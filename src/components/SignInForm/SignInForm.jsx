@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, TextInput, Button } from 'react-native'
 
-export const SignInForm = () => {
+export const SignInForm = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Crea tu Cuenta</Text>
@@ -27,7 +27,7 @@ export const SignInForm = () => {
         title="Crear Cuenta"
         
         onPress={() => {
-          handleLogin();
+          navigation.navigate('Login');
         }}
       />
     </View>

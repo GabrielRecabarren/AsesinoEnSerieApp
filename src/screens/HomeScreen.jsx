@@ -1,16 +1,16 @@
 import React from "react";
 import { View, StyleSheet, ImageBackground } from "react-native";
-import LoginForm from "../../components/LoginForm/LoginForm";
-import { SignInForm } from "../../components/SignInForm/SignInForm";
 
-const HomeScreen = () => {
+import { SignInForm } from "../components/SignInForm/SignInForm";
+
+const HomeScreen = ({navigation}) => {
   return (
     <ImageBackground
-      source={require('../../img/fondo.png')}
+      source={require('../img/fondo.png')}
       style={styles.imageBackground}
     >
       <View style={styles.container}>
-        <SignInForm />
+        <SignInForm navigation={navigation} />
       </View>
     </ImageBackground>
   );

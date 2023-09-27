@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import validator from "validator";
 
 //Formulario de Inicio de Sesión a la App.
-const LoginForm = () => {
+const LoginForm = ({navigation}) => {
   //Estados para manejo de validación del Login.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,7 +42,7 @@ const LoginForm = () => {
       <Button
         title="Iniciar sesión"
         onPress={() => {
-          handleLogin();
+          navigation.navigate('Home');
         }}
       />
     </View>
