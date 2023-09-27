@@ -30,6 +30,10 @@ export const SignInForm = ({navigation}) => {
           navigation.navigate('Login');
         }}
       />
+      <Button
+      title='Ya tengo'
+      color="#E333FF"
+></Button>
     </View>
   );
 };
