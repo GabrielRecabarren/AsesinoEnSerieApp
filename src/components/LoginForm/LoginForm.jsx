@@ -10,28 +10,35 @@ const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-
-
   // Manejo del botón apretado para Login
   const handleLogin = () => {
-    console.log("Login")
+    console.log("Login");
     //Reiniciamos mensajes de Error
-    setEmailError('');
-    setPasswordError('');
+    setEmailError("");
+    setPasswordError("");
 
     //Validación email
-    if(!validator.isEmail(email)){
-        setEmailError('Correo electrónico no válido');
-        return;     //Salimos del programa si no es válido.
+    if (!validator.isEmail(email)) {
+      setEmailError("Correo electrónico no válido");
+      return; //Salimos del programa si no es válido.
     }
     //Validación contraseña
-
   };
   return (
     <View style={styles.container}>
-      <Text>Inicia Sesión</Text>
-      <TextInput placeholder="email@contacto.<3" style={styles.input} />
-      <TextInput placeholder="password" style={styles.input} secureTextEntry />
+      <Text style={styles.text}>Inicia Sesión</Text>
+      <TextInput
+        placeholder="email@contacto.<3"
+        placeholderTextColor="white"
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="password"
+        placeholderTextColor="white"
+        style={styles.input}
+        secureTextEntry
+      />
+      
       <Button
         title="Iniciar sesión"
         onPress={() => {
@@ -46,11 +53,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+  },
+  text: {
+    fontSize: 30,
+    color: "red",
   },
   input: {
-    borderWidth: 1,
-    borderColor: "gray",
+    borderWidth: 3,
+    borderColor: "black",
+    fontSize: 18,
+    
+    color: "yellow",
     width: 200,
     margin: 10,
     padding: 10,
