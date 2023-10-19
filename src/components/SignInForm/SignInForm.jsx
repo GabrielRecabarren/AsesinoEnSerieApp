@@ -26,13 +26,16 @@ export const SignInForm = ({navigation}) => {
       <Button
         title="Crear Cuenta"
         
-        onPress={() => {
-          navigation.navigate('Login');
-        }}
+        
       />
       <Button
       title='Ya tengo'
       color="#E333FF"
+
+      //Redirigimos el botón al Login
+      onPress={() => {
+        navigation.navigate('Login');
+      }}
 ></Button>
     </View>
   );

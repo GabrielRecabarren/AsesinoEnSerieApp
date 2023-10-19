@@ -16,7 +16,7 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
-    resizeMode: "cover", // Ajusta según tus preferencias: 'cover' o 'contain'
+    resizeMode: "cover", 
     justifyContent: "center",
   },
   container: {

@@ -42,7 +42,7 @@ const LoginForm = ({navigation}) => {
       <Button
         title="Iniciar sesión"
         onPress={() => {
-          navigation.navigate('Home');
+          navigation.navigate('Start');
         }}
       />
     </View>
