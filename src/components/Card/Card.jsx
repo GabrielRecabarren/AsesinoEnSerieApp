@@ -16,13 +16,14 @@ const styles = StyleSheet.create({
 
     backgroundColor: "rgba(100, 38, 135, 0.9)",
     borderRadius: 20,
+    padding:10,
 
     borderWidth: 3,
     borderColor: "rgba(322, 25, 255, 0.18)",
   },
   text: {
     
-    fontSize: 50,
+    fontSize: 20,
     color: "white",
     
   },
