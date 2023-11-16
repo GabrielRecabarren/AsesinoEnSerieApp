@@ -2,7 +2,7 @@ const jugadores = [
     {
       id: 1,
       nombre: "Ted Bundy",
-      imagen: "https://www.kindpng.com/picc/m/21-218808_cool-avatar-png-picture-cool-pics-for-avatar.png"
+      imagen: 'https://e7.pngegg.com/pngimages/134/173/png-clipart-internet-forum-avatar-avatar-english-face.png'
     },
     {
       id: 2,

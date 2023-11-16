@@ -10,11 +10,13 @@ import { Narracion } from "../components/Narracion/Narracion";
 import { Card } from "../components/Card/Card";
 import { PlayerAvatar } from "../components/PlayerAvatar/PlayerAvatar";
 import jugadores from "../../api/fakePlayers";
+import roles from "../../api/roles";
 
-export const CreateScreen = () => {
+export const CreateScreen = ({navigation}) => {
   //States
   const [juegoOk, setjuegoOk] = useState(false); //estado para ver si el juego ya está listo.
-  const [text, setText] = useState(text); //Estado del texto mostrado en pantalla.
+  const [playersOk, setPlayersOk] = useState(false); //Estado de jugadores listos
+  const [text, setText] = useState(''); //Estado del texto mostrado en pantalla.
 
   const intro = ("Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam fugit  dolores enim consequuntur tempore minima sequi ad perspiciatis, odio minus explicabo reprehenderit! Quo quae, provident repellat quam in debitis commodi.");
   const instruccion = "Busca un lugar tranquilo y libre de miradas para ver tu rol."
@@ -50,13 +52,25 @@ const fakeReady = ()=>{
     >
       <Narracion text={text}/>
         <Text style={{textAlign:"center", color:"yellow", margin:10, fontWeight:"bold", fontSize:18}}> Usuarios con Partida Aceptada</Text>
-      <View style={styles.playersBar}>
+     
+      {!playersOk 
+      ? 
+      (<View style={styles.playersBar}>
         {jugadores.map((jugador) => (
           <PlayerAvatar key={jugador.id} namePlayer={jugador.nombre} image={jugador.imagen}/>
         ))}
-      </View>
+      </View>)
+      : 
+      (
+      <View style={styles.playersBar}>
+        {roles.map((rol) => (
+          <PlayerAvatar key={rol.id} namePlayer={rol.rol} image={rol.imagen}/>
+        ))}
+      </View>)
+      } 
+      {/* Si el juego está listo para comenzar, se activa el botón. */}
       {juegoOk ? (
-        <Pressable style={{ flex: 1 }} onPress={()=>console.log("Comenzar")}>
+        <Pressable style={{ flex: 1 }} onPress={()=>navigation.navigate('Chat')}>
           <Card text={"Comenzar Partida "} />
         </Pressable>
       ) : (
@@ -81,5 +95,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
+    flexWrap: "wrap",
+    alignContent: "space-between",
+    gap:40
   },
 });

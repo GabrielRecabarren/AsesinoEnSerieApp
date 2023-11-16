@@ -1,20 +1,21 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
-export const PlayerAvatar = ({ namePlayer, image }) => {
+export const PlayerAvatar = ({ namePlayer,rol,rolActive, image }) => {
   return (
     <View style={styles.bubble}>
       <Image
         style={styles.userAvatar}
         source={{
-          uri: 'https://e7.pngegg.com/pngimages/134/173/png-clipart-internet-forum-avatar-avatar-english-face.png'
+          uri: image
         }}
       />
       <Text
         numberOfLines={2}
         style={{ color: "yellow", fontWeight: "600", fontSize: 7, margin:2 }}
       >
-        {namePlayer}
+        {/* Si viene con el rol activo, habla com rol, sino con el nombre de jugador */}
+        {rolActive ? rol : namePlayer}
       </Text>
     </View>
   );
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(256, 15, 61, 0.6)",
+    backgroundColor: "rgba(226, 15, 61, 0.6)",
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.18)",

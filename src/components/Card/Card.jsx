@@ -9,7 +9,7 @@ export const Card = ({ text }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    margin:70,
+    margin:5,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
