@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground, Button } from "react-native";
 
 import { SignInForm } from "../components/SignInForm/SignInForm";
 
@@ -11,6 +11,7 @@ const HomeScreen = ({navigation}) => {
     >
       <View style={styles.container}>
         <SignInForm navigation={navigation} />
+        <Button title="Atajo" onPress={()=>navigation.navigate("Start")}/>
       </View>
     </ImageBackground>
   );

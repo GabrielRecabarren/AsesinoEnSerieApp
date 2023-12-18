@@ -11,17 +11,29 @@ import { Card } from "../components/Card/Card";
 import { PlayerAvatar } from "../components/PlayerAvatar/PlayerAvatar";
 import jugadores from "../../api/fakePlayers";
 import roles from "../../api/roles";
+import { obtenerDatosUsuario } from "../../api/api";
 
 export const CreateScreen = ({navigation}) => {
   //States
   const [juegoOk, setjuegoOk] = useState(false); //estado para ver si el juego ya está listo.
   const [playersOk, setPlayersOk] = useState(false); //Estado de jugadores listos
   const [text, setText] = useState(''); //Estado del texto mostrado en pantalla.
+  const [userData, setUserData] = useState('');
 
+  //Esto debería venir de la base de datos
   const intro = ("Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam fugit  dolores enim consequuntur tempore minima sequi ad perspiciatis, odio minus explicabo reprehenderit! Quo quae, provident repellat quam in debitis commodi.");
   const instruccion = "Busca un lugar tranquilo y libre de miradas para ver tu rol."
+  
   useEffect(() => {
     if(!juegoOk){
+    obtenerDatosUsuario()
+    .then((data) => {
+      setUserData("perro");
+      console.log(`Datos obtenidos: ${userData}`);
+    })
+    .catch((error) => {
+      console.error('Error al obtener datos del usuario', error);
+    });
 
       setTimeout(() => {
         setText(intro);

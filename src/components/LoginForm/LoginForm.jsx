@@ -1,29 +1,37 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import validator from "validator";
+import { loginUsuario } from "../../../api/api";
 
-//Formulario de Inicio de Sesión a la App.
-const LoginForm = ({navigation}) => {
-  //Estados para manejo de validación del Login.
+const LoginForm = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  // Manejo del botón apretado para Login
-  const handleLogin = () => {
-    console.log("Login");
-    //Reiniciamos mensajes de Error
+  const handleLogin = async () => {
+    // Reiniciamos mensajes de Error
     setEmailError("");
     setPasswordError("");
 
-    //Validación email
-    if (!validator.isEmail(email)) {
-      setEmailError("Correo electrónico no válido");
-      return; //Salimos del programa si no es válido.
+    // Intentamos iniciar sesión
+    try {
+      const userData = { email, password };
+      const loggedUser = await loginUsuario(userData);
+
+      // Verificamos si la autenticación fue exitosa
+      if (loggedUser) {
+        console.log(`Inicio de sesión exitoso usuario : ${loggedUser.user.username}`);
+        navigation.navigate("Start");
+      } else {
+        console.log("Inicio de sesión fallido");
+      }
+    } catch (error) {
+      console.error("Error al intentar iniciar sesión:", error);
+      // Puedes mostrar un mensaje de error al usuario si lo deseas
+      alert("Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.");
     }
-    //Validación contraseña
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Inicia Sesión</Text>
@@ -31,19 +39,29 @@ const LoginForm = ({navigation}) => {
         placeholder="email@contacto.<3"
         placeholderTextColor="white"
         style={styles.input}
+        value={email}
+        onChangeText={(text) => {
+          setEmail(text);
+          setEmailError("");
+        }}
       />
+      <Text style={{ color: "red" }}>{emailError}</Text>
       <TextInput
         placeholder="password"
         placeholderTextColor="white"
         style={styles.input}
         secureTextEntry
+        value={password}
+        onChangeText={(text) => {
+          setPassword(text);
+          setPasswordError("");
+        }}
       />
-      
+      <Text style={{ color: "red" }}>{passwordError}</Text>
+
       <Button
         title="Iniciar sesión"
-        onPress={() => {
-          navigation.navigate('Start');
-        }}
+        onPress={handleLogin}
       />
     </View>
   );
@@ -63,7 +81,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "black",
     fontSize: 18,
-    
     color: "yellow",
     width: 200,
     margin: 10,

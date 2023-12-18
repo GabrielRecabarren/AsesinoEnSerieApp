@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  Text,
   ImageBackground,
   StyleSheet,
   Pressable,
@@ -10,6 +9,10 @@ import { Card } from "../components/Card/Card";
 import { CompraAsesino } from "../components/CompraAsesino/CompraAsesino";
 
 export const StartScreen = ({navigation}) => {
+
+  const handlingCrearPartida =()=>{
+    console.log("Vamos a crear una partida")
+  }
 
     const handlingStart = (option) =>{
         switch (option) {
@@ -30,7 +33,7 @@ export const StartScreen = ({navigation}) => {
       style={styles.imageBackground}
     >
       <View style={styles.container}>
-        <Pressable style={{flex:1}} onPress={()=>handlingStart(1)} >
+        <Pressable style={{flex:1}} onPress={()=>handlingCrearPartida()} >
           <Card text={"CREAR PARTIDA"} />
         </Pressable>
         <Pressable style={{flex:1}} onPress={()=>handlingStart(2)}>
