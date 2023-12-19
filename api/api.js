@@ -44,7 +44,7 @@ export const loginUsuario = async (userData) => {
 }
 
 //Crear una partida
-export const crearPartida = async () => {
+export const crearPartida = async (gameData) => {
   try {
     console.log("Intentando crear una partida ");
     const response = await api.post("/crearPartida", gameData);
