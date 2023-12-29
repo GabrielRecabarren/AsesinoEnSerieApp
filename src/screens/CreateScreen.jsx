@@ -16,20 +16,19 @@ import { obtenerDatosUsuario } from "../../api/api";
 export const CreateScreen = ({navigation}) => {
   //States
   const [juegoOk, setjuegoOk] = useState(false); //estado para ver si el juego ya está listo.
-  const [playersOk, setPlayersOk] = useState(false); //Estado de jugadores listos
+  const [playersOk, setPlayersOk] = useState(false); //Estado de si están los jugadores listos
+  const [jugadoresConectados, setJugadoresConectados] = useState([]); //Estado de jugadores listos
   const [text, setText] = useState(''); //Estado del texto mostrado en pantalla.
-  const [userData, setUserData] = useState('');
 
   //Esto debería venir de la base de datos
-  const intro = ("Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam fugit  dolores enim consequuntur tempore minima sequi ad perspiciatis, odio minus explicabo reprehenderit! Quo quae, provident repellat quam in debitis commodi.");
+  const intro = "Comienza el relato ..."
   const instruccion = "Busca un lugar tranquilo y libre de miradas para ver tu rol."
   
   useEffect(() => {
     if(!juegoOk){
     obtenerDatosUsuario()
     .then((data) => {
-      setUserData("perro");
-      console.log(`Datos obtenidos: ${userData}`);
+    setJugadoresConectados(data);
     })
     .catch((error) => {
       console.error('Error al obtener datos del usuario', error);
@@ -37,7 +36,7 @@ export const CreateScreen = ({navigation}) => {
 
       setTimeout(() => {
         setText(intro);
-        fakeReady();
+        
         
       }, 3000);
     }else if(juegoOk){
@@ -49,11 +48,6 @@ export const CreateScreen = ({navigation}) => {
     }, [juegoOk]);
   
 
-const fakeReady = ()=>{
-  setTimeout(() => {
-    setjuegoOk(true);
-  }, 8000);
-}
 
 
 
@@ -68,8 +62,8 @@ const fakeReady = ()=>{
       {!playersOk 
       ? 
       (<View style={styles.playersBar}>
-        {jugadores.map((jugador) => (
-          <PlayerAvatar key={jugador.id} namePlayer={jugador.nombre} image={jugador.imagen}/>
+        {jugadoresConectados.map((jugador) => (
+          <PlayerAvatar key={jugador.id} namePlayer={jugador.username} image={jugador.imagen}/>
         ))}
       </View>)
       : 
