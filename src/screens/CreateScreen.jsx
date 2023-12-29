@@ -9,7 +9,6 @@ import {
 import { Narracion } from "../components/Narracion/Narracion";
 import { Card } from "../components/Card/Card";
 import { PlayerAvatar } from "../components/PlayerAvatar/PlayerAvatar";
-import jugadores from "../../api/fakePlayers";
 import roles from "../../api/roles";
 import { obtenerDatosUsuario } from "../../api/api";
 
