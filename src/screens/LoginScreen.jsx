@@ -2,6 +2,7 @@ import { View, StyleSheet, ImageBackground } from "react-native";
 import LoginForm from "../components/LoginForm/LoginForm";
 
 const LoginScreen = ({ navigation }) => {
+  
   return (
     <ImageBackground
       source={require("../img/fondo.png")}

@@ -8,10 +8,19 @@ const LoginForm = ({ navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+
+  const guardarUsuarioEnSesion = async (usuario) => {
+    try {
+      await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
+    } catch (error) {
+      console.error('Error al guardar usuario en la sesión:', error);
+    }
+  };
   const handleLogin = async () => {
     // Reiniciamos mensajes de Error
     setEmailError("");
     setPasswordError("");
+    
 
     // Intentamos iniciar sesión
     try {
