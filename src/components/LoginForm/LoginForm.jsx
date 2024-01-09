@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet} from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { loginUsuario } from "../../../api/api";
 
 const LoginForm = ({ navigation }) => {
@@ -8,10 +9,13 @@ const LoginForm = ({ navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-
+  //Guardamos al usuario  
   const guardarUsuarioEnSesion = async (usuario) => {
     try {
       await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
+      console.log("Usuario guardado");
+      const dataStored = await AsyncStorage.getItem("usuario");
+      console.log(dataStored);
     } catch (error) {
       console.error('Error al guardar usuario en la sesión:', error);
     }
@@ -30,6 +34,7 @@ const LoginForm = ({ navigation }) => {
       // Verificamos si la autenticación fue exitosa
       if (loggedUser) {
         console.log(`Inicio de sesión exitoso usuario : ${loggedUser.user.username}`);
+        await guardarUsuarioEnSesion(loggedUser);
         navigation.navigate("Start");
       } else {
         console.log("Inicio de sesión fallido");
