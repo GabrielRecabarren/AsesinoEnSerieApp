@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { loginUsuario } from "../../../api/api";
@@ -9,33 +9,34 @@ const LoginForm = ({ navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+
   //Guardamos al usuario  
   const guardarUsuarioEnSesion = async (usuario) => {
     try {
       await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
-      console.log("Usuario guardado");
+      
       const dataStored = await AsyncStorage.getItem("usuario");
-      console.log(dataStored);
+      return dataStored;
     } catch (error) {
       console.error('Error al guardar usuario en la sesión:', error);
     }
   };
+
   const handleLogin = async () => {
     // Reiniciamos mensajes de Error
     setEmailError("");
-    setPasswordError("");
-    
+    setPasswordError("");   
 
     // Intentamos iniciar sesión
     try {
       const userData = { email, password };
       const loggedUser = await loginUsuario(userData);
-
+      
       // Verificamos si la autenticación fue exitosa
       if (loggedUser) {
-        console.log(`Inicio de sesión exitoso usuario : ${loggedUser.user.username}`);
-        await guardarUsuarioEnSesion(loggedUser);
-        navigation.navigate("Start");
+        const usuarioGuardado = await guardarUsuarioEnSesion(loggedUser);
+              
+        usuarioGuardado ?  navigation.navigate("Start") : alert("Imposible guardar usuario");
       } else {
         console.log("Inicio de sesión fallido");
       }
@@ -45,6 +46,8 @@ const LoginForm = ({ navigation }) => {
       alert("Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.");
     }
   };
+
+  
 
   return (
     <View style={styles.container}>

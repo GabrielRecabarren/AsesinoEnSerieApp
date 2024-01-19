@@ -14,15 +14,16 @@ export const SignInForm = ({ navigation }) => {
       const userData = {
         username,
         email,
-        password,        
+        password,
         alias
       };  
+      console.log(`Vamos a comenzar a crear un usuario ${userData.username}`)
       const nuevoUsuario = await crearUsuario(userData);
       console.log('Usuario creado:', nuevoUsuario);
-      navigation.navigate("Login")
+      nuevoUsuario===undefined ? alert("usuario no existe") : navigation.navigate("Login")
 
     } catch (error) {
-      console.error('Error al crear usuario:', error);
+      console.error('Error al crear usuario:', error.message);
 
     }
   }

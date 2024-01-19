@@ -11,6 +11,7 @@ import { Card } from "../components/Card/Card";
 import { PlayerAvatar } from "../components/PlayerAvatar/PlayerAvatar";
 import roles from "../../api/roles";
 import { obtenerDatosUsuario } from "../../api/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const CreateScreen = ({navigation}) => {
   //States
@@ -22,10 +23,13 @@ export const CreateScreen = ({navigation}) => {
   //Esto debería venir de la base de datos
   const intro = "Comienza el relato ..."
   const instruccion = "Busca un lugar tranquilo y libre de miradas para ver tu rol."
-  
+  const usuario = AsyncStorage.getItem("usuario");
+  const token = JSON.parse(usuario).token;
+      
+      console.log(`Token: ${token}`);
   useEffect(() => {
     if(!juegoOk){
-    obtenerDatosUsuario()
+    obtenerDatosUsuario(token)
     .then((data) => {
     setJugadoresConectados(data);
     })
