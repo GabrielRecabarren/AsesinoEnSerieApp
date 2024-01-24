@@ -7,16 +7,18 @@ import { StartScreen } from "./src/screens/StartScreen.jsx";
 import { CreateScreen } from "./src/screens/CreateScreen.jsx";
 import { LoadScreen } from "./src/screens/LoadScreen.jsx";
 import ChatScreen from "./src/screens/ChatScreen.jsx";
+import { UserProvider } from "./src/context/UserContext.js";
 //Creo un Stack para navegación
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
 
-
+    
     //Navigation Container debe cubrir todo.
 
       <NavigationContainer>
+        <UserProvider>
         <Stack.Navigator initialRouteName="Home" >
           <Stack.Screen
             name="Home"
@@ -29,6 +31,7 @@ export default function App() {
           <Stack.Screen name="Load" component={LoadScreen} />
           <Stack.Screen name="Chat" component={ChatScreen} />
         </Stack.Navigator>
+    </UserProvider>
       </NavigationContainer>
   );
 }

@@ -3,21 +3,32 @@ import { View, ImageBackground, StyleSheet, Pressable } from "react-native";
 import { Card } from "../components/Card/Card";
 import { CompraAsesino } from "../components/CompraAsesino/CompraAsesino";
 import { crearPartida } from "../../api/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const StartScreen = ({ navigation }) => {
+
+ 
+
   //Creamos partida
   const handlingCrearPartida = async () => {
+    //Traemos al user desde el AsynStorage
+  const userData = await AsyncStorage.getItem("usuario");
+  const token = JSON.parse(userData).token;//Obtenemos el token
+  const userId = JSON.parse(userData).user.id; //Obtenemos el userId.
+  console.log(`Fuckin token: ${token}, and the mdfukin userId: ${userId}`);
+    
     try {
+      
       console.log("Creando partida");
       const gameData = {
-        userId: 1,
+        userId: userId,
         datosPartida: {
           state: "En Curso",
         },
       };    
       console.log(`Datos Enviados: ${JSON.stringify(gameData)}`);
       console.log(`Creando Partida...`);
-      const newGame = await crearPartida(gameData);
+      const newGame = await crearPartida(gameData, token);
 
       console.log(`Partida Creada: ${JSON.stringify(newGame)}`);
       navigation.navigate("Create");
@@ -48,6 +59,9 @@ export const StartScreen = ({ navigation }) => {
         </Pressable>
         <Pressable style={{ flex: 1 }} onPress={() => handlingStart(2)}>
           <Card text={"PARTIDA GUARDADA"} />
+        </Pressable>
+        <Pressable style={{ flex: 1 }} onPress={() => obtenerToken()}>
+          <Card text={"token"} />
         </Pressable>
       </View>
 

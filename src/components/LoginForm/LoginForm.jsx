@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { loginUsuario } from "../../../api/api";
+import { UserContext } from "../../context/UserContext";
 
 const LoginForm = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -9,13 +10,20 @@ const LoginForm = ({ navigation }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  //Datos del context
+const {login, logout, userData} = useContext(UserContext);
+
+
 
   //Guardamos al usuario  
   const guardarUsuarioEnSesion = async (usuario) => {
     try {
       await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
       
-      const dataStored = await AsyncStorage.getItem("usuario");
+      const dataStored = await AsyncStorage.getItem('usuario');
+      const parsedData = await JSON.parse(dataStored);
+      await login(parsedData);
+      console.log(userData);
       return dataStored;
     } catch (error) {
       console.error('Error al guardar usuario en la sesión:', error);

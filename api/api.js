@@ -49,14 +49,20 @@ export const loginUsuario = async (userData) => {
 }
 
 //Crear una partida
-export const crearPartida = async (gameData) => {
+export const crearPartida = async (gameData, token) => {
   try {
     console.log("Intentando crear una partida ");
-    const response = await api.post("/crearPartida", gameData);
+    const response = await api.post("/crearPartida", gameData, {
+      headers:{
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    });
     return response.data;
     
   } catch (error) {
     console.log(error)
+    throw new Error(error.message || "Error creando la partida");
   }
 
-}
+};
