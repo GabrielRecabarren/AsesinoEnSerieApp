@@ -1,36 +1,43 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, ImageBackground, StyleSheet, Pressable } from "react-native";
 import { Card } from "../components/Card/Card";
 import { CompraAsesino } from "../components/CompraAsesino/CompraAsesino";
-import { crearPartida } from "../../api/api";
+import { crearPartida, listarUsuariosPorPartida } from "../../api/api";
+import { UserContext } from "../context/UserContext";
+import { GameContext } from "../context/GameContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const StartScreen = ({ navigation }) => {
 
- 
+  //Traemos el contexto
+  const { userData } = useContext(UserContext);
+const { create} = useContext(GameContext);
 
   //Creamos partida
   const handlingCrearPartida = async () => {
-    //Traemos al user desde el AsynStorage
-  const userData = await AsyncStorage.getItem("usuario");
-  const token = JSON.parse(userData).token;//Obtenemos el token
-  const userId = JSON.parse(userData).user.id; //Obtenemos el userId.
-  console.log(`Fuckin token: ${token}, and the mdfukin userId: ${userId}`);
-    
+
+    const token = userData.data.token;//Obtenemos el token
+    console.log(token);
+    const userId = userData.data.user.id; //Obtenemos el userId.
+    console.log(`Fuckin token: ${token}, and the mdfukin userId: ${userId}`);
+
     try {
-      
+
       console.log("Creando partida");
       const gameData = {
         userId: userId,
         datosPartida: {
           state: "En Curso",
         },
-      };    
+      };
       console.log(`Datos Enviados: ${JSON.stringify(gameData)}`);
       console.log(`Creando Partida...`);
       const newGame = await crearPartida(gameData, token);
+      console.log(`Partida Creada`);
+      await create(newGame);
+      console.log(`Partida Guardada: ${JSON.stringify(newGame)}`);
 
-      console.log(`Partida Creada: ${JSON.stringify(newGame)}`);
+      
       navigation.navigate("Create");
     } catch (error) {
       console.log(`Error creando la partida: ${error}`);

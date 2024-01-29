@@ -7,8 +7,8 @@ const api = axios.create({
   baseURL,
   timeout: 5000, // Puedes ajustar este valor según tus necesidades
 });
-
-export const obtenerDatosUsuario = async (token) => {
+//Obtener todos los usuarios (ADMIN)
+export const obtenerDatosUsuario = async (token, idGame) => {
   try {
     console.log('Llamando datos de usuario');
     const response = await api.get(usersEndpoint, {
@@ -66,3 +66,21 @@ export const crearPartida = async (gameData, token) => {
   }
 
 };
+
+//Obtener usuarios por partida
+export const listarUsuariosPorPartida = async(gameId, token) =>{
+  try {
+    console.log(`"Enviando datos para listar: ${gameId} ${token}"`)
+    const response = await api.get(`/users/:${gameId}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': "application/json"
+      }
+    })
+    console.log(response);
+    
+  } catch (error) {
+    throw { message: 'No se pueden obtener los usuarios de la partida.', error };
+    
+  }
+}

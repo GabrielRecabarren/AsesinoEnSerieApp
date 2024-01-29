@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ImageBackground,
   Pressable,
@@ -10,8 +10,9 @@ import { Narracion } from "../components/Narracion/Narracion";
 import { Card } from "../components/Card/Card";
 import { PlayerAvatar } from "../components/PlayerAvatar/PlayerAvatar";
 import roles from "../../api/roles";
-import { obtenerDatosUsuario } from "../../api/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { listarUsuariosPorPartida } from "../../api/api";
+import { UserContext } from "../context/UserContext";
+import { GameContext } from "../context/GameContext";
 
 export const CreateScreen = ({ navigation }) => {
   //States
@@ -20,20 +21,26 @@ export const CreateScreen = ({ navigation }) => {
   const [jugadoresConectados, setJugadoresConectados] = useState([]); //Estado de jugadores listos
   const [text, setText] = useState(''); //Estado del texto mostrado en pantalla.
 
+  const {userData} = useContext(UserContext);
+  const { gameId} = useContext(GameContext);
   //Esto debería venir de la base de datos
   const intro = "Comienza el relato ..."
   const instruccion = "Busca un lugar tranquilo y libre de miradas para ver tu rol."
-  const usuario = async () => {
-    const dataUser = await AsyncStorage.getItem("usuario");
-    const parsedUser = JSON.parse(dataUser);
-    console.log(parsedUser.token);
-    
-  };
+  
+  const token = userData.data.token;//Obtenemos el token
+  const gameIdParsed = gameId;
+
+  const usuariosConectados = async()=> {
+    console.log("listando users por partida")
+    await listarUsuariosPorPartida(gameId, token);
+  }
 
 
-
+  
 useEffect(()=>{
-  usuario();
+
+  console.log(`UE`);
+  usuariosConectados();
 }, []) 
 
 

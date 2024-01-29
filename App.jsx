@@ -8,30 +8,34 @@ import { CreateScreen } from "./src/screens/CreateScreen.jsx";
 import { LoadScreen } from "./src/screens/LoadScreen.jsx";
 import ChatScreen from "./src/screens/ChatScreen.jsx";
 import { UserProvider } from "./src/context/UserContext.js";
+import { GameContextProvider } from "./src/context/GameContext.js";
 //Creo un Stack para navegación
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
 
-    
+
     //Navigation Container debe cubrir todo.
 
-      <NavigationContainer>
-        <UserProvider>
-        <Stack.Navigator initialRouteName="Home" >
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ title: "Bienvenid@" }}
-          />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Start" component={StartScreen} />
-          <Stack.Screen name="Create" component={CreateScreen} />
-          <Stack.Screen name="Load" component={LoadScreen} />
-          <Stack.Screen name="Chat" component={ChatScreen} />
-        </Stack.Navigator>
-    </UserProvider>
-      </NavigationContainer>
+    <NavigationContainer>
+      <UserProvider>
+        <GameContextProvider>
+
+          <Stack.Navigator initialRouteName="Home" >
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ title: "Bienvenid@" }}
+            />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Start" component={StartScreen} />
+            <Stack.Screen name="Create" component={CreateScreen} />
+            <Stack.Screen name="Load" component={LoadScreen} />
+            <Stack.Screen name="Chat" component={ChatScreen} />
+          </Stack.Navigator>
+        </GameContextProvider>
+      </UserProvider>
+    </NavigationContainer>
   );
 }
