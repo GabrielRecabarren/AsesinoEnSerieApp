@@ -71,16 +71,34 @@ export const crearPartida = async (gameData, token) => {
 export const listarUsuariosPorPartida = async(gameId, token) =>{
   try {
     console.log(`"Enviando datos para listar: ${gameId} ${token}"`)
-    const response = await api.get(`/users/:${gameId}`,{
+    const response = await api.get(`/players/${gameId}`,{
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': "application/json"
       }
     })
-    console.log(response);
+    console.log(response.data);
+    return response.data;
     
   } catch (error) {
-    throw { message: 'No se pueden obtener los usuarios de la partida.', error };
+    throw { message: 'No se pueden obtener los usuarios de la partida.' };
     
   }
 }
+// Listar partidas por usuario
+export const listarPartidasPorUsuario = async (userId, token) => {
+  try {
+    console.log(`Obteniendo partidas para el usuario con ID: ${userId}`);
+    const response = await api.get(`/games/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('No se pueden obtener las partidas del usuario.');
+  }
+};

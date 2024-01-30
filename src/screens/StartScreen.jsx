@@ -2,10 +2,9 @@ import React, { useContext } from "react";
 import { View, ImageBackground, StyleSheet, Pressable } from "react-native";
 import { Card } from "../components/Card/Card";
 import { CompraAsesino } from "../components/CompraAsesino/CompraAsesino";
-import { crearPartida, listarUsuariosPorPartida } from "../../api/api";
+import { crearPartida,  } from "../../api/api";
 import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const StartScreen = ({ navigation }) => {
 

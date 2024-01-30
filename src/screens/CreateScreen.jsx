@@ -31,8 +31,9 @@ export const CreateScreen = ({ navigation }) => {
   const gameIdParsed = gameId;
 
   const usuariosConectados = async()=> {
-    console.log("listando users por partida")
-    await listarUsuariosPorPartida(gameId, token);
+    console.log(`"listando users por partida" con este gameID ${gameId}`)
+    const usuariosConfirmados = await listarUsuariosPorPartida(gameId, token);
+    setJugadoresConectados(usuariosConfirmados);
   }
 
 

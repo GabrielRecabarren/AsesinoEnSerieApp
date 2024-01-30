@@ -1,35 +1,63 @@
-import React from 'react'
-import { View, Text, ImageBackground, StyleSheet, TextInput } from 'react-native'
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, ImageBackground, StyleSheet, FlatList } from 'react-native';
+import { listarPartidasPorUsuario } from '../../api/api';
+import { UserContext } from '../context/UserContext';
 
 export const LoadScreen = () => {
+  const [partidasUsuario, setPartidasUsuario] = useState([]);
+  const { userData } = useContext(UserContext);
+
+  useEffect(() => {
+    const cargarPartidasUsuario = async () => {
+      try {
+        const token = userData.data.token;
+        const userId = userData.data.user.id;
+        const partidas = await listarPartidasPorUsuario(userId, token);
+
+        const partidasEnCurso = partidas.filter((partida) => partida.state === 'En Curso');
+
+        setPartidasUsuario(partidasEnCurso);
+      } catch (error) {
+        console.error('Error al obtener las partidas:', error.message);
+      }
+    };
+
+    cargarPartidasUsuario();
+  }, []);
+
   return (
-    <ImageBackground source={require("../img/fondo.png")} style={{flex:1}}>
+    <ImageBackground source={require("../img/fondo.png")} style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Text style={styles.title}> Ingresa el Código de tu Partida</Text>
-        <TextInput
-         placeholder="xxxxxxxx"
-         placeholderTextColor="white"
-         style={styles.input}></TextInput>
+        <Text style={styles.title}>Tus Partidas en Curso</Text>
 
+        <FlatList
+          data={partidasUsuario}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.partidaContainer}>
+              <Text style={styles.partidaText}>{`Partida ID: ${item.id}, Estado: ${item.state}`}</Text>
+              <Text style={styles.partidaText}>{`Creador: ${item.creator?.username || 'Desconocido'}`}</Text>
+              {/* Agregar más detalles según la estructura de tus datos */}
+            </View>
+          )}
+        />
       </View>
-
     </ImageBackground>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
-    justifyContent: "center",
+    justifyContent: 'center',
     margin: 20,
-    backgroundColor: "rgba(31, 38, 135, 0.37)",
+    backgroundColor: 'rgba(31, 38, 135, 0.37)',
     borderRadius: 20,
     padding: 20,
     height: 500,
     borderWidth: 3,
-    borderColor: "rgba(32, 25, 255, 0.18)",
-    shadowColor: "rgba(31, 38, 135, 0.37)",
+    borderColor: 'rgba(32, 25, 255, 0.18)',
+    shadowColor: 'rgba(31, 38, 135, 0.37)',
     shadowOffset: {
       width: 4,
       height: 8,
@@ -37,20 +65,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 32,
   },
-  title:{
-    fontSize: 52,
-    color:"yellow"
+  title: {
+    fontSize: 32,
+    color: 'yellow',
+    marginBottom: 20,
   },
-  input: {
-    textAlign:"center",
-    borderWidth: 3,
-    borderColor: "black",
-    fontSize: 55,
-    
-    color: "yellow",
-    width: "95%",
-    margin: 20,
-    padding: 10,
+  partidaContainer: {
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
   },
-  
-})
+  partidaText: {
+    color: 'white',
+    fontSize: 18,
+    marginBottom: 8,
+  },
+});
