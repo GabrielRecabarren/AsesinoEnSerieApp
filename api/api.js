@@ -102,3 +102,26 @@ export const listarPartidasPorUsuario = async (userId, token) => {
     throw new Error('No se pueden obtener las partidas del usuario.');
   }
 };
+
+//Invitar Usuarios a la partida:
+export const invitarUsuariosALaPartida = async (users, token) => {
+  try {
+    console.log(`Invitando usuarios: ${users}`);
+    const response = await api.post(`/games/agregarJugadores`, 
+      {
+        userIds: users
+     },{
+
+       headers: {
+         Authorization: `Bearer ${token}`,
+         'Content-Type': 'application/json',
+        },
+        
+      });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('No se pueden invitar usuarios a la partida.');
+  }
+};
