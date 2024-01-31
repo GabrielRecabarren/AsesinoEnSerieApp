@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
-import { Chat } from '../components/Chat/Chat';
+import  Chat  from '../components/Chat/Chat';
 import BotonAccion from '../components/BotonAccion/BotonAccion';
 
 const ChatScreen = () => {
