@@ -107,7 +107,7 @@ export const listarPartidasPorUsuario = async (userId, token) => {
 export const invitarUsuariosALaPartida = async (users, token) => {
   try {
     console.log(`Invitando usuarios: ${users}`);
-    const response = await api.post(`/games/agregarJugadores`, 
+    const response = await api.put(`/games/agregarJugadores`, 
       {
         userIds: users
      },{
