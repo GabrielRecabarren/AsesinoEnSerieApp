@@ -9,6 +9,7 @@ import { LoadScreen } from "./src/screens/LoadScreen.jsx";
 import ChatScreen from "./src/screens/ChatScreen.jsx";
 import { UserProvider } from "./src/context/UserContext.js";
 import { GameContextProvider } from "./src/context/GameContext.js";
+import InvitarScreen from "./src/screens/InvitarScreen.jsx";
 //Creo un Stack para navegación
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,7 @@ export default function App() {
             <Stack.Screen name="Create" component={CreateScreen} />
             <Stack.Screen name="Load" component={LoadScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
+            <Stack.Screen name="Invitar" component={InvitarScreen} />
           </Stack.Navigator>
         </GameContextProvider>
       </UserProvider>

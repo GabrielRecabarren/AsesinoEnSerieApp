@@ -12,7 +12,7 @@ export const obtenerDatosUsuario = async (token, idGame) => {
   try {
     console.log('Llamando datos de usuario');
     const response = await api.get(usersEndpoint, {
-      headers:{
+      headers: {
         Authorization: `Bearer ${token}`
       }
     });
@@ -41,7 +41,7 @@ export const loginUsuario = async (userData) => {
     const response = await api.post("/login", userData);
     console.log(`Loggeado con exito: ${userData.email}`)
     return response.data;
-    
+
   } catch (error) {
     alert("Usuario inválido.")
     throw error;
@@ -53,13 +53,13 @@ export const crearPartida = async (gameData, token) => {
   try {
     console.log("Intentando crear una partida ");
     const response = await api.post("/crearPartida", gameData, {
-      headers:{
+      headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
     });
     return response.data;
-    
+
   } catch (error) {
     console.log(error)
     throw new Error(error.message || "Error creando la partida");
@@ -68,10 +68,10 @@ export const crearPartida = async (gameData, token) => {
 };
 
 //Obtener usuarios por partida
-export const listarUsuariosPorPartida = async(gameId, token) =>{
+export const listarUsuariosPorPartida = async (gameId, token) => {
   try {
     console.log(`"Enviando datos para listar: ${gameId} ${token}"`)
-    const response = await api.get(`/players/${gameId}`,{
+    const response = await api.get(`/players/${gameId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': "application/json"
@@ -79,10 +79,10 @@ export const listarUsuariosPorPartida = async(gameId, token) =>{
     })
     console.log(response.data);
     return response.data;
-    
+
   } catch (error) {
     throw { message: 'No se pueden obtener los usuarios de la partida.' };
-    
+
   }
 }
 // Listar partidas por usuario
@@ -104,20 +104,24 @@ export const listarPartidasPorUsuario = async (userId, token) => {
 };
 
 //Invitar Usuarios a la partida:
-export const invitarUsuariosALaPartida = async (users, token) => {
+export const invitarUsuariosALaPartida = async (users, token, gameId) => {
   try {
+    if (!Array.isArray(users)) {
+      throw new Error('users debe ser un array.');
+    }
+
     console.log(`Invitando usuarios: ${users}`);
-    const response = await api.put(`/games/agregarJugadores`, 
+    const response = await api.put(`/games/${gameId}/agregarJugadores`,
       {
         userIds: users
-     },{
+      }, {
 
-       headers: {
-         Authorization: `Bearer ${token}`,
-         'Content-Type': 'application/json',
-        },
-        
-      });
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+
+    });
     console.log(response.data);
     return response.data;
   } catch (error) {

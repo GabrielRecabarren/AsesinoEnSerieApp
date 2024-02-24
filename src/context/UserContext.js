@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createContext, useState} from 'react';
 
 const UserContext = createContext();
@@ -7,7 +8,9 @@ const UserProvider = ({children}) =>{
     const [userId, setUserId] = useState(null);
     const [userToken, setUserToken] = useState(null);
 
-    const login = (data) => {
+    const login = async(data) => {
+        await AsyncStorage.setItem('usuarioAutenticado', 'true');
+
         setUserData({data});
         setUserToken(data.token)
         setUserId(data.user.id)

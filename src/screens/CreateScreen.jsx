@@ -40,7 +40,7 @@ export const CreateScreen = ({ navigation }) => {
   
 useEffect(()=>{
 
-  console.log(`UE`);
+  console.log(`UE:Usuarios Conectados`);
   usuariosConectados();
 }, []) 
 
@@ -80,7 +80,7 @@ useEffect(()=>{
           <Card text={"Esperando Jugadores "} />
         </Pressable>
       )}
-      <Pressable style={{ flex: 1 }} onPress={() => console.log("Invitar")}>
+      <Pressable style={{ flex: 1 }} onPress={() => navigation.navigate("Invitar")}>
         <Card text={"Invitar Jugadores "} />
       </Pressable>
     </ImageBackground>
