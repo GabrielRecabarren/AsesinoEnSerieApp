@@ -13,6 +13,7 @@ import roles from "../../api/roles";
 import { listarUsuariosPorPartida } from "../../api/api";
 import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
+import { PlayersContext } from "../context/PlayersContext";
 
 export const CreateScreen = ({ navigation }) => {
   //States
@@ -23,6 +24,7 @@ export const CreateScreen = ({ navigation }) => {
 
   const {userData} = useContext(UserContext);
   const { gameId} = useContext(GameContext);
+  const { playersConectados }= useContext(PlayersContext);
   //Esto debería venir de la base de datos
   const intro = "Comienza el relato ..."
   const instruccion = "Busca un lugar tranquilo y libre de miradas para ver tu rol."
@@ -40,9 +42,9 @@ export const CreateScreen = ({ navigation }) => {
   
 useEffect(()=>{
 
-  console.log(`UE:Usuarios Conectados`);
+  console.log(playersConectados);
   usuariosConectados();
-}, []) 
+}, [playersConectados]) 
 
 
 

@@ -3,14 +3,17 @@ import { SafeAreaView, StyleSheet, TextInput, ImageBackground, Text, View, Butto
 import { UserContext } from '../context/UserContext';
 import { invitarUsuariosALaPartida } from '../../api/api';
 import { GameContext } from '../context/GameContext';
+import { PlayersContext } from '../context/PlayersContext';
 
-const InvitarScreen = ({navigation}) => {
+const InvitarScreen = ({ navigation }) => {
     const [correoElectronico, setCorreoElectronico] = useState([]);
     const [codigoJugador, setCodigoJugador] = useState([]);
 
     const { userData } = useContext(UserContext);
     const token = userData.data.token;//Obtenemos el token
     const { gameId } = useContext(GameContext);
+
+    const { invitar } = useContext(PlayersContext);
 
 
 
@@ -22,16 +25,16 @@ const InvitarScreen = ({navigation}) => {
             const jugadoresArray = codigoJugador.split(',').map(jugador => jugador.trim());
             console.log(jugadoresArray);
             // Llama a la función invitarUsuariosALaPartida con los datos ingresados por el usuario
-            await invitarUsuariosALaPartida(jugadoresArray, token, gameId);
-            alert('Invitación enviada exitosamente');
+            const usuariosInvitados = await invitarUsuariosALaPartida(jugadoresArray, token, gameId);
+            invitar(usuariosInvitados);
             navigation.navigate("Create");
         } catch (error) {
             console.error('Error al enviar la invitación:', error);
             alert('Error al enviar la invitación');
-            
+
         }
     };
-    
+
     return (
         <ImageBackground
             source={require('../img/fondo.png')} // Ruta de la imagen de fondo

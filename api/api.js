@@ -122,8 +122,9 @@ export const invitarUsuariosALaPartida = async (users, token, gameId) => {
       },
 
     });
-    console.log(response.data);
-    return response.data;
+    const dataDevuelta = JSON.stringify(response.data)
+    console.log(`Data devuelta: ${dataDevuelta}`);
+    return dataDevuelta;
   } catch (error) {
     console.error(error);
     throw new Error('No se pueden invitar usuarios a la partida.');

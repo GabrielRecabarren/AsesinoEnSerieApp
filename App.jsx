@@ -10,6 +10,7 @@ import ChatScreen from "./src/screens/ChatScreen.jsx";
 import { UserProvider } from "./src/context/UserContext.js";
 import { GameContextProvider } from "./src/context/GameContext.js";
 import InvitarScreen from "./src/screens/InvitarScreen.jsx";
+import { PlayersContextProvider } from "./src/context/PlayersContext.js";
 //Creo un Stack para navegación
 const Stack = createNativeStackNavigator();
 
@@ -22,20 +23,23 @@ export default function App() {
     <NavigationContainer>
       <UserProvider>
         <GameContextProvider>
+          <PlayersContextProvider>
 
-          <Stack.Navigator initialRouteName="Home" >
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{ title: "Bienvenid@" }}
-            />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Start" component={StartScreen} />
-            <Stack.Screen name="Create" component={CreateScreen} />
-            <Stack.Screen name="Load" component={LoadScreen} />
-            <Stack.Screen name="Chat" component={ChatScreen} />
-            <Stack.Screen name="Invitar" component={InvitarScreen} />
-          </Stack.Navigator>
+
+            <Stack.Navigator initialRouteName="Home" >
+              <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{ title: "Bienvenid@" }}
+              />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Start" component={StartScreen} />
+              <Stack.Screen name="Create" component={CreateScreen} />
+              <Stack.Screen name="Load" component={LoadScreen} />
+              <Stack.Screen name="Chat" component={ChatScreen} />
+              <Stack.Screen name="Invitar" component={InvitarScreen} />
+            </Stack.Navigator>
+          </PlayersContextProvider>
         </GameContextProvider>
       </UserProvider>
     </NavigationContainer>

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     flexWrap: 'wrap',
-    maxWidth: '70%', // Ajusta el ancho máximo según tu preferencia
+    maxWidth: '70%', 
     color: 'white',
   },
 });
