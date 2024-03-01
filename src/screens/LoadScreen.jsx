@@ -68,13 +68,7 @@ const styles = StyleSheet.create({
     height: 500,
     borderWidth: 3,
     borderColor: 'rgba(32, 25, 255, 0.18)',
-    shadowColor: 'rgba(31, 38, 135, 0.37)',
-    shadowOffset: {
-      width: 4,
-      height: 8,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 32,
+    
   },
   title: {
     fontSize: 32,

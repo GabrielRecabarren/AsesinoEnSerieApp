@@ -30,7 +30,7 @@ const InvitarScreen = ({ navigation }) => {
             navigation.navigate("Create");
         } catch (error) {
             console.error('Error al enviar la invitación:', error);
-            alert('Error al enviar la invitación');
+            alert('Error al enviar la invitación. Prueba de nuevo o prueba otra cosa.');
 
         }
     };

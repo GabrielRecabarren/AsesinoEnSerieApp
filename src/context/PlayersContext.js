@@ -8,7 +8,7 @@ const PlayersContextProvider = ({ children }) => {
     const [playersConectados, setPlayersConectados] = useState([]);
 
     const invitar =(players) =>{
-        setPlayersConectados(players);
+        setPlayersConectados(...playersConectados, players);
         console.log("Agregados al Context");
 
     }

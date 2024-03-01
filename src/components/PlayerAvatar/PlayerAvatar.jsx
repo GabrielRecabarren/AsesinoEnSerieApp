@@ -33,14 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.18)",
-    shadowColor: "rgba(31, 38, 135, 0.37)",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-
-    shadowRadius: 32,
-    shadowOpacity: 1,
+    
     elevation: 8,
   },
   userAvatar: {

@@ -17,37 +17,32 @@ import { PlayersContext } from "../context/PlayersContext";
 
 export const CreateScreen = ({ navigation }) => {
   //States
-  const [juegoOk, setjuegoOk] = useState(false); //estado para ver si el juego ya está listo.
   const [playersOk, setPlayersOk] = useState(false); //Estado de si están los jugadores listos
   const [jugadoresConectados, setJugadoresConectados] = useState([]); //Estado de jugadores listos
-  const [text, setText] = useState(''); //Estado del texto mostrado en pantalla.
+  const [text, setText] = useState('Comienza el relato ...'); //Estado del texto mostrado en pantalla.
 
-  const {userData} = useContext(UserContext);
-  const { gameId} = useContext(GameContext);
-  const { playersConectados }= useContext(PlayersContext);
-  //Esto debería venir de la base de datos
-  const intro = "Comienza el relato ..."
-  const instruccion = "Busca un lugar tranquilo y libre de miradas para ver tu rol."
-  
-  const token = userData.data.token;//Obtenemos el token
-  const gameIdParsed = gameId;
+  const { userData } = useContext(UserContext);
+  const { gameId } = useContext(GameContext);
+  const { playersConectados } = useContext(PlayersContext);
 
-  const usuariosConectados = async()=> {
+  //Función para obtener los usuarios conectados
+  const usuariosConectados = async () => {
     console.log(`"listando users por partida" con este gameID ${gameId}`)
-    const usuariosConfirmados = await listarUsuariosPorPartida(gameId, token);
+    const usuariosConfirmados = await listarUsuariosPorPartida(gameId, userData.data.token);
     setJugadoresConectados(usuariosConfirmados);
   }
 
+  useEffect(() => {
+    usuariosConectados();
+  }, [playersConectados]);
 
-  
-useEffect(()=>{
-
-  console.log(playersConectados);
-  usuariosConectados();
-}, [playersConectados]) 
-
-
-
+  // Cambiar el texto y el estado de los jugadores cuando haya 6 jugadores conectados
+  useEffect(() => {
+    if (jugadoresConectados.length >= 6) {
+      setPlayersOk(true);
+      setText('Busca un lugar tranquilo y libre de miradas para ver tu rol.');
+    }
+  }, [jugadoresConectados]);
 
   return (
     <ImageBackground
@@ -57,31 +52,16 @@ useEffect(()=>{
       <Narracion text={text} />
       <Text style={{ textAlign: "center", color: "yellow", margin: 10, fontWeight: "bold", fontSize: 18 }}> Usuarios con Partida Aceptada</Text>
 
-      {!playersOk
-        ?
-        (<View style={styles.playersBar}>
-          {jugadoresConectados.map((jugador) => (
-            <PlayerAvatar key={jugador.id} namePlayer={jugador.username} image={jugador.imagen} />
-          ))}
-        </View>)
-        :
-        (
-          <View style={styles.playersBar}>
-            {roles.map((rol) => (
-              <PlayerAvatar key={rol.id} namePlayer={rol.rol} image={rol.imagen} />
-            ))}
-          </View>)
-      }
+      <View style={styles.playersBar}>
+        {jugadoresConectados.map((jugador) => (
+          <PlayerAvatar key={jugador.id} namePlayer={jugador.username} image={jugador.imagen} />
+        ))}
+      </View>
+
       {/* Si el juego está listo para comenzar, se activa el botón. */}
-      {juegoOk ? (
-        <Pressable style={{ flex: 1 }} onPress={() => navigation.navigate('Chat')}>
-          <Card text={"Comenzar Partida "} />
-        </Pressable>
-      ) : (
-        <Pressable style={{ flex: 1 }} onPress={() => console.log("Esperando")}>
-          <Card text={"Esperando Jugadores "} />
-        </Pressable>
-      )}
+      <Pressable style={{ flex: 1 }} onPress={() => navigation.navigate(playersOk ? 'Chat' : 'Esperando')}>
+        <Card text={playersOk ? "Comenzar Partida" : "Esperando Jugadores"} />
+      </Pressable>
       <Pressable style={{ flex: 1 }} onPress={() => navigation.navigate("Invitar")}>
         <Card text={"Invitar Jugadores "} />
       </Pressable>
