@@ -5,11 +5,11 @@ import { PlayerAvatar } from '../PlayerAvatar/PlayerAvatar';
 export const Mensaje = ({ mensaje, isSender }) => {
   return (
     <View style={[styles.container, isSender ? styles.senderContainer : styles.receiverContainer]}>
-      {isSender && <PlayerAvatar namePlayer="Tu Nombre" rol={"Tu Rol"} style={styles.avatar} />} {/* Si eres el remitente, muestra tu avatar */}
+      {isSender && <PlayerAvatar namePlayer="Tu Nombre" rol={"Tu Rol"} style={styles.avatar} />}
       <View style={[styles.messageContainer, isSender ? styles.senderMessageContainer : styles.receiverMessageContainer]}>
-        <Text style={[styles.text, isSender ? styles.senderText : styles.receiverText]}>{mensaje}</Text>
+        <Text style={[styles.text, isSender ? styles.senderText : styles.receiverText]}>{mensaje.text}</Text>
       </View>
-      {!isSender && <PlayerAvatar namePlayer="Nombre del Remitente" rol={"Rol del Remitente"} style={styles.avatar} />} {/* Si no eres el remitente, muestra el avatar del remitente */}
+      {!isSender && <PlayerAvatar namePlayer="Nombre del Remitente" rol={"Rol del Remitente"} style={styles.avatar} />}
     </View>
   );
 };
@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   senderMessageContainer: {
-    backgroundColor: '#DCF8C5', // Color de fondo para mensajes enviados
+    backgroundColor: '#DCF8C5',
     borderTopRightRadius: 0,
   },
   receiverMessageContainer: {
-    backgroundColor: '#E5E5EA', // Color de fondo para mensajes recibidos
+    backgroundColor: '#E5E5EA',
     borderTopLeftRadius: 0,
   },
   text: {
@@ -53,3 +53,4 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
 });
+

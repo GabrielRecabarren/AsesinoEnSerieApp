@@ -13,11 +13,10 @@ const Chat = () => {
   
   useEffect(() => {
     if (socket) {
-      // Manejar eventos de socket si es necesario
+      // Manejar eventos de socket
       socket.on('chat-message', (msg) => {
-        console.log("Mensaje recibido:", msg);
-        // Actualizar el estado de los mensajes
-        setMessages((prevMessages) => [...prevMessages, msg]);
+        console.log("chatMsj:", msg);
+      
       });
     }
     return () => {
@@ -34,29 +33,37 @@ const Chat = () => {
     }
   }, [messages]);
 
-  // Manejador para enviar mensajes
-  const handleSendMessage = () => {
-    if (socket) {
-      if (inputMessage.trim() !== '') {
-        const message = inputMessage;
-        console.log(message,"Message*");
+ // Dentro del componente Chat
+// Manejador para enviar mensajes
+const handleSendMessage = () => {
+  if (socket) {
+    if (inputMessage.trim() !== '') {
+      const message = { text: inputMessage, sender: 'usuarioActual' }; // Objeto de mensaje completo que incluye el texto y el remitente
 
-        socket.emit('chat-message', message, (res) => {
-          console.log(res, "response*");
-          if (res.success) {
-            setMessages((prevMessages) => [...prevMessages, message]);
-          } else {
-            console.warn("Error al enviar el mensaje:", res.error);
-          }
-        });
-      
-      } else {
-        console.warn("No se puede enviar un mensaje vacío");
-      }
+      socket.emit('chat-message', message, (res) => {
+        console.log(res, "response*");
+        if (res.success) {
+          console.log(message, "msg aqui ahora, en el if useEff*")
+          setMessages((prevMessages) => [...prevMessages, message]);
+        } else {
+          console.warn("Error al enviar el mensaje:", res.error);
+        }
+      });
     } else {
-      console.error("Error: El socket no está disponible");
+      console.warn("No se puede enviar un mensaje vacío");
     }
-  };
+  } else {
+    console.error("Error: El socket no está disponible");
+  }
+};
+
+// Dentro del componente Chat, al renderizar el ScrollView
+<ScrollView style={styles.chatBox} ref={scrollViewRef}>
+  {messages.map((message, index) => (
+    <Mensaje key={index} mensaje={message.text} isSender={message.sender === 'usuarioActual'} />
+  ))}
+</ScrollView>
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,7 +81,6 @@ const Chat = () => {
             onChangeText={(text) => setInputMessage(text)}
             value={inputMessage}
             placeholder={`Escribe tu mensaje como ${speakingAsRole ? 'Rol' : 'Usuario'}...`}
-            onSubmitEditing={handleSendMessage}
           />
           <Button title="Enviar" onPress={handleSendMessage} />
           <Switch
