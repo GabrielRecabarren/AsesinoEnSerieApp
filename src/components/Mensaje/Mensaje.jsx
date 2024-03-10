@@ -5,9 +5,11 @@ import { PlayerAvatar } from '../PlayerAvatar/PlayerAvatar';
 export const Mensaje = ({ mensaje, isSender }) => {
   return (
     <View style={[styles.container, isSender ? styles.senderContainer : styles.receiverContainer]}>
-      {!isSender && <PlayerAvatar namePlayer="Nombre del Remitente" rol={"Rol del Remitente"} />} {/* Si no eres el remitente, muestra el avatar del remitente */}
-      <Text style={[styles.text, isSender ? styles.senderText : styles.receiverText]}>{mensaje}</Text>
-      {isSender && <PlayerAvatar namePlayer="Tu Nombre" rol={"Tu Rol"} />} {/* Si eres el remitente, muestra tu avatar */}
+      {isSender && <PlayerAvatar namePlayer="Tu Nombre" rol={"Tu Rol"} style={styles.avatar} />} {/* Si eres el remitente, muestra tu avatar */}
+      <View style={[styles.messageContainer, isSender ? styles.senderMessageContainer : styles.receiverMessageContainer]}>
+        <Text style={[styles.text, isSender ? styles.senderText : styles.receiverText]}>{mensaje}</Text>
+      </View>
+      {!isSender && <PlayerAvatar namePlayer="Nombre del Remitente" rol={"Rol del Remitente"} style={styles.avatar} />} {/* Si no eres el remitente, muestra el avatar del remitente */}
     </View>
   );
 };
@@ -15,29 +17,39 @@ export const Mensaje = ({ mensaje, isSender }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 10,
   },
   senderContainer: {
-    flexDirection: 'row-reverse', // Invertir el orden de los elementos en el contenedor del remitente
-    alignItems: 'flex-end', // Alinear los elementos del remitente en la parte inferior
+    justifyContent: 'flex-end',
   },
   receiverContainer: {
-    flexDirection: 'row', // Mantener el orden de los elementos en el contenedor del receptor
-    alignItems: 'flex-start', // Alinear los elementos del receptor en la parte superior
+    justifyContent: 'flex-start',
+  },
+  messageContainer: {
+    maxWidth: '70%',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 5,
+  },
+  senderMessageContainer: {
+    backgroundColor: '#DCF8C5', // Color de fondo para mensajes enviados
+    borderTopRightRadius: 0,
+  },
+  receiverMessageContainer: {
+    backgroundColor: '#E5E5EA', // Color de fondo para mensajes recibidos
+    borderTopLeftRadius: 0,
   },
   text: {
-    flex: 1,
-    flexWrap: 'wrap',
-    maxWidth: '70%',
-    padding: 10,
-    borderRadius: 10,
     color: 'white',
   },
   senderText: {
-    backgroundColor: '#DCF8C5', // Color de fondo para mensajes enviados
+    textAlign: 'right',
   },
   receiverText: {
-    backgroundColor: '#E5E5EA', // Color de fondo para mensajes recibidos
+    textAlign: 'left',
+  },
+  avatar: {
+    marginHorizontal: 5,
   },
 });

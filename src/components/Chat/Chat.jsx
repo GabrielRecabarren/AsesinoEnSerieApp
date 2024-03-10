@@ -1,58 +1,55 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, Switch, KeyboardAvoidingView, Platform, Button, SafeAreaView, StatusBar } from 'react-native';
-import { io } from 'socket.io-client';
+import { View, ScrollView, TextInput, Button, SafeAreaView, StatusBar, StyleSheet, Switch } from 'react-native';
+import { SocketContext } from '../../context/socketProvider';
 import { Mensaje } from '../Mensaje/Mensaje';
-import { UserContext } from '../../context/UserContext';
-import { GameContext } from '../../context/GameContext';
-
-const socketEndpoint = "http://localhost:3000";
 
 const Chat = () => {
-  const scrollViewRef = useRef(null); // Referencia para la ScrollView
-  const { userData } = useContext(UserContext); // Asumiendo que tienes información del usuario actual disponible en el contexto
-  const [socket, setSocket] = useState(null);
+  const scrollViewRef = useRef(null);
+  const socketContext = useContext(SocketContext); // Obtener el contexto del socket
+  const socket = socketContext.socket; // Obtener el socket del contexto
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [speakingAsRole, setSpeakingAsRole] = useState(false);
-
-  useEffect(function didMount() {
-    const newSocket = io(socketEndpoint);
   
-    newSocket.on('connect', () => console.log("Connected to server"));
-    newSocket.on("disconnect", () => console.log("Disconnected from server"));
-  
-    newSocket.on("chat-message", (msg) => {
-      console.log("Mensaje recibido:", msg); // Agregado para verificar la recepción de mensajes
-      setMessages((prevMessages) => [...prevMessages, msg]);
-      setInputMessage("")
-    });
-  
-    setSocket(newSocket);
-  
-    return function didUnmount() {
-      newSocket.disconnect();
-      newSocket.removeAllListeners();
+  useEffect(() => {
+    if (socket) {
+      // Manejar eventos de socket si es necesario
+      socket.on('chat-message', (msg) => {
+        console.log("Mensaje recibido:", msg);
+        // Actualizar el estado de los mensajes
+        setMessages((prevMessages) => [...prevMessages, msg]);
+      });
+    }
+    return () => {
+      // Limpiar los listeners si es necesario
+      if (socket) {
+        socket.removeAllListeners('chat-message');
+      }
     };
-  }, []);
-  
+  }, [socket]);
 
+  useEffect(() => {
+    if (messages.length > 0) {
+      scrollViewRef.current.scrollToEnd({ animated: true });
+    }
+  }, [messages]);
+
+  // Manejador para enviar mensajes
   const handleSendMessage = () => {
     if (socket) {
       if (inputMessage.trim() !== '') {
-        const prefix = speakingAsRole ? 'Rol' : 'Usuario';
-        const message = `${prefix}: ${inputMessage}`;
+        const message = inputMessage;
+        console.log(message,"Message*");
 
-        socket.emit('chat-message', message, (response) => {
-          console.log(response);
-          // Manejar la confirmación de que el mensaje fue enviado correctamente
-          if (response.success) {
-            // Actualizar el estado de los mensajes solo después de que el mensaje haya sido enviado correctamente
-            setMessages((messages) => [...messages, message]);
-            setInputMessage('');
+        socket.emit('chat-message', message, (res) => {
+          console.log(res, "response*");
+          if (res.success) {
+            setMessages((prevMessages) => [...prevMessages, message]);
           } else {
-            console.warn("Error al enviar el mensaje:", response.error);
+            console.warn("Error al enviar el mensaje:", res.error);
           }
         });
+      
       } else {
         console.warn("No se puede enviar un mensaje vacío");
       }
@@ -65,21 +62,17 @@ const Chat = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar />
       <View style={styles.container}>
-        <ScrollView style={styles.chatBox}
-          ref={scrollViewRef}
-          onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
-        >
+        <ScrollView style={styles.chatBox} ref={scrollViewRef}>
           {messages.map((message, index) => (
-            <Mensaje key={index} mensaje={message} isSender={message.senderId === userData.id} />
+            <Mensaje key={index} mensaje={message} />
           ))}
         </ScrollView>
-
 
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            value={inputMessage}
             onChangeText={(text) => setInputMessage(text)}
+            value={inputMessage}
             placeholder={`Escribe tu mensaje como ${speakingAsRole ? 'Rol' : 'Usuario'}...`}
             onSubmitEditing={handleSendMessage}
           />
@@ -102,15 +95,13 @@ const styles = StyleSheet.create({
   },
   chatBox: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    width:"500px",
+    width: '100%',
   },
   inputContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 10,
     paddingHorizontal: 10,
-    width: '100%',
   },
   input: {
     flex: 1,
@@ -119,7 +110,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingLeft: 10,
+    paddingRight: 10,
     color: 'white',
+    marginRight: 10,
   },
 });
 

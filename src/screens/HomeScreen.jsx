@@ -29,7 +29,6 @@ const HomeScreen = ({ navigation }) => {
       
       <View style={styles.container}>
         <SignInForm navigation={navigation} />
-        <Button title="Atajo" onPress={()=>navigation.navigate("Start")}/>
       </View>
     </ImageBackground>
   );

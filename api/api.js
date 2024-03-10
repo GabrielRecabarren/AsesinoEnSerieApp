@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://192.168.1.89:3000';
+const baseURL = 'http://localhost:3000';
 const usersEndpoint = '/users';
 
 const api = axios.create({
@@ -37,9 +37,9 @@ export const crearUsuario = async (userData) => {
 
 export const loginUsuario = async (userData) => {
   try {
-    console.log(`Loggeando usuario ${userData.email}`);
+    // console.log(`Loggeando usuario ${userData.email}`);
     const response = await api.post("/login", userData);
-    console.log(`Loggeado con exito: ${userData.email}`)
+    // console.log(`Loggeado con exito: ${userData.email}`)
     return response.data;
 
   } catch (error) {
@@ -51,7 +51,7 @@ export const loginUsuario = async (userData) => {
 //Crear una partida
 export const crearPartida = async (gameData, token) => {
   try {
-    console.log("Intentando crear una partida ");
+    // console.log("Intentando crear una partida ");
     const response = await api.post("/crearPartida", gameData, {
       headers: {
         Authorization: `Bearer ${token}`,
