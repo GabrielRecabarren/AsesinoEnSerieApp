@@ -2,14 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { PlayerAvatar } from '../PlayerAvatar/PlayerAvatar';
 
-export const Mensaje = ({ mensaje, isSender }) => {
+export const Mensaje = ({ mensaje, speakingAsRol }) => {
   return (
-    <View style={[styles.container, isSender ? styles.senderContainer : styles.receiverContainer]}>
-      {isSender && <PlayerAvatar namePlayer="Tu Nombre" rol={"Tu Rol"} style={styles.avatar} />}
-      <View style={[styles.messageContainer, isSender ? styles.senderMessageContainer : styles.receiverMessageContainer]}>
-        <Text style={[styles.text, isSender ? styles.senderText : styles.receiverText]}>{mensaje.text}</Text>
+    <View style={styles.container}>
+      <View style={styles.messageContainer}>
+        <Text style={styles.text}>{mensaje.text}</Text>
       </View>
-      {!isSender && <PlayerAvatar namePlayer="Nombre del Remitente" rol={"Rol del Remitente"} style={styles.avatar} />}
+      <Text style={styles.senderName}>{mensaje.username}</Text>
     </View>
   );
 };

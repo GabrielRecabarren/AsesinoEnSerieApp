@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, ScrollView, TextInput, Button, SafeAreaView, StatusBar, StyleSheet, Switch } from 'react-native';
 import { SocketContext } from '../../context/socketProvider';
 import { Mensaje } from '../Mensaje/Mensaje';
+import { UserContext } from '../../context/UserContext';
 
 const Chat = () => {
   const scrollViewRef = useRef(null);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
+  const {userData} = useContext(UserContext);
+  const username = userData.data.user.username;
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [speakingAsRole, setSpeakingAsRole] = useState(false);
@@ -28,23 +31,26 @@ const Chat = () => {
   }, [socket]);
 
   useEffect(() => {
+    console.log(username, "username*");
     if (messages.length > 0) {
       scrollViewRef.current.scrollToEnd({ animated: true });
     }
   }, [messages]);
 
- // Dentro del componente Chat
+ 
 // Manejador para enviar mensajes
 const handleSendMessage = () => {
   if (socket) {
+    
     if (inputMessage.trim() !== '') {
-      const message = { text: inputMessage, sender: 'usuarioActual' }; // Objeto de mensaje completo que incluye el texto y el remitente
+      const message = { text: inputMessage, sender: username }; // Objeto de mensaje completo que incluye el texto y el remitente
 
-      socket.emit('chat-message', message, (res) => {
-        console.log(res, "response*");
+      socket.emit('chat-message', message.text, (res) => {
+       
         if (res.success) {
-          console.log(message, "msg aqui ahora, en el if useEff*")
+          console.log(res.success, "res.success")
           setMessages((prevMessages) => [...prevMessages, message]);
+          setInputMessage("");
         } else {
           console.warn("Error al enviar el mensaje:", res.error);
         }
@@ -57,12 +63,7 @@ const handleSendMessage = () => {
   }
 };
 
-// Dentro del componente Chat, al renderizar el ScrollView
-<ScrollView style={styles.chatBox} ref={scrollViewRef}>
-  {messages.map((message, index) => (
-    <Mensaje key={index} mensaje={message.text} isSender={message.sender === 'usuarioActual'} />
-  ))}
-</ScrollView>
+
 
 
   return (
@@ -71,7 +72,7 @@ const handleSendMessage = () => {
       <View style={styles.container}>
         <ScrollView style={styles.chatBox} ref={scrollViewRef}>
           {messages.map((message, index) => (
-            <Mensaje key={index} mensaje={message} />
+            <Mensaje key={index} mensaje={message} speakingAsRole={speakingAsRole} />
           ))}
         </ScrollView>
 
@@ -80,7 +81,7 @@ const handleSendMessage = () => {
             style={styles.input}
             onChangeText={(text) => setInputMessage(text)}
             value={inputMessage}
-            placeholder={`Escribe tu mensaje como ${speakingAsRole ? 'Rol' : 'Usuario'}...`}
+            placeholder={`Escribe como ${speakingAsRole ? 'Rol' : username}...`}
           />
           <Button title="Enviar" onPress={handleSendMessage} />
           <Switch
