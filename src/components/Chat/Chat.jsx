@@ -18,7 +18,16 @@ const Chat = () => {
     if (socket) {
       // Manejar eventos de socket
       socket.on('chat-message', (msg) => {
-        console.log("chatMsj:", msg);
+        
+
+        if(msg.sender!=username){
+          const message = { text: msg.text, sender: msg.sender, isReceiver:true}; // Objeto de mensaje completo que incluye el texto y el remitente
+          console.log(message);
+          setMessages((prevMessages) => [...prevMessages, message]);
+
+        }
+
+
       
       });
     }
@@ -43,12 +52,11 @@ const handleSendMessage = () => {
   if (socket) {
     
     if (inputMessage.trim() !== '') {
-      const message = { text: inputMessage, sender: username }; // Objeto de mensaje completo que incluye el texto y el remitente
+      const message = { text: inputMessage, sender: username, isReceiver: false }; // Objeto de mensaje completo que incluye el texto y el remitente
 
-      socket.emit('chat-message', message.text, (res) => {
-       
+      socket.emit('chat-message', { text: message.text, sender:username }, (res) => {
+        
         if (res.success) {
-          console.log(res.success, "res.success")
           setMessages((prevMessages) => [...prevMessages, message]);
           setInputMessage("");
         } else {
@@ -63,6 +71,13 @@ const handleSendMessage = () => {
   }
 };
 
+//Manejador de envio con tecla handleOnEnterPress
+  const  handleOnEnterPress= e=>{
+    if(e.nativeEvent.key == 'Enter'){
+       handleSendMessage(); 
+
+  }
+ }
 
 
 
@@ -72,7 +87,7 @@ const handleSendMessage = () => {
       <View style={styles.container}>
         <ScrollView style={styles.chatBox} ref={scrollViewRef}>
           {messages.map((message, index) => (
-            <Mensaje key={index} mensaje={message} speakingAsRole={speakingAsRole} />
+            <Mensaje key={index} mensaje={message} speakingAsRole={speakingAsRole} sender={username} />
           ))}
         </ScrollView>
 
@@ -82,6 +97,7 @@ const handleSendMessage = () => {
             onChangeText={(text) => setInputMessage(text)}
             value={inputMessage}
             placeholder={`Escribe como ${speakingAsRole ? 'Rol' : username}...`}
+            onKeyPress={handleOnEnterPress}
           />
           <Button title="Enviar" onPress={handleSendMessage} />
           <Switch
@@ -103,6 +119,7 @@ const styles = StyleSheet.create({
   chatBox: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     width: '100%',
+    height: '60%',
   },
   inputContainer: {
     flexDirection: 'row',
