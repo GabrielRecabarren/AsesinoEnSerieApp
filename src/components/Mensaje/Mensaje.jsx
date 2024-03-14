@@ -2,14 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { PlayerAvatar } from '../PlayerAvatar/PlayerAvatar';
 
-export const Mensaje = ({ mensaje, speakingAsRol, sender }) => {
-  console.log(mensaje.isReceiver, "*isReceiver dentro de Mensaje")
+export const Mensaje = ({ mensaje, speakingAsRol }) => {
+  console.log( "*sender dentro de Mensaje")
   const isReceiver = mensaje.isReceiver;
   return (
     <View style={[styles.container, isReceiver ? styles.receiverContainer : styles.senderContainer]}>
       {isReceiver ? (
         <>
-          <PlayerAvatar namePlayer={sender}></PlayerAvatar>
+          <PlayerAvatar namePlayer={mensaje.sender}></PlayerAvatar>
           <View style={[styles.messageContainer, styles.receiverMessageContainer]}>
             <Text style={[styles.text, styles.receiverText]}>{mensaje.text}</Text>
           </View>
@@ -19,7 +19,7 @@ export const Mensaje = ({ mensaje, speakingAsRol, sender }) => {
           <View style={[styles.messageContainer, styles.senderMessageContainer]}>
             <Text style={[styles.text, styles.senderText]}>{mensaje.text}</Text>
           </View>
-          <PlayerAvatar namePlayer={sender}></PlayerAvatar>
+          <PlayerAvatar namePlayer={mensaje.sender}></PlayerAvatar>
         </>
       )}
       <Text style={[styles.senderName, !isReceiver ? styles.receiverText : styles.senderText]}>{mensaje.username}</Text>

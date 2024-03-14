@@ -87,7 +87,7 @@ const handleSendMessage = () => {
       <View style={styles.container}>
         <ScrollView style={styles.chatBox} ref={scrollViewRef}>
           {messages.map((message, index) => (
-            <Mensaje key={index} mensaje={message} speakingAsRole={speakingAsRole} sender={username} />
+            <Mensaje key={index} mensaje={message} speakingAsRole={speakingAsRole} />
           ))}
         </ScrollView>
 
