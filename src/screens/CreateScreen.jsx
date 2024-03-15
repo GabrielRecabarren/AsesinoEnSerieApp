@@ -59,7 +59,7 @@ export const CreateScreen = ({ navigation }) => {
       </View>
 
       {/* Si el juego está listo para comenzar, se activa el botón. */}
-      <Pressable style={{ flex: 1 }} onPress={() => navigation.navigate(playersOk ? 'Chat' : 'Esperando')}>
+      <Pressable style={{ flex: 1 }} onPress={() => navigation.navigate(playersOk ? 'Rol' : 'Esperando')}>
         <Card text={playersOk ? "Comenzar Partida" : "Esperando Jugadores"} />
       </Pressable>
       <Pressable style={{ flex: 1 }} onPress={() => navigation.navigate("Invitar")}>

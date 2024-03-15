@@ -8,12 +8,15 @@ export const LoadScreen = ({ navigation }) => {
   const [partidasUsuario, setPartidasUsuario] = useState([]);
   const { userData } = useContext(UserContext);
   const { load } = useContext(GameContext);
+  const userRole= userData.data.user.role// "Rol en userData"
 
   useEffect(() => {
+  
     const cargarPartidasUsuario = async () => {
       try {
         const token = userData.data.token;
         const userId = userData.data.user.id;
+
         const partidas = await listarPartidasPorUsuario(userId, token);
 
         setPartidasUsuario(partidas); // Establecer todas las partidas
@@ -29,7 +32,8 @@ export const LoadScreen = ({ navigation }) => {
   const handlePartidaSeleccionada = (gameData) => {
     // Llamar a GameContext para cargar la partida seleccionada
     load(gameData);
-    navigation.navigate('Chat');
+    console.log(userRole, "UserRole antes de verificar");
+    navigation.navigate(userRole==="DEFAULT" ? 'Rol' : 'Chat');
   };
 
   return (

@@ -12,6 +12,7 @@ import { GameContextProvider } from "./src/context/GameContext.js";
 import InvitarScreen from "./src/screens/InvitarScreen.jsx";
 import { PlayersContextProvider } from "./src/context/PlayersContext.js";
 import { SocketProvider } from "./src/context/socketProvider.js";
+import RolScreen from "./src/screens/RolScreen.jsx";
 
 // Creo un Stack para navegación
 const Stack = createNativeStackNavigator();
@@ -36,6 +37,7 @@ export default function App() {
                 <Stack.Screen name="Load" component={LoadScreen} />
                 <Stack.Screen name="Chat" component={ChatScreen} />
                 <Stack.Screen name="Invitar" component={InvitarScreen} />
+                <Stack.Screen name="Rol" component={RolScreen}/> 
               </Stack.Navigator>
             </PlayersContextProvider>
           </GameContextProvider>
