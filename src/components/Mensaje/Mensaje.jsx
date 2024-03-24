@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { PlayerAvatar } from '../PlayerAvatar/PlayerAvatar';
 
-export const Mensaje = ({ mensaje, speakingAsRol }) => {
+export const Mensaje = ({ mensaje }) => {
   console.log( "*sender dentro de Mensaje")
   const isReceiver = mensaje.isReceiver;
   return (

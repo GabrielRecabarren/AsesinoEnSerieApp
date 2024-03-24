@@ -12,6 +12,7 @@ const Chat = () => {
   const {userData} = useContext(UserContext);
   const { gameId } = useContext(GameContext);
   const username = userData.data.user.username;
+  const role = "ROLE_USER";
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [speakingAsRole, setSpeakingAsRole] = useState(false);
@@ -22,8 +23,7 @@ const Chat = () => {
 
       // Manejar eventos de socket
       
-      socket.on('chat-message', (msg) => {
-        
+      socket.on('chat-message', (msg) => {       
 
         if(msg.sender!=username){
           const message = { text: msg.text, sender: msg.sender, isReceiver:true}; // Objeto de mensaje completo que incluye el texto y el remitente
@@ -57,9 +57,9 @@ const handleSendMessage = () => {
   if (socket) {
     
     if (inputMessage.trim() !== '') {
-      const message = { text: inputMessage, sender: username, isReceiver: false }; // Objeto de mensaje completo que incluye el texto y el remitente
+      const message = { text: inputMessage, sender: username, isReceiver: false, speakingAsRole: speakingAsRole, role: role  }; // Objeto de mensaje completo que incluye el texto y el remitente
 
-      socket.emit('chat-message', { text: message.text, sender:username }, gameId, (res) => {
+      socket.emit('chat-message', message, gameId, (res) => {
         
         if (res.success) {
           setMessages((prevMessages) => [...prevMessages, message]);
