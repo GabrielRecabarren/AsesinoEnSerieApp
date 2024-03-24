@@ -3,12 +3,15 @@ import { View, Text, ImageBackground, StyleSheet, ScrollView, TouchableOpacity }
 import { listarPartidasPorUsuario } from '../../api/api';
 import { UserContext } from '../context/UserContext';
 import { GameContext } from '../context/GameContext';
+import { SocketContext } from '../context/socketProvider';
 
 export const LoadScreen = ({ navigation }) => {
   const [partidasUsuario, setPartidasUsuario] = useState([]);
   const { userData } = useContext(UserContext);
   const { load } = useContext(GameContext);
+  const {  socket } = useContext(SocketContext);
   const userRole= userData.data.user.role// "Rol en userData"
+  
 
   useEffect(() => {
   
@@ -32,7 +35,8 @@ export const LoadScreen = ({ navigation }) => {
   const handlePartidaSeleccionada = (gameData) => {
     // Llamar a GameContext para cargar la partida seleccionada
     load(gameData);
-    console.log(userRole, "UserRole antes de verificar");
+    socket.emit('join-game', gameData.id);
+    // console.log(userRole, "UserRole antes de verificar");
     navigation.navigate(userRole==="DEFAULT" ? 'Rol' : 'Chat');
   };
 

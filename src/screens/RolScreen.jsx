@@ -3,11 +3,20 @@ import { ImageBackground,Picker,StyleSheet, View,Text, Button } from "react-nati
 
 const RolScreen =({navigation}) => {
     //Estado para guardar el rol elegido.
-    const [rolElegido, setRolElegido] = useState(null);
+    const [rolElegido, setRolElegido] = useState("DEFAULT");
 
 const updateSelectedValue = (value) => {
     setRolElegido(value);
 };
+
+//Manejamos el boton:
+const irAlJuego = ()=>{
+    if(rolElegido === "DEFAULT"){ 
+        alert('Debes elegir tu rol');
+        console.log(rolElegido);
+    }else{
+      navigation.navigate('Chat');
+    }}
 return(
     <ImageBackground
     source={require("../img/fondo.png")}
@@ -17,7 +26,7 @@ return(
   selectedValue={rolElegido}
   onValueChange={(itemValue) => updateSelectedValue(itemValue)}
 >
-  <Picker.Item label="Elige tu rol" value=" " />
+  <Picker.Item label="Elige tu rol" value="undefined" />
   <Picker.Item label="DOCTOR" value="DOCTOR" />
   <Picker.Item label="DETECTIVE" value="DETECTIVE" />
   <Picker.Item label="FISCAL" value="FISCAL" />
@@ -29,11 +38,11 @@ return(
 <View style={styles.leyenda}> 
     <Text>Aquí iría la descripción del rol elegido: {rolElegido}</Text>
 </View>
-        </View> 
   <Button
-  onPress={()=>navigation.navigate('Chat')}>
+  onPress={irAlJuego} title="Vamos al Juego!">
      Comencemos!
   </Button>
+    </View> 
 
     </ImageBackground>)
 
@@ -57,6 +66,10 @@ const styles = StyleSheet.create({
       leyenda:{
         flex: 1,
         backgroundColor:"green"
+
+      },
+      button:{
+        width:"80%"
 
       }
 });

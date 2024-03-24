@@ -3,20 +3,25 @@ import { View, ScrollView, TextInput, Button, SafeAreaView, StatusBar, StyleShee
 import { SocketContext } from '../../context/socketProvider';
 import { Mensaje } from '../Mensaje/Mensaje';
 import { UserContext } from '../../context/UserContext';
+import { GameContext } from '../../context/GameContext';
 
 const Chat = () => {
   const scrollViewRef = useRef(null);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
   const {userData} = useContext(UserContext);
+  const { gameId } = useContext(GameContext);
   const username = userData.data.user.username;
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [speakingAsRole, setSpeakingAsRole] = useState(false);
   
+  
   useEffect(() => {
     if (socket) {
+
       // Manejar eventos de socket
+      
       socket.on('chat-message', (msg) => {
         
 
@@ -54,7 +59,7 @@ const handleSendMessage = () => {
     if (inputMessage.trim() !== '') {
       const message = { text: inputMessage, sender: username, isReceiver: false }; // Objeto de mensaje completo que incluye el texto y el remitente
 
-      socket.emit('chat-message', { text: message.text, sender:username }, (res) => {
+      socket.emit('chat-message', { text: message.text, sender:username }, gameId, (res) => {
         
         if (res.success) {
           setMessages((prevMessages) => [...prevMessages, message]);
