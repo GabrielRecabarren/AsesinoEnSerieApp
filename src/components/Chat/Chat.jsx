@@ -26,9 +26,10 @@ const Chat = () => {
       socket.on('chat-message', (msg) => {       
 
         if(msg.sender!=username){
-          const message = { text: msg.text, sender: msg.sender, isReceiver:true}; // Objeto de mensaje completo que incluye el texto y el remitente
-          console.log(message);
-          setMessages((prevMessages) => [...prevMessages, message]);
+          const modifiedMessage = { ...msg, isReceiver: true };
+
+          console.log(modifiedMessage);
+          setMessages((prevMessages) => [...prevMessages, modifiedMessage]);
 
         }
     
