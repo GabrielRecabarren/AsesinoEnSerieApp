@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 
-const BotonAccion = ({ title }) => {
+const BotonAccion = ({ title, action }) => {
   return (
     <Pressable
       style={({ pressed }) => [
@@ -10,7 +10,7 @@ const BotonAccion = ({ title }) => {
           backgroundColor: pressed ? 'rgba(0, 0, 0, 0.5)' : 'rgba(206, 42, 226, 0.25)',
         },
       ]}
-      onPress={() => console.log('Hola')}
+      onPress={action}
     >
       <Text style={styles.textoBoton}>{title}</Text>
     </Pressable>
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     justifyContent: 'center',
     alignItems: 'center',
+    maxHeight:20 
   },
   textoBoton: {
     color: 'white',

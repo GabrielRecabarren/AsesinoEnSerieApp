@@ -2,26 +2,24 @@ import React, { useContext } from "react";
 import { View, ImageBackground, StyleSheet, Pressable } from "react-native";
 import { Card } from "../components/Card/Card";
 import { CompraAsesino } from "../components/CompraAsesino/CompraAsesino";
-import { crearPartida,  } from "../../api/api";
+import { crearPartida } from "../../api/api";
 import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
+import BotonAccion from "../components/BotonAccion/BotonAccion";
 
 export const StartScreen = ({ navigation }) => {
-
   //Traemos el contexto
   const { userData } = useContext(UserContext);
-const { create} = useContext(GameContext);
+  const { create } = useContext(GameContext);
 
   //Creamos partida
   const handlingCrearPartida = async () => {
-
-    const token = userData.data.token;//Obtenemos el token
+    const token = userData.data.token; //Obtenemos el token
     console.log(token);
     const userId = userData.data.user.id; //Obtenemos el userId.
     console.log(`Fuckin token: ${token}, and the mdfukin userId: ${userId}`);
 
     try {
-
       console.log("Creando partida");
       const gameData = {
         userId: userId,
@@ -36,7 +34,6 @@ const { create} = useContext(GameContext);
       await create(newGame);
       console.log(`Partida Guardada: ${JSON.stringify(newGame)}`);
 
-      
       navigation.navigate("Create");
     } catch (error) {
       console.log(`Error creando la partida: ${error}`);
@@ -66,10 +63,12 @@ const { create} = useContext(GameContext);
         <Pressable style={{ flex: 1 }} onPress={() => handlingStart(2)}>
           <Card text={"PARTIDA GUARDADA"} />
         </Pressable>
-        
       </View>
 
       <CompraAsesino />
+      <View style={styles.profileContainer}>
+        <BotonAccion style={styles.perfil} title={"👤"} action={() => navigation.navigate("Profile")} />
+      </View>
     </ImageBackground>
   );
 };
@@ -77,18 +76,25 @@ const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
   },
+  profileContainer: {
+    position: "absolute", // Ajusta el posicionamiento
+    top: 0, // Alinea el contenedor en la parte superior
+    right: 0, // Alinea el contenedor en el lado derecho
+    padding: 10, // Añade espacio alrededor del botón de perfil
+    zIndex:1
+  },
   container: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
     borderRadius: 20,
-    margin: 20,
+    margin: 50,
     backgroundColor: "rgba(31, 38, 135, 0.37)",
-    padding: 20,
+    padding: 40,
     height: 500,
     borderWidth: 3,
     borderColor: "rgba(32, 25, 255, 0.18)",
-    
+    zIndex: 0,
   },
 });
 export default StartScreen;

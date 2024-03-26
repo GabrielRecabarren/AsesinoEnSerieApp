@@ -12,7 +12,7 @@ const ChatScreen = () => {
       >
         <View style={styles.botonesContainer}>
           <BotonAccion style={styles.tips} title={"Consejos Rol📕"} />
-          <BotonAccion style={styles.perfil} title={"👤	"} />
+          <BotonAccion style={styles.perfil} title={"👤	"} action={() => console.log("Holanda")}/>
         </View>
         <Chat  />
         <View style={styles.botonesAcciones}>
