@@ -9,10 +9,10 @@ const Chat = () => {
   const scrollViewRef = useRef(null);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
-  const {userData} = useContext(UserContext);
+  const {userData, userRol} = useContext(UserContext);
   const { gameId } = useContext(GameContext);
   const username = userData.data.user.username;
-  const role = "ROLE_USER";
+  const role = userRol;
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [speakingAsRole, setSpeakingAsRole] = useState(false);
@@ -31,9 +31,7 @@ const Chat = () => {
           setMessages((prevMessages) => [...prevMessages, message]);
 
         }
-
-
-      
+    
       });
     }
     return () => {
@@ -45,7 +43,6 @@ const Chat = () => {
   }, [socket]);
 
   useEffect(() => {
-    console.log(username, "username*");
     if (messages.length > 0) {
       scrollViewRef.current.scrollToEnd({ animated: true });
     }
@@ -57,12 +54,18 @@ const handleSendMessage = () => {
   if (socket) {
     
     if (inputMessage.trim() !== '') {
-      const message = { text: inputMessage, sender: username, isReceiver: false, speakingAsRole: speakingAsRole, role: role  }; // Objeto de mensaje completo que incluye el texto y el remitente
+      const message = { 
+        text: inputMessage, 
+        sender: username, 
+        isReceiver: false, 
+        speakingAsRole: speakingAsRole,
+        role: role  }; // Objeto de mensaje completo 
 
       socket.emit('chat-message', message, gameId, (res) => {
         
         if (res.success) {
           setMessages((prevMessages) => [...prevMessages, message]);
+          console.log(messages, "que sucede msg?")
           setInputMessage("");
         } else {
           console.warn("Error al enviar el mensaje:", res.error);
@@ -92,7 +95,7 @@ const handleSendMessage = () => {
       <View style={styles.container}>
         <ScrollView style={styles.chatBox} ref={scrollViewRef}>
           {messages.map((message, index) => (
-            <Mensaje key={index} mensaje={message} speakingAsRole={speakingAsRole} />
+            <Mensaje key={index} mensaje={message}  />
           ))}
         </ScrollView>
 
@@ -101,7 +104,7 @@ const handleSendMessage = () => {
             style={styles.input}
             onChangeText={(text) => setInputMessage(text)}
             value={inputMessage}
-            placeholder={`Escribe como ${speakingAsRole ? 'Rol' : username}...`}
+            placeholder={`Escribe como ${speakingAsRole ? role : username}...`}
             onKeyPress={handleOnEnterPress}
           />
           <Button title="Enviar" onPress={handleSendMessage} />

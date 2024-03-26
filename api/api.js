@@ -88,14 +88,12 @@ export const listarUsuariosPorPartida = async (gameId, token) => {
 // Listar partidas por usuario
 export const listarPartidasPorUsuario = async (userId, token) => {
   try {
-    console.log(`Obteniendo partidas para el usuario con ID: ${userId}`);
     const response = await api.get(`/games/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);

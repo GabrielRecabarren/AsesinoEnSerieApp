@@ -3,26 +3,26 @@ import { View, Text, StyleSheet } from 'react-native';
 import { PlayerAvatar } from '../PlayerAvatar/PlayerAvatar';
 
 export const Mensaje = ({ mensaje }) => {
-  console.log( "*sender dentro de Mensaje")
-  const isReceiver = mensaje.isReceiver;
+  const { text, sender, isReceiver, speakingAsRole, role } = mensaje;
+
   return (
     <View style={[styles.container, isReceiver ? styles.receiverContainer : styles.senderContainer]}>
       {isReceiver ? (
         <>
-          <PlayerAvatar namePlayer={mensaje.sender}></PlayerAvatar>
+          <PlayerAvatar namePlayer={sender} />
           <View style={[styles.messageContainer, styles.receiverMessageContainer]}>
-            <Text style={[styles.text, styles.receiverText]}>{mensaje.text}</Text>
+            <Text style={[styles.text, styles.receiverText]}>{text}</Text>
           </View>
         </>
       ) : (
         <>
           <View style={[styles.messageContainer, styles.senderMessageContainer]}>
-            <Text style={[styles.text, styles.senderText]}>{mensaje.text}</Text>
+            <Text style={[styles.text, styles.senderText]}>{text}</Text>
           </View>
-          <PlayerAvatar namePlayer={mensaje.sender}></PlayerAvatar>
+          <PlayerAvatar namePlayer={speakingAsRole ? role : sender} />
         </>
       )}
-      <Text style={[styles.senderName, !isReceiver ? styles.receiverText : styles.senderText]}>{mensaje.username}</Text>
+      <Text style={[styles.senderName, !isReceiver ? styles.receiverText : styles.senderText]}>{sender}</Text>
     </View>
   );
 };

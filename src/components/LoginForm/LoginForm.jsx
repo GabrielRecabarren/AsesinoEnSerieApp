@@ -10,25 +10,24 @@ const LoginForm = ({ navigation }) => {
   const [passwordError, setPasswordError] = useState("");
 
   //Datos del context
-const {login, logout, userData} = useContext(UserContext);
+const {login, userData} = useContext(UserContext);
 
 
 
   //Guardamos al usuario  
   const guardarUsuarioEnSesion = async (usuario) => {
     try {
-      console.log(1);
+     
       await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
-      console.log(2);
+      
 
       const dataStored = await AsyncStorage.getItem('usuario');
-      console.log(3);
-
+      
       const parsedData = await JSON.parse(dataStored);
-      console.log(parsedData);
+      
 
       await login(parsedData);
-      console.log(userData);
+      
       return dataStored;
     } catch (error) {
       console.error('Error al guardar usuario en la sesión:', error);

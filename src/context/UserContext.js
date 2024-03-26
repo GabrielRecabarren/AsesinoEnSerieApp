@@ -20,6 +20,7 @@ const UserProvider = ({children}) =>{
     const elegirRol = (rol) =>{
         
         setUserRol(rol);
+        console.log(rol);
         //Aqui deberia actualizarlo al backend ?
 
     }
@@ -29,7 +30,7 @@ const UserProvider = ({children}) =>{
     };
 
     return (
-        <UserContext.Provider value={{ userData, userToken, userId,userRol, login, logout}}>
+        <UserContext.Provider value={{ userData, userToken, userId,userRol, elegirRol, login, logout}}>
            
             
             {children}
