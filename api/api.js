@@ -146,3 +146,20 @@ export const asignarUserRoleEnPartida = async (userId, gameId, userRoleId, token
   }
 };
 
+//Consultar Rol
+export const consultarUserRoleEnPartida = async (userId, gameId, token) => {
+  try {
+    const response = await api.get(`${usersEndpoint}/${userId}/games/${gameId}/user-role`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response.data, "response con rol");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error al consultar el UserRole en la partida.');
+  }
+};
+
+

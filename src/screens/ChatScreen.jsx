@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import Chat from '../components/Chat/Chat';
 import BotonAccion from '../components/BotonAccion/BotonAccion';
+import { UserContext } from '../context/UserContext';
+import { consultarUserRoleEnPartida } from '../../api/api';
+import { GameContext } from '../context/GameContext';
 
-const ChatScreen = () => {
+const ChatScreen = ({navigation}) => {
+  const { elegirRol, userToken, userId } = useContext(UserContext);
+  const { gameId } = useContext(GameContext);
+  //Manjeamos boton para salir de la partida
+ const handleExitGame = ()=>{
+  elegirRol("DEFAULT");
+  alert("Saliendo del juego");
+  navigation.navigate("Start");
+};
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -12,12 +23,13 @@ const ChatScreen = () => {
       >
         <View style={styles.botonesContainer}>
           <BotonAccion style={styles.tips} title={"Consejos Rol📕"} />
-          <BotonAccion style={styles.perfil} title={"👤	"} action={() => console.log("Holanda")}/>
+          <BotonAccion style={styles.perfil} title={"👤	"} action={() => consultarUserRoleEnPartida( userId, gameId, userToken )}/>
         </View>
         <Chat  />
         <View style={styles.botonesAcciones}>
           <BotonAccion style={styles.matar} title={"🔪"} />
           <BotonAccion style={styles.perfil} title={"📣	"} />
+          <BotonAccion style={styles.perfil} title={"Salir de la partida."} action={handleExitGame} />
         </View>
       </ImageBackground>
     </View>

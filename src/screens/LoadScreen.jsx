@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, ImageBackground, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { listarPartidasPorUsuario } from '../../api/api';
+import { consultarUserRoleEnPartida, listarPartidasPorUsuario } from '../../api/api';
 import { UserContext } from '../context/UserContext';
 import { GameContext } from '../context/GameContext';
 import { SocketContext } from '../context/socketProvider';
 
 export const LoadScreen = ({ navigation }) => {
   const [partidasUsuario, setPartidasUsuario] = useState([]);
-  const { userToken, userId,userRol } = useContext(UserContext);
+  const [partidasElegida, setPartidaElegida] = useState([]);
+  const { userToken, userId,userRol, elegirRol } = useContext(UserContext);
   const { load } = useContext(GameContext);
   const {  socket } = useContext(SocketContext);
   
@@ -16,8 +17,8 @@ export const LoadScreen = ({ navigation }) => {
   
     const cargarPartidasUsuario = async () => {
       try {
+
         const token = userToken;
-        console.log(userRol);
 
         const partidas = await listarPartidasPorUsuario(userId, token);
 
@@ -31,14 +32,17 @@ export const LoadScreen = ({ navigation }) => {
   }, []);
 
 
-  const handlePartidaSeleccionada = (gameData) => {
-    console.log(gameData, "GameData en loadScreen")
+  const handlePartidaSeleccionada = async(gameData) => {
     // Llamar a GameContext para cargar la partida seleccionada
     load(gameData);
     socket.emit('join-game', gameData.id);
     // console.log(userRole, "UserRole antes de verificar");
-    console.log(userRol, "UserRole")
-    navigation.navigate(userRol==="DEFAULT" ? 'Rol' : 'Chat');
+    console.log(userRol, gameData, "UserRole y GameData")
+    const rolEnPartida = await consultarUserRoleEnPartida(userId, gameData.id, userToken);
+    console.log(rolEnPartida, "RolenPartida");
+    elegirRol(rolEnPartida);
+    navigation.navigate(rolEnPartida==="DEFAULT" ? 'Rol' : 'Chat');
+
   };
 
   return (

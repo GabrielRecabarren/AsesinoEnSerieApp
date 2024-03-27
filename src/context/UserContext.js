@@ -20,8 +20,6 @@ const UserProvider = ({children}) =>{
     const elegirRol = (rol) =>{
         
         setUserRol(rol);
-        console.log(rol);
-        //Aqui deberia actualizarlo al backend ?
 
     }
 

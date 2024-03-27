@@ -11,8 +11,10 @@ import InfoModal from "../components/Modal/Modal";
 
 export const StartScreen = ({ navigation }) => {
   //Traemos el contexto
-  const { userData } = useContext(UserContext);
+  const { userData, userRol } = useContext(UserContext);
   const { create } = useContext(GameContext);
+
+  console.log(userRol, "Deberia siempre estar en Default aqui");
 
   //Creamos partida
   const handlingCrearPartida = async () => {
@@ -91,6 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
+    alignItems: "center",
     borderRadius: 20,
     margin: 50,
     backgroundColor: "rgba(31, 38, 135, 0.37)",
