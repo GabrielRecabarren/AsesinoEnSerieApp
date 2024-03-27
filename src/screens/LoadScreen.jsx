@@ -7,18 +7,17 @@ import { SocketContext } from '../context/socketProvider';
 
 export const LoadScreen = ({ navigation }) => {
   const [partidasUsuario, setPartidasUsuario] = useState([]);
-  const { userData } = useContext(UserContext);
+  const { userToken, userId,userRol } = useContext(UserContext);
   const { load } = useContext(GameContext);
   const {  socket } = useContext(SocketContext);
-  const userRole= userData.data.user.role// "Rol en userData"
   
 
   useEffect(() => {
   
     const cargarPartidasUsuario = async () => {
       try {
-        const token = userData.data.token;
-        const userId = userData.data.user.id;
+        const token = userToken;
+        console.log(userRol);
 
         const partidas = await listarPartidasPorUsuario(userId, token);
 
@@ -33,11 +32,13 @@ export const LoadScreen = ({ navigation }) => {
 
 
   const handlePartidaSeleccionada = (gameData) => {
+    console.log(gameData, "GameData en loadScreen")
     // Llamar a GameContext para cargar la partida seleccionada
     load(gameData);
     socket.emit('join-game', gameData.id);
     // console.log(userRole, "UserRole antes de verificar");
-    navigation.navigate(userRole==="DEFAULT" ? 'Rol' : 'Chat');
+    console.log(userRol, "UserRole")
+    navigation.navigate(userRol==="DEFAULT" ? 'Rol' : 'Chat');
   };
 
   return (

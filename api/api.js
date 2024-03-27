@@ -3,6 +3,7 @@ import axios from 'axios';
 const baseURL = 'http://localhost:3000';
 const usersEndpoint = '/users';
 
+
 const api = axios.create({
   baseURL,
   timeout: 5000, // Puedes ajustar este valor según tus necesidades
@@ -128,3 +129,20 @@ export const invitarUsuariosALaPartida = async (users, token, gameId) => {
     throw new Error('No se pueden invitar usuarios a la partida.');
   }
 };
+
+export const asignarUserRoleEnPartida = async (userId, gameId, userRoleId, token) => {
+  try {
+    console.log(`${usersEndpoint}/${userId}/games/${gameId}/assign-role/${userRoleId}`);
+    const response = await api.put(`${usersEndpoint}/${userId}/games/${gameId}/assign-role/${userRoleId}`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error al asignar UserRole en la partida.');
+  }
+};
+

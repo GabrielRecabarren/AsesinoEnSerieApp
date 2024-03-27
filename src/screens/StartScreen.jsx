@@ -7,6 +7,8 @@ import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
 import BotonAccion from "../components/BotonAccion/BotonAccion";
 
+import InfoModal from "../components/Modal/Modal";
+
 export const StartScreen = ({ navigation }) => {
   //Traemos el contexto
   const { userData } = useContext(UserContext);
@@ -56,6 +58,7 @@ export const StartScreen = ({ navigation }) => {
       source={require("../img/fondo.png")}
       style={styles.imageBackground}
     >
+      <InfoModal/>
       <View style={styles.container}>
         <Pressable style={{ flex: 1 }} onPress={() => handlingCrearPartida()}>
           <Card text={"CREAR PARTIDA"} />
@@ -69,6 +72,7 @@ export const StartScreen = ({ navigation }) => {
       <View style={styles.profileContainer}>
         <BotonAccion style={styles.perfil} title={"👤"} action={() => navigation.navigate("Profile")} />
       </View>
+      
     </ImageBackground>
   );
 };

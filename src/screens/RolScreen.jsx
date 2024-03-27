@@ -8,35 +8,34 @@ import {
   Button,
 } from "react-native";
 import { UserContext } from "../context/UserContext";
+import { asignarUserRoleEnPartida } from "../../api/api";
+import { GameContext } from "../context/GameContext";
 
 const RolScreen = ({ navigation }) => {
-  const { elegirRol } = useContext(UserContext);
+  const { userToken, userId, userRol, elegirRol } = useContext(UserContext);
+  const { gameId } =useContext(GameContext); 
 
-  //Estado para guardar el rol elegido.
   const [rolElegido, setRolElegido] = useState("DEFAULT");
 
-  useEffect(() => {
-    // Configurar opciones de navegación para ocultar el header
-    navigation.setOptions({
-      header: () => null,
-    });
-  }, []);
-
   const updateSelectedValue = (value) => {
-    console.log(value);
     setRolElegido(value);
-
   };
 
-  //Manejamos el boton:
-  const irAlJuego = () => {
+  const irAlJuego = async () => {
     if (rolElegido === "DEFAULT") {
       alert("Debes elegir tu rol");
     } else {
-      elegirRol(rolElegido);
-      navigation.navigate("Chat");
+      try {
+        await asignarUserRoleEnPartida(userId, gameId, rolElegido, userToken);
+        elegirRol(rolElegido);
+        navigation.navigate("Chat");
+      } catch (error) {
+        console.error(error);
+        alert("Error al asignar el rol. Inténtalo de nuevo.");
+      }
     }
   };
+
   return (
     <ImageBackground
       source={require("../img/fondo.png")}
@@ -89,4 +88,5 @@ const styles = StyleSheet.create({
     width: "80%",
   },
 });
+
 export default RolScreen;
