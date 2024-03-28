@@ -38,11 +38,16 @@ export const LoadScreen = ({ navigation }) => {
     socket.emit('join-game', gameData.id);
     // console.log(userRole, "UserRole antes de verificar");
     console.log(userRol, gameData, "UserRole y GameData")
-    const rolEnPartida = await consultarUserRoleEnPartida(userId, gameData.id, userToken);
-    console.log(rolEnPartida, "RolenPartida");
-    elegirRol(rolEnPartida);
-    navigation.navigate(rolEnPartida==="DEFAULT" ? 'Rol' : 'Chat');
-
+    try {
+      const rolEnPartida = await consultarUserRoleEnPartida(userId, gameData.id, userToken);
+      console.log(rolEnPartida, "RolenPartida");
+      elegirRol(rolEnPartida);
+      navigation.navigate(rolEnPartida==="DEFAULT" ? 'Rol' : 'Chat');
+    } catch (error) {
+      console.error("Error al consultar el UserRole en la partida:", error);
+      // Aquí puedes redirigir al usuario a la página donde se elige el rol
+      navigation.navigate('Rol');
+    }
   };
 
   return (
