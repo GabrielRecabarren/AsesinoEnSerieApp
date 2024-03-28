@@ -11,10 +11,10 @@ const ChatScreen = ({ navigation }) => {
   const { gameId } = useContext(GameContext);
   //Manejamos Boton de  acciones en función del rol del usuario
   const handleRolAction = async (userRol) => {
-   const roleSelected = userRol.userRole;
+    console.log(userRol);
     // const await consultarUserRoleEnPartida( userId, gameId, userToken )
 
-    switch (roleSelected) {
+    switch (userRol) {
       case "ASESINO":
         console.log("Asesino");
         break;

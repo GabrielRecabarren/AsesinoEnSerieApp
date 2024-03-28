@@ -41,7 +41,7 @@ export const LoadScreen = ({ navigation }) => {
     try {
       const rolEnPartida = await consultarUserRoleEnPartida(userId, gameData.id, userToken);
       console.log(rolEnPartida, "RolenPartida");
-      elegirRol(rolEnPartida);
+      elegirRol(rolEnPartida.userRole);
       navigation.navigate(rolEnPartida==="DEFAULT" ? 'Rol' : 'Chat');
     } catch (error) {
       console.error("Error al consultar el UserRole en la partida:", error);
