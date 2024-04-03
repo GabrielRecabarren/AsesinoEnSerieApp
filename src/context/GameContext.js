@@ -5,6 +5,7 @@ const GameContext = createContext();
 const GameContextProvider = ({ children }) => {
     const [gameStatus, setGameStatus] = useState("");
     const [gameId, setGameId] = useState(null);
+    const [gamePlayers, setGamePlayers] = useState([]);
 
     const create = (gameData) => {
         console.log(`Create desde Game Provider, ${gameData}`)
@@ -14,15 +15,14 @@ const GameContextProvider = ({ children }) => {
     }
 
     const load = (gameData) => {
-        console.log(`Quiero guardar la partida.`)
         setGameStatus(gameData.status);
         setGameId(gameData.id);
-        console.log(`Partida ${gameData.id} guardada en contexto.`)
+        setGamePlayers(gameData.players);
     }
 
 
     return (
-        <GameContext.Provider value={{ create, load, gameId }}>
+        <GameContext.Provider value={{ create, load, gameId, gamePlayers }}>
             {children}
         </GameContext.Provider>
     )

@@ -7,8 +7,8 @@ import { GameContext } from '../../context/GameContext';
 
 const Chat = () => {
   const scrollViewRef = useRef(null);
-  const socketContext = useContext(SocketContext); // Obtener el contexto del socket
-  const socket = socketContext.socket; // Obtener el socket del contexto
+    const socketContext = useContext(SocketContext); // Obtener el contexto del socket
+    const socket = socketContext.socket; // Obtener el socket del contexto
   const {userData, userRol} = useContext(UserContext);
   const { gameId } = useContext(GameContext);
   const username = userData.data.user.username;

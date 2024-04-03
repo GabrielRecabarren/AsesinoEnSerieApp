@@ -1,31 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
 import Chat from "../components/Chat/Chat";
 import BotonAccion from "../components/BotonAccion/BotonAccion";
 import { UserContext } from "../context/UserContext";
-import { consultarUserRoleEnPartida } from "../../api/api";
 import { GameContext } from "../context/GameContext";
+import { SocketContext } from "../context/socketProvider";
+import AccionModal from "../components/Modal/Modal";
 
 const ChatScreen = ({ navigation }) => {
   const { elegirRol, userToken, userId, userRol } = useContext(UserContext);
-  const { gameId } = useContext(GameContext);
-  //Manejamos Boton de  acciones en función del rol del usuario
-  const handleRolAction = async (userRol) => {
-    console.log(userRol);
-    // const await consultarUserRoleEnPartida( userId, gameId, userToken )
 
-    switch (userRol) {
-      case "ASESINO":
-        console.log("Asesino");
-        break;
-      case "PERIODISTA":
-        console.log("Periodista");
-        break;
-      default:
-        console.log("Rol no reconocido");
-        break;
+  const { gameId, gamePlayers } = useContext(GameContext);
+  const socketContext = useContext(SocketContext); // Obtener el contexto del socket
+  const socket = socketContext.socket; // Obtener el socket del contexto
+
+  //UseEffect para escuchar las acciones del rol
+  useEffect(() => {
+    console.log(gamePlayers, "GamePlayers");
+    if (socket) {
+      socket.on("action-rol", (msg) => {
+        console.log("Action received: ", msg);
+        alert(`El jugador ${msg.user} ha realizado la acción "${msg}".`);
+      });
     }
-  };
+  });
+
+ 
   // Manjeamos boton para salir de la partida
   const handleExitGame = () => {
     elegirRol("DEFAULT");
@@ -40,21 +40,20 @@ const ChatScreen = ({ navigation }) => {
       >
         <View style={styles.botonesContainer}>
           <BotonAccion style={styles.tips} title={"Consejos Rol📕"} />
+          
           <BotonAccion
             style={styles.perfil}
             title={"👤	"}
             action={() => navigation.navigate("Profile")}
-          />
+            />
         </View>
         <View style={styles.chatContainer}>
           <Chat />
           <View style={styles.botonesAcciones}>
-            <BotonAccion
-              style={styles.matar}
-              title={"🔪"}
-              action={() => handleRolAction(userRol)}
-            />
-            <BotonAccion style={styles.perfil} title={"📣	"} />
+            <AccionModal/>
+           
+           
+            <BotonAccion style={styles.perfil} title={" 📣	"} />
             <BotonAccion
               style={styles.perfil}
               title={"Salir de la partida."}
@@ -99,9 +98,7 @@ const styles = StyleSheet.create({
     width: "15%",
     zIndex: 1,
   },
-  matar: {
-    backgroundColor: "red",
-  },
+  
   tips: {
     // Puedes ajustar los estilos específicos del botón si es necesario
   },

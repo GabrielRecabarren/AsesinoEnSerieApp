@@ -7,21 +7,17 @@ import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
 import BotonAccion from "../components/BotonAccion/BotonAccion";
 
-import InfoModal from "../components/Modal/Modal";
 
 export const StartScreen = ({ navigation }) => {
   //Traemos el contexto
   const { userData, userRol } = useContext(UserContext);
   const { create } = useContext(GameContext);
 
-  console.log(userRol, "Deberia siempre estar en Default aqui");
 
   //Creamos partida
   const handlingCrearPartida = async () => {
     const token = userData.data.token; //Obtenemos el token
-    console.log(token);
     const userId = userData.data.user.id; //Obtenemos el userId.
-    console.log(`Fuckin token: ${token}, and the mdfukin userId: ${userId}`);
 
     try {
       console.log("Creando partida");
@@ -31,12 +27,9 @@ export const StartScreen = ({ navigation }) => {
           state: "En Curso",
         },
       };
-      console.log(`Datos Enviados: ${JSON.stringify(gameData)}`);
-      console.log(`Creando Partida...`);
+      
       const newGame = await crearPartida(gameData, token);
-      console.log(`Partida Creada`);
       await create(newGame);
-      console.log(`Partida Guardada: ${JSON.stringify(newGame)}`);
 
       navigation.navigate("Create");
     } catch (error) {
@@ -60,7 +53,6 @@ export const StartScreen = ({ navigation }) => {
       source={require("../img/fondo.png")}
       style={styles.imageBackground}
     >
-      <InfoModal/>
       <View style={styles.container}>
         <Pressable style={{ flex: 1 }} onPress={() => handlingCrearPartida()}>
           <Card text={"CREAR PARTIDA"} />
