@@ -21,6 +21,7 @@ const connectionConfig = {
   reconnection: true,
   reconnectionDelay: 100,
   reconnectionAttempts: 100000,
+  autoConnect:false,
   transports: ['websocket'],
   // Parámetros opcionales
   query: {

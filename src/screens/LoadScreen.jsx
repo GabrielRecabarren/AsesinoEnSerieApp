@@ -41,6 +41,9 @@ export const LoadScreen = ({ navigation }) => {
   const handlePartidaSeleccionada = async (gameData) => {
     // Llamar a GameContext para cargar la partida seleccionada
     load(gameData);
+    socket.connect();
+    //Intentando enviar datos del usuario para mensajes especificos:
+    socket.emit("canal-privado", userId);
     socket.emit("join-game", gameData.id);
     try {
       const rolEnPartida = await consultarUserRoleEnPartida(

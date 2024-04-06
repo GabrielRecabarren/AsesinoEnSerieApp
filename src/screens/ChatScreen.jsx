@@ -2,20 +2,21 @@ import React, { useContext, useEffect } from "react";
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
 import Chat from "../components/Chat/Chat";
 import BotonAccion from "../components/BotonAccion/BotonAccion";
+import AccionModal from "../components/Modal/RolActionModal";
 import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
 import { SocketContext } from "../context/socketProvider";
-import AccionModal from "../components/Modal/Modal";
 
 const ChatScreen = ({ navigation }) => {
-  const { elegirRol, userToken, userId, userRol } = useContext(UserContext);
+  const { elegirRol } = useContext(UserContext);
 
-  const { gameId, gamePlayers } = useContext(GameContext);
+  const {gamePlayers } = useContext(GameContext);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
 
   //UseEffect para escuchar las acciones del rol
   useEffect(() => {
+    // socket.connect();
     console.log(gamePlayers, "GamePlayers");
     if (socket) {
       socket.on("action-rol", (msg) => {
@@ -29,6 +30,7 @@ const ChatScreen = ({ navigation }) => {
   // Manjeamos boton para salir de la partida
   const handleExitGame = () => {
     elegirRol("DEFAULT");
+    socket.disconnect();
     alert("Saliendo del juego");
     navigation.navigate("Start");
   };

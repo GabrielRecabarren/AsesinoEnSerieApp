@@ -25,22 +25,21 @@ export default function App() {
         <UserProvider>
           <GameContextProvider>
             <PlayersContextProvider>
-              <Stack.Navigator initialRouteName="Home" screenOptions={{
-          headerShown: false, // Ocultar la barra de navegación en todas las pantallas
-        }}>
-                <Stack.Screen
-                  name="Home"
-                  component={HomeScreen}
-                  
-                />
+              <Stack.Navigator
+                initialRouteName="Home"
+                screenOptions={{
+                  headerShown: false, // Ocultar la barra de navegación en todas las pantallas
+                }}
+              >
+                <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Start" component={StartScreen} />
                 <Stack.Screen name="Create" component={CreateScreen} />
                 <Stack.Screen name="Load" component={LoadScreen} />
                 <Stack.Screen name="Chat" component={ChatScreen} />
                 <Stack.Screen name="Invitar" component={InvitarScreen} />
-                <Stack.Screen name="Rol" component={RolScreen}/> 
-                <Stack.Screen name="Profile" component={ProfileScreen}/> 
+                <Stack.Screen name="Rol" component={RolScreen} />
+                <Stack.Screen name="Profile" component={ProfileScreen} />
               </Stack.Navigator>
             </PlayersContextProvider>
           </GameContextProvider>
