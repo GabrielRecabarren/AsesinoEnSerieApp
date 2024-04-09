@@ -44,7 +44,7 @@ export const LoadScreen = ({ navigation }) => {
     socket.connect();
     //Intentando enviar datos del usuario para mensajes especificos:
     socket.emit("canal-privado", userId);
-    socket.emit("join-game", gameData.id);
+    socket.emit("join-game", gameData.id, userId);
     try {
       const rolEnPartida = await consultarUserRoleEnPartida(
         userId,

@@ -16,12 +16,11 @@ const ChatScreen = ({ navigation }) => {
 
   //UseEffect para escuchar las acciones del rol
   useEffect(() => {
-    // socket.connect();
     console.log(gamePlayers, "GamePlayers");
     if (socket) {
-      socket.on("action-rol", (msg) => {
-        console.log("Action received: ", msg);
-        alert(`El jugador ${msg.user} ha realizado la acción "${msg}".`);
+      socket.on("action-rol", (accion, destinatario, gameId) => {
+        console.log("Action received: ", accion);
+        alert(`El jugador  ha realizado la acción "${accion}" contra el jugador de ID: ${destinatario}.`);
       });
     }
   });

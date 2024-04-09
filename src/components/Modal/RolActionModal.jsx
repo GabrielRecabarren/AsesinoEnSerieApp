@@ -6,7 +6,6 @@ import {
   View,
   StyleSheet,
   Pressable,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { PlayerAvatar } from "../PlayerAvatar/PlayerAvatar";
 import { GameContext } from "../../context/GameContext";
@@ -16,17 +15,18 @@ import { SocketContext } from "../../context/socketProvider";
 const AccionModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState([]);
-  const { gamePlayers } = useContext(GameContext);
-  const { userRol } = useContext(UserContext);
+  const { gamePlayers, gameId } = useContext(GameContext);
+  const { userRol, userId } = useContext(UserContext);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
 
 
   //Manejamos Boton de  acciones en función del rol del usuario
   const handleRolAction = async (userRol) => {
+
     switch (userRol) {
       case "ASESINO":
-        socket.emit("action-rol", "asesinar","rolDeLaPersona", (callback) =>{
+        socket.emit("action-rol", "asesinar", selectedPlayer.id, gameId, (callback) =>{
           console.log("Mensaje enviado correctamente.", callback);
         });
 
@@ -51,6 +51,12 @@ const AccionModal = () => {
         break;
     }
   };
+
+  //Cerrar el modal
+  const handleCloseModal = () => {
+    setSelectedPlayer([]);
+    setModalVisible(!modalVisible)
+  }
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Modal
@@ -95,7 +101,7 @@ const AccionModal = () => {
                     <PlayerAvatar namePlayer={selectedPlayer.username} />
                     <Button
                       title="Matar"
-                      onPress={() => handleRolAction(userRol)}
+                      onPress={() => handleRolAction(userRol, userId)}
                       color="#F44336"
                     />
                   </>
@@ -103,7 +109,7 @@ const AccionModal = () => {
               </View>
               <Button
                 title="Mejor por ahora no ...."
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={handleCloseModal}
                 color={"#ff4509"}
               />
             </View>
