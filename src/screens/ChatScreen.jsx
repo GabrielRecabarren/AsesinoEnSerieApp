@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
 import Chat from "../components/Chat/Chat";
 import BotonAccion from "../components/BotonAccion/BotonAccion";
@@ -6,11 +6,13 @@ import AccionModal from "../components/Modal/RolActionModal";
 import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
 import { SocketContext } from "../context/socketProvider";
+import Loader from "../components/Loader/Loader";
 
 const ChatScreen = ({ navigation }) => {
+  const [loaderVisible, setLoaderVisible] = useState(false);
   const { elegirRol } = useContext(UserContext);
 
-  const {gamePlayers } = useContext(GameContext);
+  const { gamePlayers, gameId } = useContext(GameContext);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
 
@@ -19,13 +21,39 @@ const ChatScreen = ({ navigation }) => {
     console.log(gamePlayers, "GamePlayers");
     if (socket) {
       socket.on("action-rol", (accion, destinatario, gameId) => {
-        console.log("Action received: ", accion);
-        alert(`El jugador  ha realizado la acción "${accion}" contra el jugador de ID: ${destinatario}.`);
+        handleRolAction();
       });
-    }
+
+      socket.on("asesinato", ()=>{
+        alert("Moriste");
+        }
+      );
+    };
   });
 
- 
+  //Manejamos el action rol
+  const handleRolAction = () => {
+    setLoaderVisible(true);
+
+    const message = { 
+      text: "Esta ocurriendo un asesinato", 
+      sender: "EVENTO", 
+      isReceiver: false, 
+      speakingAsRole: false,
+      role: "DEFAULT"  }; // Objeto de mensaje completo 
+//Enviamos el mensaje de evento
+    socket.emit('chat-message', message,gameId,  (res) => {
+      
+      if (res.success) {
+        alert("Ok")
+      } else {
+        console.warn("Error al enviar el mensaje:", res.error);
+      }
+    });
+  }
+
+
+
   // Manjeamos boton para salir de la partida
   const handleExitGame = () => {
     elegirRol("DEFAULT");
@@ -41,20 +69,19 @@ const ChatScreen = ({ navigation }) => {
       >
         <View style={styles.botonesContainer}>
           <BotonAccion style={styles.tips} title={"Consejos Rol📕"} />
-          
+
           <BotonAccion
             style={styles.perfil}
             title={"👤	"}
             action={() => navigation.navigate("Profile")}
-            />
+          />
         </View>
         <View style={styles.chatContainer}>
           <Chat />
+          <Loader visible={loaderVisible} style={{ zIndex: 10 }} />
           <View style={styles.botonesAcciones}>
-            <AccionModal/>
-           
-           
-            <BotonAccion style={styles.perfil} title={" 📣	"} />
+            <AccionModal />
+
             <BotonAccion
               style={styles.perfil}
               title={"Salir de la partida."}
@@ -99,7 +126,7 @@ const styles = StyleSheet.create({
     width: "15%",
     zIndex: 1,
   },
-  
+
   tips: {
     // Puedes ajustar los estilos específicos del botón si es necesario
   },

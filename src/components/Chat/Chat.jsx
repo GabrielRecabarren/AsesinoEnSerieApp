@@ -21,8 +21,7 @@ const Chat = () => {
   useEffect(() => {
     if (socket) {
 
-      // Manejar eventos de socket
-      
+      // Manejar eventos de socket      
       socket.on('chat-message', (msg) => {       
 
         if(msg.sender!=username){
@@ -66,7 +65,6 @@ const handleSendMessage = () => {
         
         if (res.success) {
           setMessages((prevMessages) => [...prevMessages, message]);
-          console.log(messages, "que sucede msg?")
           setInputMessage("");
         } else {
           console.warn("Error al enviar el mensaje:", res.error);
