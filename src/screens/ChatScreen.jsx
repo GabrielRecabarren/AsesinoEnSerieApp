@@ -7,11 +7,14 @@ import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
 import { SocketContext } from "../context/socketProvider";
 import Loader from "../components/Loader/Loader";
+import AsesinadoCartel from "../components/Asesinado/Asesinado";
 
 const ChatScreen = ({ navigation }) => {
   const [loaderVisible, setLoaderVisible] = useState(false);
-  const { elegirRol } = useContext(UserContext);
-
+  const { elegirRol, userId } = useContext(UserContext);
+  const [asesinados, setAsesinados] = useState([]);
+  const [asesinado, setAsesinado] = useState(false);
+  
   const { gamePlayers, gameId } = useContext(GameContext);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
@@ -20,36 +23,43 @@ const ChatScreen = ({ navigation }) => {
   useEffect(() => {
     console.log(gamePlayers, "GamePlayers");
     if (socket) {
-      socket.on("action-rol", (accion, destinatario, gameId) => {
-        handleRolAction();
+      socket.on("action-rol", (accion, userId, destinatario, gameId) => {
+        handleRolAction(destinatario, gameId);
       });
 
       socket.on("asesinato", ()=>{
         alert("Moriste");
-        }
+        setLoaderVisible(false);
+        setAsesinados(prevAsesinados => [...prevAsesinados, userId]); 
+        setAsesinado(userId);
+      }
       );
     };
-  });
+  }, [socket]);
+  useEffect(() => {
+    console.log(asesinados, "asesinados actualizados");
+  }, [asesinados]);
+  
 
   //Manejamos el action rol
   const handleRolAction = () => {
     setLoaderVisible(true);
 
-    const message = { 
-      text: "Esta ocurriendo un asesinato", 
-      sender: "EVENTO", 
-      isReceiver: false, 
-      speakingAsRole: false,
-      role: "DEFAULT"  }; // Objeto de mensaje completo 
-//Enviamos el mensaje de evento
-    socket.emit('chat-message', message,gameId,  (res) => {
+//     const message = { 
+//       text: "Esta ocurriendo un asesinato", 
+//       sender: "EVENTO", 
+//       isReceiver: false, 
+//       speakingAsRole: false,
+//       role: "DEFAULT"  }; // Objeto de mensaje completo 
+// //Enviamos el mensaje de evento
+//     socket.emit('chat-message', message,gameId,  (res) => {
       
-      if (res.success) {
-        alert("Ok")
-      } else {
-        console.warn("Error al enviar el mensaje:", res.error);
-      }
-    });
+//       if (res.success) {
+//         alert("Ok")
+//       } else {
+//         console.warn("Error al enviar el mensaje:", res.error);
+//       }
+//     });
   }
 
 
@@ -72,12 +82,12 @@ const ChatScreen = ({ navigation }) => {
 
           <BotonAccion
             style={styles.perfil}
-            title={"👤	"}
+            title={" 👤	"}
             action={() => navigation.navigate("Profile")}
           />
         </View>
         <View style={styles.chatContainer}>
-          <Chat />
+          {asesinado ? <AsesinadoCartel navigation={navigation} /> : <Chat />  }
           <Loader visible={loaderVisible} style={{ zIndex: 10 }} />
           <View style={styles.botonesAcciones}>
             <AccionModal />

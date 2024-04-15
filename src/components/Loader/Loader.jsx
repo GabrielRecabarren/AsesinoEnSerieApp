@@ -1,57 +1,52 @@
 import React, { useRef, useEffect, useContext } from 'react';
-import { View, StyleSheet, Animated, Easing, Button } from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing, Button } from 'react-native';
 import { SocketContext } from '../../context/socketProvider';
+import { UserContext } from '../../context/UserContext';
+import { GameContext } from '../../context/GameContext';
 
 
 const Loader = ({ visible }) => {
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
+  const { userId } = useContext(UserContext);
+  const { gameId } = useContext(GameContext);
   const rotation = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    if (visible) {
-      Animated.loop(
-        Animated.timing(rotation, {
-          toValue: 1,
-          duration: 1200,
-          easing: Easing.linear,
-          useNativeDriver: true,
-        })
-      ).start();
-    }
-  }, [visible]);
+  
 
-  const rotateInterpolate = rotation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
+  
 
   if (!visible) {
     return null; // Retorna null para ocultar el componente si visible es falso
   }
-  const confirmarMuerte = () => {
-    let y_n = true;
-    socket.emit("confirmar-muerte", y_n,()=>{
-      alert("Has sido asesinado");
-      
-    })
+  //La victima confirma si está siendo asesinada.
+  const confirmarMuerte = (y_n) => {
+    if(y_n===true){
+      socket.emit("confirmar-muerte", y_n, userId, gameId, ()=>{
+        console.log("Muerte confirmada", userId);
+        alert("Has sido asesinado");        
+      });
+    };
   }
 
   return (
     <View style={styles.container}>
-      <Animated.View
+       <View style={styles.warningContainer}>
+        <Text style={styles.warningText}>¿Te están asesinando?</Text>
+      </View>
+      <View
         style={[
           styles.circle,
-          styles.circle1,
-          { transform: [{ rotate: rotateInterpolate }] },
+          styles.circle1
         ]}
       />
       <View style={[styles.circle, styles.circle2]} />
       <View style={[styles.circle, styles.circle3]} />
       <View style={[styles.circle, styles.circle4]} />
       <View style={styles.border} />
-      <View>
-        <Button title='confirmar' style={{ zIndex: 2 }} onPress={confirmarMuerte}></Button>
+      <View >
+        <Button title='Confirmar' style={{ zIndex: 2 }} onPress={()=>confirmarMuerte(true)}></Button>
+        <Button title='No' color={"red"} style={{ zIndex: 2 }} onPress={() => confirmarMuerte(false)}></Button>
 
       </View>
     </View>
@@ -66,11 +61,24 @@ const styles = StyleSheet.create({
     left: '50%',
     transform: [{ translateX: -48 }, { translateY: -48 }],
     borderRadius: 48,
-    height: 96,
-    width: 96,
+    height: 196,
+    width: 196,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#9b59b6',
+  },
+  warningContainer: {
+    position: 'absolute',
+    top: -30, // Ajusta la posición vertical según sea necesario
+    backgroundColor: 'yellow',
+    padding: 10,
+    borderRadius: 5,
+    zIndex: 1, // Asegura que el cartel esté encima de los círculos
+  },
+  warningText: {
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   circle: {
     position: 'absolute',

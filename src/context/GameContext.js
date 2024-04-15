@@ -11,7 +11,6 @@ const GameContextProvider = ({ children }) => {
         console.log(`Create desde Game Provider, ${gameData}`)
         setGameStatus(gameData.status);
         setGameId(gameData.id);
-
     }
 
     const load = (gameData) => {
@@ -20,9 +19,18 @@ const GameContextProvider = ({ children }) => {
         setGamePlayers(gameData.players);
     }
 
+    const exit = () => {
+
+        setGameStatus("Finalizada");
+        setGameId(null);
+        setGamePlayers([]);
+        console.log("exit");
+
+    }
+
 
     return (
-        <GameContext.Provider value={{ create, load, gameId, gamePlayers }}>
+        <GameContext.Provider value={{ create, load, exit, gameId, gamePlayers }}>
             {children}
         </GameContext.Provider>
     )

@@ -26,9 +26,10 @@ const AccionModal = () => {
 
     switch (userRol) {
       case "ASESINO":
-        socket.emit("action-rol", "asesinar", selectedPlayer.id, gameId, (callback) =>{
+        socket.emit("action-rol", "asesinar",userId, selectedPlayer.id, gameId, (callback) =>{
           console.log("Mensaje enviado correctamente.", callback);
         });
+        setModalVisible(false);
 
         break;
       case "COMPLICE":
