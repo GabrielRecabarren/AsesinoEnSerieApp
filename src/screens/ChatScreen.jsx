@@ -9,17 +9,24 @@ import { SocketContext } from "../context/socketProvider";
 import Loader from "../components/Loader/Loader";
 import AsesinadoCartel from "../components/Asesinado/Asesinado";
 import Header from "../components/Header/Header";
+import CartaRolModal from "../components/Modal/CartaRolModal";
 
 const ChatScreen = ({ navigation }) => {
   const [loaderVisible, setLoaderVisible] = useState(false);
   const { elegirRol, userId } = useContext(UserContext);
   const [asesinados, setAsesinados] = useState([]);
-  const [asesinado, setAsesinado] = useState(false);
+
   
-  const { gamePlayers, gameId } = useContext(GameContext);
+  const { gamePlayers, gameId, asesinado, usuarioAsesinado } = useContext(GameContext);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
 
+  useEffect(() => {
+    socket.connect();
+    //Intentando enviar datos del usuario para mensajes especificos:
+    socket.emit("canal-privado", userId);
+    socket.emit("join-game", gameId, userId);
+  })
   //UseEffect para escuchar las acciones del rol
   useEffect(() => {
     console.log(gamePlayers, "GamePlayers");
@@ -28,11 +35,12 @@ const ChatScreen = ({ navigation }) => {
         handleRolAction(destinatario, gameId);
       });
 
-      socket.on("asesinato", ()=>{
+      socket.on("asesinato", () => {
         alert("Moriste");
         setLoaderVisible(false);
-        setAsesinados(prevAsesinados => [...prevAsesinados, userId]); 
-        setAsesinado(userId);
+        setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
+        usuarioAsesinado();
+        navigation.navigate("")
       }
       );
     };
@@ -40,28 +48,16 @@ const ChatScreen = ({ navigation }) => {
   useEffect(() => {
     console.log(asesinados, "asesinados actualizados");
   }, [asesinados]);
-  
+
 
   //Manejamos el action rol
   const handleRolAction = () => {
     setLoaderVisible(true);
-
-//     const message = { 
-//       text: "Esta ocurriendo un asesinato", 
-//       sender: "EVENTO", 
-//       isReceiver: false, 
-//       speakingAsRole: false,
-//       role: "DEFAULT"  }; // Objeto de mensaje completo 
-// //Enviamos el mensaje de evento
-//     socket.emit('chat-message', message,gameId,  (res) => {
-      
-//       if (res.success) {
-//         alert("Ok")
-//       } else {
-//         console.warn("Error al enviar el mensaje:", res.error);
-//       }
-//     });
   }
+  const handleCloseModal = () => {
+
+    setLoaderVisible(false);
+  };
 
 
 
@@ -78,18 +74,19 @@ const ChatScreen = ({ navigation }) => {
         source={require("../img/fondo.png")}
         style={styles.imageBackground}
       >
-              <Header navigation={navigation}/>
+        <Header navigation={navigation} />
 
         <View style={styles.botonesContainer}>
           <BotonAccion style={styles.tips} title={"Consejos Rol📕"} />
 
-         
+
         </View>
         <View style={styles.chatContainer}>
-          {asesinado ? <AsesinadoCartel navigation={navigation} /> : <Chat />  }
-          <Loader visible={loaderVisible} style={{ zIndex: 10 }} />
+          {asesinado ? <AsesinadoCartel navigation={navigation} /> : <Chat />}
+          <Loader visible={loaderVisible} style={{ zIndex: 10 }} onCloseModal={handleCloseModal} />
           <View style={styles.botonesAcciones}>
             <AccionModal />
+            <CartaRolModal />
 
             <BotonAccion
               style={styles.perfil}
@@ -129,14 +126,14 @@ const styles = StyleSheet.create({
   botonesAcciones: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
 
-    gap: 10,
-    width: "15%",
+    gap: 15,
+    width: 300,
     zIndex: 1,
   },
 
-  
+
 });
 
 export default ChatScreen;

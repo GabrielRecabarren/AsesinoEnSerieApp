@@ -5,12 +5,11 @@ import { UserContext } from '../../context/UserContext';
 import { GameContext } from '../../context/GameContext';
 
 
-const Loader = ({ visible }) => {
+const Loader = ({ visible, onCloseModal }) => {
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
   const { userId } = useContext(UserContext);
   const { gameId } = useContext(GameContext);
-  const rotation = useRef(new Animated.Value(0)).current;
 
   
 
@@ -27,6 +26,9 @@ const Loader = ({ visible }) => {
         alert("Has sido asesinado");        
       });
     };
+    if(y_n===false){
+      onCloseModal();
+    }
   }
 
   return (
@@ -44,6 +46,7 @@ const Loader = ({ visible }) => {
       <View style={[styles.circle, styles.circle3]} />
       <View style={[styles.circle, styles.circle4]} />
       <View style={styles.border} />
+      <Text style={styles.rememberText} >*Recuerda que si el Asesino NO está con su cómplice, NO PUEDE MATARTE.</Text>
       <View >
         <Button title='Confirmar' style={{ zIndex: 2 }} onPress={()=>confirmarMuerte(true)}></Button>
         <Button title='No' color={"red"} style={{ zIndex: 2 }} onPress={() => confirmarMuerte(false)}></Button>
@@ -57,7 +60,7 @@ const Loader = ({ visible }) => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: '50%',
+    top: '40%',
     left: '50%',
     transform: [{ translateX: -48 }, { translateY: -48 }],
     borderRadius: 48,
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
   },
   warningContainer: {
     position: 'absolute',
-    top: -30, // Ajusta la posición vertical según sea necesario
+    top: -20, // Ajusta la posición vertical según sea necesario
     backgroundColor: 'yellow',
     padding: 10,
     borderRadius: 5,
@@ -110,6 +113,11 @@ const styles = StyleSheet.create({
     borderColor: '#ffffff',
     borderRadius: 48,
   },
+  rememberText: {
+    color: 'blue', // Hace que el texto sea amarillo
+    fontSize: 18, // Ajusta el tamaño de la fuente según sea necesario
+    fontWeight: 'bold', // Hace que el texto sea más gordo
+  }
 });
 
 export default Loader;

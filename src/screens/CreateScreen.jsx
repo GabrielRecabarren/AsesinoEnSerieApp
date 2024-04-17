@@ -41,11 +41,11 @@ export const CreateScreen = ({ navigation }) => {
   // Cambiar el texto y el estado de los jugadores cuando haya 6 jugadores conectados
   useEffect(() => {
     if (playersOk === false) {
-      setText("Uno/a de nosotros/as se convertirá en Asesino/a. En sus adentros descubrirá un instinto inexpugnable que hasta ahora había sido reprimido... Respirará entre nosotros y nosotras, nos observará y se ocultará con su cómplice.")
+      setText("Uno/a de nosotros/as se convertirá en Asesino/a. En sus adentros descubrirá un instinto inexpugnable que hasta ahora había sido reprimido. Nos conoce bien, convencerá a uno de nosotros para convertirse en cómplice de un plan aterrador: Eliminar uno auno, a quienes hasta ahora habíansido sus amigos y amigas. Asesino y Cómplice deberán pasar desapercibidos en cada uno de sus crímenes, ocultar el plan a sus víctimas, acometer sin dejar rastros ni sospechas.")
     }
     if (jugadoresConectados.length >= 6) {
       setPlayersOk(true);
-      setText('Busca un lugar tranquilo y libre de miradas para ver tu rol.');
+      setText('¿Podremos detener la matanza a tiempo? ¿Encontrar y juzgar correctamente, eludiendo la estrategia, el engaño y las patrañas de un par de mentes criminales? ¿O terminará el asesino y complice impunes? ... Busca un lugar tranquilo y libre de miradas para ver tu rol.');
 
     }
   }, [jugadoresConectados]);

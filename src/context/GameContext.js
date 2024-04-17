@@ -6,6 +6,7 @@ const GameContextProvider = ({ children }) => {
     const [gameStatus, setGameStatus] = useState("");
     const [gameId, setGameId] = useState(null);
     const [gamePlayers, setGamePlayers] = useState([]);
+    const [asesinado, setAsesinado] = useState(false);
 
     const create = (gameData) => {
         console.log(`Create desde Game Provider, ${gameData}`)
@@ -23,6 +24,10 @@ const GameContextProvider = ({ children }) => {
         setGamePlayers(players);
     };
     
+    const usuarioAsesinado = () => {
+        setAsesinado(true);
+    }
+    
 
     const exit = () => {
 
@@ -35,7 +40,7 @@ const GameContextProvider = ({ children }) => {
 
 
     return (
-        <GameContext.Provider value={{ create, load,loadPlayers, exit, gameId, gamePlayers }}>
+        <GameContext.Provider value={{ create, load,loadPlayers, usuarioAsesinado,exit, asesinado, gameId, gamePlayers }}>
             {children}
         </GameContext.Provider>
     )

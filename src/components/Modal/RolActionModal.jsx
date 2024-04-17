@@ -30,6 +30,7 @@ const AccionModal = () => {
           console.log("Mensaje enviado correctamente.", callback);
         });
         setModalVisible(false);
+        alert("Ahora muestra tu Carta Rol , junto a tu cómplice, para cometer tu ASESINATO");
 
         break;
       case "COMPLICE":
