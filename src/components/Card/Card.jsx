@@ -11,7 +11,7 @@ export const Card = ({ text, valor }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    width: "45%", // Ajusta el ancho para que haya dos tarjetas por fila
+    alignSelf: 'flex-start',
     marginVertical: 5, // Espacio vertical entre las tarjetas
     padding: 10,
     backgroundColor: "rgba(100, 38, 135, 0.9)",

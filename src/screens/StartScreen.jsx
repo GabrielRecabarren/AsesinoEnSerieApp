@@ -55,11 +55,11 @@ export const StartScreen = ({ navigation }) => {
     >
       <Header navigation={navigation}/>
       <View style={styles.container}>
-        <Pressable style={{ flex: 1 }} onPress={() => handlingCrearPartida()}>
+        <Pressable style={styles.button} onPress={() => handlingCrearPartida()}>
           <Card text={"CREAR PARTIDA"} />
         </Pressable>
-        <Pressable style={{ flex: 1 }} onPress={() => handlingStart(2)}>
-          <Card text={"PARTIDA GUARDADA"} />
+        <Pressable style={styles.button} onPress={() => handlingStart(2)}>
+          <Card  text={"PARTIDA GUARDADA"} />
         </Pressable>
       </View>
 
@@ -86,6 +86,13 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "rgba(32, 25, 255, 0.18)",
     zIndex: 0,
+  },
+  button: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
   },
 });
 export default StartScreen;

@@ -8,6 +8,7 @@ const UserProvider = ({children}) =>{
     const [userId, setUserId] = useState(null);
     const [userToken, setUserToken] = useState(null);
     const [userRol, setUserRol] = useState("DEFAULT");
+    const [username, setUsername] = useState("");
 
     const login = async(data) => {
         await AsyncStorage.setItem('usuarioAutenticado', 'true');
@@ -15,6 +16,7 @@ const UserProvider = ({children}) =>{
         setUserData({data});
         setUserToken(data.token)
         setUserId(data.user.id)
+        setUsername(data.user.username)
     };
 
     const elegirRol = (rol) =>{
@@ -28,7 +30,7 @@ const UserProvider = ({children}) =>{
     };
 
     return (
-        <UserContext.Provider value={{ userData, userToken, userId,userRol, elegirRol, login, logout}}>
+        <UserContext.Provider value={{ userData, userToken, userId,userRol,username, elegirRol, login, logout}}>
            
             
             {children}

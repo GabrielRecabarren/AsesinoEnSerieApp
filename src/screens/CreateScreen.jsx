@@ -19,30 +19,51 @@ export const CreateScreen = ({ navigation }) => {
   //States
   const [playersOk, setPlayersOk] = useState(false); //Estado de si están los jugadores listos
   const [jugadoresConectados, setJugadoresConectados] = useState([]); //Estado de jugadores listos
-  const [text, setText] = useState('Comienza el relato ...'); //Estado del texto mostrado en pantalla.
+  const [text, setText] = useState(''); //Estado del texto mostrado en pantalla.
 
   const { userData } = useContext(UserContext);
-  const { gameId } = useContext(GameContext);
+  const { gameId, gameData, load } = useContext(GameContext);
   const { playersConectados } = useContext(PlayersContext);
 
   //Función para obtener los usuarios conectados
   const usuariosConectados = async () => {
-    console.log(`"listando users por partida" con este gameID ${gameId}`)
+    console.log(`"listando users por partida" con este gameID ${gameId}`,gameData)
     const usuariosConfirmados = await listarUsuariosPorPartida(gameId, userData.data.token);
     setJugadoresConectados(usuariosConfirmados);
   }
 
   useEffect(() => {
     usuariosConectados();
+
   }, [playersConectados]);
+
 
   // Cambiar el texto y el estado de los jugadores cuando haya 6 jugadores conectados
   useEffect(() => {
+    if (playersOk === false) {
+      setText("Uno/a de nosotros/as se convertirá en Asesino/a. En sus adentros descubrirá un instinto inexpugnable que hasta ahora había sido reprimido... Respirará entre nosotros y nosotras, nos observará y se ocultará con su cómplice.")
+    }
     if (jugadoresConectados.length >= 6) {
       setPlayersOk(true);
       setText('Busca un lugar tranquilo y libre de miradas para ver tu rol.');
+
     }
   }, [jugadoresConectados]);
+
+  const handleComenzarPartida = () => {
+    console.log("Comenzar partida", gameId);
+    const updatedGameData = {
+      state: "En Curso",
+      id: gameId,
+      players: jugadoresConectados
+
+    }
+    load(updatedGameData);
+    navigation.navigate(playersOk ? 'Rol' : 'Esperando')
+
+  }
+
+  // Renderizado del componente
 
   return (
     <ImageBackground
@@ -58,13 +79,17 @@ export const CreateScreen = ({ navigation }) => {
         ))}
       </View>
 
-      {/* Si el juego está listo para comenzar, se activa el botón. */}
-      <Pressable style={{ flex: 1 }} onPress={() => navigation.navigate(playersOk ? 'Rol' : 'Esperando')}>
-        <Card text={playersOk ? "Comenzar Partida" : "Esperando Jugadores"} />
-      </Pressable>
-      <Pressable style={{ flex: 1 }} onPress={() => navigation.navigate("Invitar")}>
-        <Card text={"Invitar Jugadores "} />
-      </Pressable>
+
+      <View>
+
+        {/* Si el juego está listo para comenzar, se activa el botón. */}
+        <Pressable style={styles.button} onPress={handleComenzarPartida}>
+          <Card text={playersOk ? "Comenzar Partida" : "Esperando Jugadores"} />
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => navigation.navigate("Invitar")}>
+          <Card text={"Invitar Jugadores "} />
+        </Pressable>
+      </View>
     </ImageBackground>
   );
 };
@@ -83,4 +108,18 @@ const styles = StyleSheet.create({
     alignContent: "space-between",
     gap: 40
   },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  button: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+
 });

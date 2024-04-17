@@ -20,8 +20,8 @@ export const LoadScreen = ({ navigation }) => {
   const [partidasUsuario, setPartidasUsuario] = useState([]);
   const [partidasElegida, setPartidaElegida] = useState([]);
   const { userToken, userId, userRol, elegirRol } = useContext(UserContext);
-  const { load } = useContext(GameContext);
   const { socket } = useContext(SocketContext);
+  const { load } = useContext(GameContext);
 
   useEffect(() => {
     const cargarPartidasUsuario = async () => {
@@ -40,12 +40,9 @@ export const LoadScreen = ({ navigation }) => {
   }, []);
 
   const handlePartidaSeleccionada = async (gameData) => {
-    // Llamar a GameContext para cargar la partida seleccionada
+    console.log(gameData, "LoadScreen");
     load(gameData);
-    socket.connect();
-    //Intentando enviar datos del usuario para mensajes especificos:
-    socket.emit("canal-privado", userId);
-    socket.emit("join-game", gameData.id, userId);
+
     try {
       const rolEnPartida = await consultarUserRoleEnPartida(
         userId,
@@ -53,11 +50,13 @@ export const LoadScreen = ({ navigation }) => {
         userToken
       );
       elegirRol(rolEnPartida.userRole);
-      navigation.navigate(rolEnPartida === "DEFAULT" ? "Rol" : "Chat");
+      console.log("hola");
+      navigation.navigate(rolEnPartida === "DEFAULT" ? "Create" : "Chat");
     } catch (error) {
       console.error("Error al consultar el UserRole en la partida:", error);
       // Aquí puedes redirigir al usuario a la página donde se elige el rol
-      navigation.navigate("Rol");
+
+      navigation.navigate("Create");
     }
   };
 

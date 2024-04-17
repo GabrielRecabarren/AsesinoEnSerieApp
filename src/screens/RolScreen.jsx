@@ -10,8 +10,12 @@ import {
 import { UserContext } from "../context/UserContext";
 import { asignarUserRoleEnPartida } from "../../api/api";
 import { GameContext } from "../context/GameContext";
+import { SocketContext } from "../context/socketProvider";
+
 
 const RolScreen = ({ navigation }) => {
+  const { socket } = useContext(SocketContext);
+
   const { userToken, userId, userRol, elegirRol } = useContext(UserContext);
   const { gameId } =useContext(GameContext); 
 
@@ -26,8 +30,13 @@ const RolScreen = ({ navigation }) => {
       alert("Debes elegir tu rol");
     } else {
       try {
+        console.log(userId, gameId, rolElegido,"holas");
         await asignarUserRoleEnPartida(userId, gameId, rolElegido, userToken);
         elegirRol(rolElegido);
+        socket.connect();
+    //Intentando enviar datos del usuario para mensajes especificos:
+    socket.emit("canal-privado", userId);
+    socket.emit("join-game", gameId, userId);
         navigation.navigate("Chat");
       } catch (error) {
         console.error(error);
