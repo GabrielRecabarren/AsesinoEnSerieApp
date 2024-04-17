@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet,  ImageBackground, Button } from "react-native";
+import { View, StyleSheet, ImageBackground, Button } from "react-native";
 
 import { SignInForm } from "../components/SignInForm/SignInForm";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -11,17 +11,17 @@ const HomeScreen = ({ navigation }) => {
       try {
         const usuarioAutenticado = await AsyncStorage.getItem('usuarioAutenticado');
         // Realiza la lógica correspondiente para redirigir a la página de inicio de sesión o a la página principal según el estado de autenticación recuperado.
-          usuarioAutenticado ? console.log("Autenticado") : console.log("No hay Autenticado");
+        usuarioAutenticado ? console.log("Autenticado") : console.log("No hay Autenticado");
       } catch (error) {
         console.error('Error al recuperar el estado de autenticación:', error);
       }
     };
-  
+
     recuperarEstadoAutenticacion();
   }, []);
-  
+
   return (
-  
+
     <ImageBackground
       source={require('../img/fondo.png')}
       style={styles.imageBackground}
@@ -37,7 +37,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
-    resizeMode: "cover", 
+    resizeMode: "cover",
     justifyContent: "center",
   },
   container: {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     height: 450,
     borderWidth: 3,
     borderColor: "rgba(322, 25, 255, 0.18)",
-    
+
   },
 
 });

@@ -8,6 +8,7 @@ import { GameContext } from "../context/GameContext";
 import { SocketContext } from "../context/socketProvider";
 import Loader from "../components/Loader/Loader";
 import AsesinadoCartel from "../components/Asesinado/Asesinado";
+import Header from "../components/Header/Header";
 
 const ChatScreen = ({ navigation }) => {
   const [loaderVisible, setLoaderVisible] = useState(false);
@@ -77,14 +78,12 @@ const ChatScreen = ({ navigation }) => {
         source={require("../img/fondo.png")}
         style={styles.imageBackground}
       >
+              <Header navigation={navigation}/>
+
         <View style={styles.botonesContainer}>
           <BotonAccion style={styles.tips} title={"Consejos Rol📕"} />
 
-          <BotonAccion
-            style={styles.perfil}
-            title={" 👤	"}
-            action={() => navigation.navigate("Profile")}
-          />
+         
         </View>
         <View style={styles.chatContainer}>
           {asesinado ? <AsesinadoCartel navigation={navigation} /> : <Chat />  }
@@ -137,9 +136,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
 
-  tips: {
-    // Puedes ajustar los estilos específicos del botón si es necesario
-  },
+  
 });
 
 export default ChatScreen;

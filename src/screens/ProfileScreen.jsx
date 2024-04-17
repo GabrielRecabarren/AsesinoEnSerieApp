@@ -2,8 +2,9 @@ import React, { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { Card } from "../components/Card/Card";
 import { View, Text, StyleSheet, ImageBackground, ScrollView } from "react-native";
+import Header from "../components/Header/Header";
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({navigation}) => {
   const { userData } = useContext(UserContext);
   const userInfo = userData.data.user;
 
@@ -19,6 +20,7 @@ export const ProfileScreen = () => {
       source={require("../img/fondoPlano.jpeg")}
       style={styles.imageBackground}
     >
+      <Header navigation={navigation} />
       <View style={styles.container}>
         <Text style={styles.title}>Perfil de Usuario</Text>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>

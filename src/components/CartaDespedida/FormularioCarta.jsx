@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import { GameContext } from '../../context/GameContext';
 import { SocketContext } from '../../context/socketProvider';
 
-const AsesinatoFormulario = ({navigation}) => {
+const AsesinatoFormulario = ({ navigation }) => {
     const [lugar, setLugar] = useState('');
     const [hora, setHora] = useState('');
     const [ultimasPalabras, setUltimasPalabras] = useState('');
@@ -20,7 +20,7 @@ const AsesinatoFormulario = ({navigation}) => {
         console.log('Ultimas Palabras:', ultimasPalabras);
 
         const despedidaMensaje = {
-            text: `Ha ocurrido un asesinato a las ${hora}hrs. en ${lugar} y sus últimas palabras fueron ${ultimasPalabras}`,
+            text: `Ha ocurrido un asesinato a las ${hora}hrs. en ${lugar}`,
             sender: "EVENTO",
             isReceiver: true,
             speakingAsRole: false,
@@ -35,7 +35,7 @@ const AsesinatoFormulario = ({navigation}) => {
                 console.warn("Error al enviar el mensaje:", res.error);
             }
         });
-        
+
     }
 
     return (
@@ -56,22 +56,19 @@ const AsesinatoFormulario = ({navigation}) => {
                 <TextInput
                     style={styles.input}
                     value={hora}
-                    onChangeText={setHora}
-                    placeholder="Hora del asesinato"
+                    onChangeText={(text) => {
+                        // Verificamos que el texto tenga solo números y el ":" en la posición adecuada
+                        if (/^\d{0,2}(:\d{0,2})?$/.test(text)) {
+                            setHora(text);
+                        }
+                    }}
+                    placeholder="HH:MM"
                     placeholderTextColor="yellow"
+                    keyboardType="numeric"
                 />
+
             </View>
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Ultimas palabras (máximo 10 palabras)</Text>
-                <TextInput
-                    style={styles.input}
-                    value={ultimasPalabras}
-                    onChangeText={setUltimasPalabras}
-                    placeholder="Ultimas palabras"
-                    placeholderTextColor="yellow"
-                    maxLength={10}
-                />
-            </View>
+           
             <Pressable style={styles.boton} onPress={handleSubmit}>
                 <Text style={styles.botonTexto}>Enviar</Text>
             </Pressable>

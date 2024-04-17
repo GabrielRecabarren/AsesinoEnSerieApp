@@ -5,7 +5,7 @@ import { CompraAsesino } from "../components/CompraAsesino/CompraAsesino";
 import { crearPartida } from "../../api/api";
 import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
-import BotonAccion from "../components/BotonAccion/BotonAccion";
+import Header from "../components/Header/Header";
 
 
 export const StartScreen = ({ navigation }) => {
@@ -53,6 +53,7 @@ export const StartScreen = ({ navigation }) => {
       source={require("../img/fondo.png")}
       style={styles.imageBackground}
     >
+      <Header navigation={navigation}/>
       <View style={styles.container}>
         <Pressable style={{ flex: 1 }} onPress={() => handlingCrearPartida()}>
           <Card text={"CREAR PARTIDA"} />
@@ -63,9 +64,7 @@ export const StartScreen = ({ navigation }) => {
       </View>
 
       <CompraAsesino />
-      <View style={styles.profileContainer}>
-        <BotonAccion style={styles.perfil} title={"👤"} action={() => navigation.navigate("Profile")} />
-      </View>
+      
       
     </ImageBackground>
   );
@@ -73,13 +72,6 @@ export const StartScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
-  },
-  profileContainer: {
-    position: "absolute", // Ajusta el posicionamiento
-    top: 0, // Alinea el contenedor en la parte superior
-    right: 0, // Alinea el contenedor en el lado derecho
-    padding: 10, // Añade espacio alrededor del botón de perfil
-    zIndex:1
   },
   container: {
     flex: 1,

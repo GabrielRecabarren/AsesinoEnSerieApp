@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { crearUsuario } from "../../../api/api";
 
 export const SignInForm = ({ navigation }) => {
@@ -8,28 +8,49 @@ export const SignInForm = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [error, setError] = useState(null);
 
-  const handleCreateAccount = async () =>{
+
+  const handleCreateAccount = async () => {
     try {
+      if (username.length < 5) {
+        throw new Error("Username debe ser mínimo de 5 caracteres.");
+      }
+
+      if (email.length === 0) {
+        throw new Error("Email obligatorio");
+      }
+      if (password.length < 8) {
+        throw new Error("Password debe ser mínimo de 8 caracteres");
+      }
+
+      if (password !== repeatPassword) {
+        throw new Error("Las contraseñas no coinciden.");
+      }
       const userData = {
-        username,
-        email,
+        username: username.toLowerCase(),
+        email: email.toLowerCase(),
         password,
         alias
-      };  
-      console.log(`Vamos a comenzar a crear un usuario ${userData.username}`)
+      };
       const nuevoUsuario = await crearUsuario(userData);
-      console.log('Usuario creado:', nuevoUsuario);
-      nuevoUsuario===undefined ? alert("usuario no existe") : navigation.navigate("Login")
+      nuevoUsuario === undefined ? alert("usuario incorrecto") : navigation.navigate("Login")
 
     } catch (error) {
       console.error('Error al crear usuario:', error.message);
+      setError(error.message);
 
     }
   }
 
   return (
     <View style={styles.container}>
+      {/* Renderizar el componente de alerta solo si hay un error */}
+      {error && (
+        <Text style={{ color: "yellow" }}>
+          {error}
+        </Text>
+      )}
       <Text style={styles.text}>Crea tu Cuenta</Text>
       <TextInput
         placeholder="Nombre Usuario"
@@ -64,8 +85,8 @@ export const SignInForm = ({ navigation }) => {
         onChangeText={(text) => setRepeatPassword(text)}
       />
 
-      <Button title="Crear Cuenta" 
-      onPress={()=> handleCreateAccount()}/>
+      <Button title="Crear Cuenta"
+        onPress={() => handleCreateAccount()} />
       <Button
         title="Ya tengo"
         color="#E333FF"

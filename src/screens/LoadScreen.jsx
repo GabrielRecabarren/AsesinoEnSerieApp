@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import Header from "../components/Header/Header";
 import {
   consultarUserRoleEnPartida,
   listarPartidasPorUsuario,
@@ -62,6 +63,8 @@ export const LoadScreen = ({ navigation }) => {
 
   return (
     <ImageBackground source={require("../img/fondo.png")} style={{ flex: 1 }}>
+      <Header navigation={navigation} />
+
       <View style={styles.container}>
         <Text style={styles.title}>Tus Partidas en Curso</Text>
 
@@ -75,9 +78,8 @@ export const LoadScreen = ({ navigation }) => {
                 <Text
                   style={styles.partidaText}
                 >{`Partida ID: ${item.id}, Estado: ${item.state}`}</Text>
-                <Text style={styles.partidaText}>{`Creador: ${
-                  item.creator?.username || "Desconocido"
-                }`}</Text>
+                <Text style={styles.partidaText}>{`Creador: ${item.creator?.username || "Desconocido"
+                  }`}</Text>
                 {/* Agregar más detalles según la estructura de tus datos */}
               </View>
             </TouchableOpacity>

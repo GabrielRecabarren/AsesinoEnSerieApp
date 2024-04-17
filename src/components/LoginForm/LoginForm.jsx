@@ -1,33 +1,35 @@
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet} from "react-native";
+import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { loginUsuario } from "../../../api/api";
 import { UserContext } from "../../context/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const LoginForm = ({ navigation }) => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+ 
 
   //Datos del context
-const {login, userData} = useContext(UserContext);
+  const { login } = useContext(UserContext);
 
 
 
   //Guardamos al usuario  
   const guardarUsuarioEnSesion = async (usuario) => {
     try {
-     
+
       await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
-      
+
 
       const dataStored = await AsyncStorage.getItem('usuario');
-      
+
       const parsedData = await JSON.parse(dataStored);
-      
+
 
       await login(parsedData);
-      
+
       return dataStored;
     } catch (error) {
       console.error('Error al guardar usuario en la sesión:', error);
@@ -35,20 +37,18 @@ const {login, userData} = useContext(UserContext);
   };
 
   const handleLogin = async () => {
-    // Reiniciamos mensajes de Error
-    setEmailError("");
-    setPasswordError("");   
+   
 
     // Intentamos iniciar sesión
     try {
-      const userData = { email, password };
+      const userData = { email: email.toLowerCase(), password: password.toLowerCase() };
       const loggedUser = await loginUsuario(userData);
-      
+
       // Verificamos si la autenticación fue exitosa
       if (loggedUser) {
         const usuarioGuardado = await guardarUsuarioEnSesion(loggedUser);
-              
-        usuarioGuardado ?  navigation.navigate("Start") : alert("Imposible guardar usuario");
+
+        usuarioGuardado ? navigation.navigate("Start") : alert("Imposible guardar usuario");
       } else {
         console.log("Inicio de sesión fallido");
       }
@@ -59,7 +59,7 @@ const {login, userData} = useContext(UserContext);
     }
   };
 
-  
+
 
   return (
     <View style={styles.container}>
@@ -91,6 +91,11 @@ const {login, userData} = useContext(UserContext);
       <Button
         title="Iniciar sesión"
         onPress={handleLogin}
+      />
+      <Button
+        title="Crear Cuenta"
+        onPress={() => navigation.navigate("Home")}
+        color={"purple"}
       />
     </View>
   );

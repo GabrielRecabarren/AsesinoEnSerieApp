@@ -6,7 +6,6 @@ import { GameContext } from '../context/GameContext';
 import { PlayersContext } from '../context/PlayersContext';
 
 const InvitarScreen = ({ navigation }) => {
-    const [correoElectronico, setCorreoElectronico] = useState([]);
     const [codigoJugador, setCodigoJugador] = useState([]);
 
     const { userData } = useContext(UserContext);
@@ -41,17 +40,7 @@ const InvitarScreen = ({ navigation }) => {
             style={styles.imageBackground}
         >
             <SafeAreaView style={styles.container}>
-                <View>
-                    <Text style={styles.title}>Invita a un jugador por su correo</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={setCorreoElectronico}
-                        value={correoElectronico}
-                        placeholder="Correo electrónico"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
-                </View>
+                
                 <View>
                     <Text style={styles.title}>Invita a un jugador por su código de jugador</Text>
                     <TextInput
