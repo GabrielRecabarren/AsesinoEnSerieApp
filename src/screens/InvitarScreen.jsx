@@ -6,54 +6,67 @@ import { GameContext } from '../context/GameContext';
 import { PlayersContext } from '../context/PlayersContext';
 
 const InvitarScreen = ({ navigation }) => {
-    const [codigoJugador, setCodigoJugador] = useState([]);
+    const [jugadores, setJugadores] = useState(['']); // Array de jugadores, inicialmente con un jugador vacío
 
     const { userData } = useContext(UserContext);
-    const token = userData.data.token;//Obtenemos el token
+    const token = userData.data.token;
     const { gameId } = useContext(GameContext);
-
     const { invitar } = useContext(PlayersContext);
 
+    const agregarJugador = () => {
+        setJugadores([...jugadores, '']); // Agrega un jugador vacío al array
+    };
 
+    const handleCodigoJugadorChange = (text, index) => {
+        const newJugadores = [...jugadores];
+        newJugadores[index] = text; // Actualiza el código del jugador en el índice correspondiente
+        setJugadores(newJugadores);
+    };
 
-
-    //Manejamos el envío de invitacion
     const enviarInvitacion = async () => {
         try {
-            // Separar la cadena de jugadores por comas y eliminar los espacios en blanco alrededor de cada número
-            const jugadoresArray = codigoJugador.split(',').map(jugador => jugador.trim());
-            console.log(jugadoresArray);
-            // Llama a la función invitarUsuariosALaPartida con los datos ingresados por el usuario
+            const jugadoresArray = jugadores.filter(jugador => jugador.trim() !== ''); // Filtra los jugadores vacíos
             const usuariosInvitados = await invitarUsuariosALaPartida(jugadoresArray, token, gameId);
             invitar(usuariosInvitados);
             navigation.navigate("Create");
         } catch (error) {
             console.error('Error al enviar la invitación:', error);
             alert('Error al enviar la invitación. Prueba de nuevo o prueba otra cosa.');
-
         }
     };
 
     return (
         <ImageBackground
-            source={require('../img/fondo.png')} // Ruta de la imagen de fondo
+            source={require('../img/fondo.png')}
             style={styles.imageBackground}
         >
             <SafeAreaView style={styles.container}>
-                
-                <View>
-                    <Text style={styles.title}>Invita a un jugador por su código de jugador</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={setCodigoJugador}
-                        value={codigoJugador}
-                        placeholder="Código alfanumérico"
-                    />
-                    <Button
-                        onPress={enviarInvitacion}
-                        title="Agregar Jugador"
-                        color="#841584"
-                    />
+                <View style={styles.content}>
+                    <Text style={styles.title}>Invita a los jugadores por sus códigos</Text>
+                    {jugadores.map((jugador, index) => (
+                        <View key={index}>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={(text) => handleCodigoJugadorChange(text, index)}
+                                value={jugador}
+                                placeholder="Código alfanumérico"
+                            />
+                        </View>
+                    ))}
+                    <View style={styles.buttonsContainer}>
+                        <Button
+                            onPress={agregarJugador}
+                            title="+"
+                            color="#841584"
+                            style={styles.addButton}
+                        />
+                        <Button
+                            onPress={enviarInvitacion}
+                            title="Enviar invitaciones📨"
+                            color="green"
+                            style={styles.sendButton}
+                        />
+                    </View>
                 </View>
             </SafeAreaView>
         </ImageBackground>
@@ -63,25 +76,46 @@ const InvitarScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     imageBackground: {
         flex: 1,
-        resizeMode: 'cover', // Ajusta según tus preferencias: 'cover' o 'contain'
+        resizeMode: 'cover',
         justifyContent: 'center',
     },
     container: {
         flex: 1,
-        marginHorizontal: 16,
         justifyContent: 'center',
+        padding: 16,
+    },
+    content: {
+        backgroundColor: 'rgba(0, 0, 255, 0.8)',
+        padding: 16,
+        borderRadius: 8,
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
+        textAlign: 'center',
+        color:"yellow"
     },
     input: {
         height: 40,
         marginVertical: 8,
         borderWidth: 1,
         padding: 10,
-        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fondo semitransparente para que el texto sea legible
+        color:"yellow",
+        
+    
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+    },
+    addButton: {
+        flex: 1,
+        marginRight: 10,
+    },
+    sendButton: {
+        flex: 2,
     },
 });
 
