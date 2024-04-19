@@ -4,34 +4,35 @@ import { SocketContext } from '../../context/socketProvider';
 import { Mensaje } from '../Mensaje/Mensaje';
 import { UserContext } from '../../context/UserContext';
 import { GameContext } from '../../context/GameContext';
+import { crearMensajeEnPartida, obtenerMensajesPorPartida, eliminarMensajePorId } from '../../../api/api';
 
 const Chat = () => {
   const scrollViewRef = useRef(null);
-    const socketContext = useContext(SocketContext); // Obtener el contexto del socket
-    const socket = socketContext.socket; // Obtener el socket del contexto
-  const {userData, userRol} = useContext(UserContext);
+  const socketContext = useContext(SocketContext); // Obtener el contexto del socket
+  const socket = socketContext.socket; // Obtener el socket del contexto
+  const { userData, userRol, userToken, userId } = useContext(UserContext);
   const { gameId } = useContext(GameContext);
   const username = userData.data.user.username;
   const role = userRol;
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [speakingAsRole, setSpeakingAsRole] = useState(false);
-  
-  
+
+
   useEffect(() => {
     if (socket) {
 
       // Manejar eventos de socket      
-      socket.on('chat-message', (msg) => {       
+      socket.on('chat-message', (msg) => {
 
-        if(msg.sender!=username){
+        if (msg.sender != username) {
           const modifiedMessage = { ...msg, isReceiver: true };
 
           console.log(modifiedMessage);
           setMessages((prevMessages) => [...prevMessages, modifiedMessage]);
 
         }
-    
+
       });
     }
     return () => {
@@ -48,43 +49,48 @@ const Chat = () => {
     }
   }, [messages]);
 
- 
-// Manejador para enviar mensajes
-const handleSendMessage = () => {
-  if (socket) {
-    
-    if (inputMessage.trim() !== '') {
-      const message = { 
-        text: inputMessage, 
-        sender: username, 
-        isReceiver: false, 
-        speakingAsRole: speakingAsRole,
-        role: role  }; // Objeto de mensaje completo 
 
-      socket.emit('chat-message', message, gameId, (res) => {
-        
-        if (res.success) {
-          setMessages((prevMessages) => [...prevMessages, message]);
-          setInputMessage("");
-        } else {
-          console.warn("Error al enviar el mensaje:", res.error);
-        }
-      });
+  // Manejador para enviar mensajes
+  const handleSendMessage = async () => {
+    if (inputMessage.trim() !== '') {
+      try {
+        // Crear el mensaje en la base de datos
+        const nuevoMensaje = await crearMensajeEnPartida({ texto: inputMessage, userId, gameId, role: userRol }, userToken);
+
+        // Enviar el mensaje a través del socket
+        const message = {
+          text: inputMessage,
+          sender: username,
+          isReceiver: false,
+          speakingAsRole: speakingAsRole,
+          role: role,
+          ...nuevoMensaje // Agregar los datos adicionales del mensaje creado en la base de datos
+        };
+        socket.emit('chat-message', message, gameId, (res) => {
+          if (res.success) {
+            setInputMessage("");
+          } else {
+            console.warn("Error al enviar el mensaje:", res.error);
+          }
+        });
+
+        // Actualizar los mensajes en el estado local
+        setMessages((prevMessages) => [...prevMessages, message]);
+      } catch (error) {
+        console.error("Error al enviar el mensaje:", error);
+      }
     } else {
       console.warn("No se puede enviar un mensaje vacío");
     }
-  } else {
-    console.error("Error: El socket no está disponible");
-  }
-};
+  };
 
-//Manejador de envio con tecla handleOnEnterPress
-  const  handleOnEnterPress= e=>{
-    if(e.nativeEvent.key == 'Enter'){
-       handleSendMessage(); 
+  //Manejador de envio con tecla handleOnEnterPress
+  const handleOnEnterPress = e => {
+    if (e.nativeEvent.key == 'Enter') {
+      handleSendMessage();
 
+    }
   }
- }
 
 
 
@@ -94,7 +100,7 @@ const handleSendMessage = () => {
       <View style={styles.container}>
         <ScrollView style={styles.chatBox} ref={scrollViewRef}>
           {messages.map((message, index) => (
-            <Mensaje key={index} mensaje={message}  />
+            <Mensaje key={index} mensaje={message} />
           ))}
         </ScrollView>
 

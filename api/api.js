@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const baseURL = 'http://localhost:3000';
 const usersEndpoint = '/users';
+const messagesEndpoint = '/messages';
 
 
 const api = axios.create({
@@ -162,4 +163,50 @@ export const consultarUserRoleEnPartida = async (userId, gameId, token) => {
   }
 };
 
+// Crear un nuevo mensaje en una partida específica
+export const crearMensajeEnPartida = async ( mensajeData, token) => {
+  try {
+    const gameId = mensajeData.gameId
+    console.log(gameId, "mensajeData en api", typeof(gameId));
+    const response = await api.post(`/messages/${gameId}`, mensajeData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error al crear el mensaje en la partida.');
+  }
+};
 
+// Eliminar un mensaje por ID
+export const eliminarMensajePorId = async (mensajeId, token) => {
+  try {
+    const response = await api.delete(`/messages/${mensajeId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error al eliminar el mensaje.');
+  }
+};
+
+// Obtener todos los mensajes de una partida específica
+export const obtenerMensajesPorPartida = async (gameId, token) => {
+  try {
+    const response = await api.get(`/messages/${gameId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error al obtener los mensajes de la partida.');
+  }
+};
