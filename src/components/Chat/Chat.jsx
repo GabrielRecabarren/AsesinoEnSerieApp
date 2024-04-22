@@ -19,6 +19,12 @@ const Chat = () => {
   const [speakingAsRole, setSpeakingAsRole] = useState(false);
 
 
+
+  useEffect(() => {
+    // Cargar mensajes al montar el componente
+    cargarMensajes();
+  }, []);
+
   useEffect(() => {
     if (socket) {
 
@@ -49,23 +55,51 @@ const Chat = () => {
     }
   }, [messages]);
 
+  const cargarMensajes = async () => {
+    try {
+      const mensajes = await obtenerMensajesPorPartida(gameId, userToken); // Obtener mensajes de la partida
+      console.log(mensajes);
+  
+      // Modificar las propiedades de los mensajes antes de establecerlos en el estado local
+      const mensajesModificados = mensajes.map(mensaje => {
+        // Verificar si el sender del mensaje es igual al username del estado del componente
+        const isReceiver = mensaje.sender != username;
+  
+        // Devolver el mensaje modificado
+        return {
+          ...mensaje,
+          isReceiver: isReceiver
+        };
+      });
+  
+      // Actualizar los mensajes en el estado local
+      setMessages(mensajesModificados);
+    } catch (error) {
+      console.error('Error al cargar mensajes:', error);
+    }
+  };
+  
 
   // Manejador para enviar mensajes
   const handleSendMessage = async () => {
     if (inputMessage.trim() !== '') {
       try {
-        // Crear el mensaje en la base de datos
-        const nuevoMensaje = await crearMensajeEnPartida({ texto: inputMessage, userId, gameId, role: userRol }, userToken);
-
+        
         // Enviar el mensaje a través del socket
         const message = {
           text: inputMessage,
           sender: username,
           isReceiver: false,
-          speakingAsRole: speakingAsRole,
-          role: role,
-          ...nuevoMensaje // Agregar los datos adicionales del mensaje creado en la base de datos
+          speakingAsRole,
+          userId,
+          gameId,
+          role,
+          
         };
+        // Crear el mensaje en la base de datos
+        const nuevoMensaje = await crearMensajeEnPartida(message, userToken);
+        
+        console.log(nuevoMensaje,"nuevoMensaje");//Emitir al socket
         socket.emit('chat-message', message, gameId, (res) => {
           if (res.success) {
             setInputMessage("");
