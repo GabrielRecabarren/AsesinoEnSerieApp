@@ -19,9 +19,9 @@ const Loader = ({ visible, onCloseModal }) => {
     return null; // Retorna null para ocultar el componente si visible es falso
   }
   //La victima confirma si está siendo asesinada.
-  const confirmarMuerte = (y_n) => {
+  const confirmarAccion = () => {
     if(y_n===true){
-      socket.emit("confirmar-muerte", y_n, userId, gameId, ()=>{
+      socket.emit("confirmar-muerte", userId, gameId, ()=>{
         console.log("Muerte confirmada", userId);
         alert("Has sido asesinado");        
       });
@@ -48,8 +48,8 @@ const Loader = ({ visible, onCloseModal }) => {
       <View style={styles.border} />
       <Text style={styles.rememberText} >*Recuerda que si el Asesino NO está con su cómplice, NO PUEDE MATARTE.</Text>
       <View >
-        <Button title='Confirmar' style={{ zIndex: 2 }} onPress={()=>confirmarMuerte(true)}></Button>
-        <Button title='No' color={"red"} style={{ zIndex: 2 }} onPress={() => confirmarMuerte(false)}></Button>
+        <Button title='Confirmar' style={{ zIndex: 2 }} onPress={()=>confirmarAccion(true)}></Button>
+        <Button title='No' color={"red"} style={{ zIndex: 2 }} onPress={() => confirmarAccion(false)}></Button>
 
       </View>
     </View>

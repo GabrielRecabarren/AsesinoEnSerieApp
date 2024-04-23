@@ -32,7 +32,7 @@ const ChatScreen = ({ navigation }) => {
     console.log(gamePlayers, "GamePlayers");
     if (socket) {
       socket.on("action-rol", (accion, userId, destinatario, gameId) => {
-        handleRolAction(destinatario, gameId);
+        handleRolAction(accion,destinatario, gameId);
       });
 
       socket.on("asesinato", () => {

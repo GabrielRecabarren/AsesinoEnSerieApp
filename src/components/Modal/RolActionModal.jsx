@@ -14,51 +14,38 @@ import { SocketContext } from "../../context/socketProvider";
 
 const AccionModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState([]);
+  const [selectedPlayer, setSelectedPlayer] = useState(null); // Cambiado a objeto en lugar de arreglo
   const { gamePlayers, gameId } = useContext(GameContext);
   const { userRol, userId } = useContext(UserContext);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
 
-
   //Manejamos Boton de  acciones en función del rol del usuario
-  const handleRolAction = async (userRol) => {
-
-    switch (userRol) {
-      case "ASESINO":
-        socket.emit("action-rol", "asesinar",userId, selectedPlayer.id, gameId, (callback) =>{
-          console.log("Mensaje enviado correctamente.", callback);
-        });
-        setModalVisible(false);
-        alert("Ahora muestra tu Carta Rol , junto a tu cómplice, para cometer tu ASESINATO");
-
-        break;
-      case "COMPLICE":
-        console.log("Cómplice");
-        break;
-      case "DETECTIVE":
-        console.log("Detective");
-        break;
-      case "MANIACO":
-        console.log("Maniaco");
-        break;
-      case "DOCTOR":
-        console.log("Doctor");
-        break;
-      case "PERIODISTA":
-        console.log("Periodista");
-        break;
-      default:
-        console.log("Rol no reconocido");
-        break;
+  const handleRolAction = async () => {
+    if (userRol && selectedPlayer) {
+      const actionData = { 
+        userRol,
+        emisor: userId,
+        destinatario: selectedPlayer.id,
+        gameId
+      }
+      console.log(actionData);
+      socket.emit("action-rol", actionData, (callback) => {
+        console.log("Mensaje enviado correctamente.", callback);
+      });
+      setModalVisible(false);
+      alert("Ahora muestra tu Carta Rol, para ejecutar tu acción");
+    } else {
+      console.log("Rol no reconocido o jugador no seleccionado");
     }
   };
 
   //Cerrar el modal
   const handleCloseModal = () => {
-    setSelectedPlayer([]);
-    setModalVisible(!modalVisible)
+    setSelectedPlayer(null); // Cambiado a null cuando se cierra el modal
+    setModalVisible(!modalVisible);
   }
+
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Modal
@@ -69,7 +56,7 @@ const AccionModal = () => {
           setModalVisible(!modalVisible);
         }}
       >
-        <Pressable style={{flex:1 }} onPress={() => setModalVisible(!modalVisible)}>
+        <Pressable style={{ flex: 1 }} onPress={() => setModalVisible(!modalVisible)}>
           <View
             style={{
               flex: 1,
@@ -81,8 +68,10 @@ const AccionModal = () => {
             <View style={{ backgroundColor: "white", padding: 20 }}>
               <Text>Elige a quién vas a asesinar</Text>
               <View style={styles.playerContainer}>
-                {selectedPlayer.length === 0 ? (
-                  gamePlayers.map((jugador, index) => (
+                {selectedPlayer === null ? (
+                  gamePlayers
+                  .filter(jugador => jugador.id !== userId)
+                  .map((jugador, index) => (
                     <Pressable
                       key={index}
                       onPressOut={() => setSelectedPlayer(jugador)}
@@ -103,7 +92,7 @@ const AccionModal = () => {
                     <PlayerAvatar namePlayer={selectedPlayer.username} />
                     <Button
                       title="Matar"
-                      onPress={() => handleRolAction(userRol, userId)}
+                      onPress={handleRolAction}
                       color="#F44336"
                     />
                   </>
