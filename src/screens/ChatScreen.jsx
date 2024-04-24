@@ -13,7 +13,8 @@ import CartaRolModal from "../components/Modal/CartaRolModal";
 
 const ChatScreen = ({ navigation }) => {
   const [loaderVisible, setLoaderVisible] = useState(false);
-  const { elegirRol, userId } = useContext(UserContext);
+  const [rolAction, setRolAction] = useState(null);
+  const { elegirRol, userId, userRol } = useContext(UserContext);
   const [asesinados, setAsesinados] = useState([]);
 
   
@@ -31,8 +32,9 @@ const ChatScreen = ({ navigation }) => {
   useEffect(() => {
     console.log(gamePlayers, "GamePlayers");
     if (socket) {
-      socket.on("action-rol", (accion, userId, destinatario, gameId) => {
-        handleRolAction(accion,destinatario, gameId);
+      socket.on("action-rol", (actionData) => {
+        console.log(actionData, "actionData recibido")
+        handleRolAction(actionData);
       });
 
       socket.on("asesinato", () => {
@@ -51,8 +53,12 @@ const ChatScreen = ({ navigation }) => {
 
 
   //Manejamos el action rol
-  const handleRolAction = () => {
+  const handleRolAction = (actionData) => {
+    const {userRol} = actionData;
+    console.log(userRol, actionData, "handlerolAction");
     setLoaderVisible(true);
+    setRolAction(userRol);
+
   }
   const handleCloseModal = () => {
 
@@ -83,10 +89,10 @@ const ChatScreen = ({ navigation }) => {
         </View>
         <View style={styles.chatContainer}>
           {asesinado ? <AsesinadoCartel navigation={navigation} /> : <Chat />}
-          <Loader visible={loaderVisible} style={{ zIndex: 10 }} onCloseModal={handleCloseModal} />
+          <Loader visible={loaderVisible} rolAction={rolAction} style={{ zIndex: 10 }} onCloseModal={handleCloseModal} />
           <View style={styles.botonesAcciones}>
             <AccionModal />
-            <CartaRolModal />
+            <CartaRolModal userRol={userRol} />
 
             <BotonAccion
               style={styles.perfil}

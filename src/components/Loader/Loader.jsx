@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, Animated, Easing, Button } from 'react-native';
 import { SocketContext } from '../../context/socketProvider';
 import { UserContext } from '../../context/UserContext';
 import { GameContext } from '../../context/GameContext';
+import textosPorAccion from '../../../api/rolTexts';
 
-
-const Loader = ({ visible, onCloseModal }) => {
+const Loader = ({ visible, onCloseModal, rolAction }) => {
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
   const { userId } = useContext(UserContext);

@@ -6,16 +6,17 @@ import {
   View,
   Text,
   Button,
+  ScrollView,
 } from "react-native";
 import { UserContext } from "../context/UserContext";
 import { asignarUserRoleEnPartida } from "../../api/api";
 import { GameContext } from "../context/GameContext";
-
+import textosPorRol from "../../api/rolTexts";
 
 const RolScreen = ({ navigation }) => {
 
   const { userToken, userId, userRol, elegirRol } = useContext(UserContext);
-  const { gameId } =useContext(GameContext); 
+  const { gameId } = useContext(GameContext);
 
   const [rolElegido, setRolElegido] = useState("DEFAULT");
 
@@ -28,10 +29,10 @@ const RolScreen = ({ navigation }) => {
       alert("Debes elegir tu rol");
     } else {
       try {
-        console.log(userId, gameId, rolElegido,"holas");
+        console.log(userId, gameId, rolElegido, "holas");
         await asignarUserRoleEnPartida(userId, gameId, rolElegido, userToken);
         elegirRol(rolElegido);
-       
+
         navigation.navigate("Chat");
       } catch (error) {
         console.error(error);
@@ -49,19 +50,41 @@ const RolScreen = ({ navigation }) => {
         <Picker
           selectedValue={rolElegido}
           onValueChange={(itemValue) => updateSelectedValue(itemValue)}
+          style={{ backgroundColor: 'purple', color: 'yellow' }}
+          itemStyle={{ color: "yellow" }}
         >
-          <Picker.Item label="Elige tu rol" value="undefined" />
-          <Picker.Item label="DOCTOR" value="DOCTOR" />
+          <Picker.Item label="Elige tu rol" value="DEFAULT" />
+          <Picker.Item label="MÉDICO" value="MEDICO" />
           <Picker.Item label="DETECTIVE" value="DETECTIVE" />
           <Picker.Item label="FISCAL" value="FISCAL" />
           <Picker.Item label="MANIACO" value="MANIACO" />
           <Picker.Item label="PERIODISTA" value="PERIODISTA" />
-          <Picker.Item label="COMPLICE" value="COMPLICE" />
+          <Picker.Item label="VÍCTIMA" value="VICTIMA" />
+          <Picker.Item label="CÓMPLICE" value="COMPLICE" />
           <Picker.Item label="ASESINO" value="ASESINO" />
         </Picker>
-        <View style={styles.leyenda}>
-          <Text>Aquí iría la descripción del rol elegido: {rolElegido}</Text>
-        </View>
+        
+
+          <ScrollView style={styles.leyenda}>
+            <Text
+              style={{
+                color: "yellow",
+                fontSize: 18,
+                fontWeight: 'bold',
+                margin: 10
+              }}>
+              {textosPorRol[rolElegido].instrucciones}
+            </Text>
+          </ScrollView>
+          <ImageBackground
+        style={{
+          width: 330,
+          height: 200,
+          resizeMode: 'cover'
+        }}
+        source={rolElegido =="DEFAULT" ? "" : require(`../img/roles/${rolElegido}.png`)}
+        >
+        </ImageBackground>
         <Button onPress={irAlJuego} title="Vamos al Juego!">
           Comencemos!
         </Button>
@@ -83,10 +106,11 @@ const styles = StyleSheet.create({
     padding: 20,
     height: 450,
     borderWidth: 3,
+
   },
   leyenda: {
     flex: 1,
-    backgroundColor: "green",
+
   },
   button: {
     width: "80%",

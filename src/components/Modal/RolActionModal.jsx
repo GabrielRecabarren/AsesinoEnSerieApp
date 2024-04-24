@@ -11,7 +11,7 @@ import { PlayerAvatar } from "../PlayerAvatar/PlayerAvatar";
 import { GameContext } from "../../context/GameContext";
 import { UserContext } from "../../context/UserContext";
 import { SocketContext } from "../../context/socketProvider";
-
+import textosPorRol from "../../../api/rolTexts";
 const AccionModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState(null); // Cambiado a objeto en lugar de arreglo
@@ -66,7 +66,7 @@ const AccionModal = () => {
             }}
           >
             <View style={{ backgroundColor: "white", padding: 20 }}>
-              <Text>Elige a quién vas a asesinar</Text>
+            <Text>{textosPorRol[userRol].pregunta}</Text>
               <View style={styles.playerContainer}>
                 {selectedPlayer === null ? (
                   gamePlayers

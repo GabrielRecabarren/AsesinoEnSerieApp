@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, View, StyleSheet, Image, Text } from "react-native";
 
-const CartaRolModal = () => {
+const CartaRolModal = ({userRol}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -19,7 +19,7 @@ const CartaRolModal = () => {
   *Recuerda que para hablar como rol puedes usar el Switch al lado del boton "ENVIAR"
 </Text>
           <Image
-            source={require("../../img/roles/asesino.png")}
+            source={require(`../../img/roles/${userRol}.png`)}
             style={styles.cardImage}
           />
           <Button
