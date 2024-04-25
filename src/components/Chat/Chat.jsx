@@ -6,7 +6,7 @@ import { UserContext } from '../../context/UserContext';
 import { GameContext } from '../../context/GameContext';
 import { crearMensajeEnPartida, obtenerMensajesPorPartida, eliminarMensajePorId } from '../../../api/api';
 
-const Chat = () => {
+const Chat = ({isAsesinado}) => {
   const scrollViewRef = useRef(null);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
@@ -138,7 +138,7 @@ const Chat = () => {
           ))}
         </ScrollView>
 
-        <View style={styles.inputContainer}>
+        <View style={isAsesinado ? {display:'none'} : styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setInputMessage(text)}

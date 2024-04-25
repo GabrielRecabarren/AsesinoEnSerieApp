@@ -30,7 +30,7 @@ const AsesinatoFormulario = ({ navigation }) => {
         socket.emit('chat-message', despedidaMensaje, gameId, (res) => {
             if (res.success) {
                 
-                navigation.navigate("Start");
+                navigation.navigate("Chat");
             } else {
                 console.warn("Error al enviar el mensaje:", res.error);
             }

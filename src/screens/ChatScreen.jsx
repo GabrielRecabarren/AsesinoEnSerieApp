@@ -38,14 +38,35 @@ const ChatScreen = ({ navigation }) => {
         handleRolAction(actionData);
       });
 
-      socket.on("asesinato", () => {
+      socket.on("ASESINO-exitoso", () => {
+        alert("Moriste");
+        setLoaderVisible(false);
+        setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
+        usuarioAsesinado();
+        navigation.navigate("Despedida");
+        
+      }
+      );
+      socket.on("MEDICO-exitoso",() =>{
+        console.log("Medico-exitoso");
+      });
+      socket.on("PERIODISTA-exitoso",() =>{
+        console.log("PERIODISTA-exitoso");
+      });
+      socket.on("FISCAL-exitoso",() =>{
+        console.log("FISCAL-exitoso");
+      });
+      socket.on("MANIACO-exitoso",() =>{
+        console.log("MANIACO-exitoso");
         alert("Moriste");
         setLoaderVisible(false);
         setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
         usuarioAsesinado();
         navigation.navigate("")
-      }
-      );
+      });
+      socket.on("DETECTIVE-exitoso",() =>{
+        console.log("DETECTIVE-exitoso");
+      });
     };
   }, [socket]);
   useEffect(() => {
@@ -54,9 +75,8 @@ const ChatScreen = ({ navigation }) => {
 
 
   //Manejamos el action rol
-  const handleRolAction = (actionData) => {
-    const {userRol} = actionData;
-    console.log(userRol, actionData, "handlerolAction");
+  const handleRolAction = () => {
+   
     setLoaderVisible(true);
 
   }
@@ -88,7 +108,7 @@ const ChatScreen = ({ navigation }) => {
 
         </View>
         <View style={styles.chatContainer}>
-          {asesinado ? <AsesinadoCartel navigation={navigation} /> : <Chat />}
+          <Chat isAsesinado={asesinado}/>
           <Loader visible={loaderVisible} actionData={rolActionData} style={{ zIndex: 10 }} onCloseModal={handleCloseModal} />
           <View style={styles.botonesAcciones}>
             <AccionModal />

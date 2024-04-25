@@ -19,14 +19,14 @@ const Loader = ({ visible, onCloseModal, actionData }) => {
     return null; // Retorna null para ocultar el componente si visible es falso
   }
   //La victima confirma si está siendo asesinada.
-  const confirmarAccion = () => {
-    if (y_n === true) {
-      socket.emit("confirmar-muerte", userId, gameId, () => {
-        console.log("Muerte confirmada", userId);
+  const confirmarAccion = (confirmar) => {
+    if (confirmar === true) {
+      socket.emit("confirmar-accion", actionData, () => {
+        console.log("Accion confirmada", actionData);
         alert("Has sido asesinado");
       });
     };
-    if (y_n === false) {
+    if (confirmar === false) {
       onCloseModal();
     }
   }
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   warningContainer: {
     position: 'absolute',
-    top: -20, // Ajusta la posición vertical según sea necesario
+    top: -30, // Ajusta la posición vertical según sea necesario
     backgroundColor: 'yellow',
     padding: 10,
     borderRadius: 5,
@@ -83,18 +83,20 @@ const styles = StyleSheet.create({
   warningText: {
     color: 'red',
     fontWeight: 'bold',
-    fontSize: 36,
+    fontSize: 33,
   },
   rememberText: {
     color: 'yellow',
-    fontSize: 24,
+    fontSize: 22,
+    
   },
   rememberContainer: {
     alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'rgba( 162, 40, 176, 0.3 )',
-  padding: 10,
+  padding: 20,
   textAlign: 'center',
+  marginTop:20
   }
 });
 
