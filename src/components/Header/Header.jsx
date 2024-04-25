@@ -10,7 +10,7 @@ const Header = ({ navigation }) => {
         <View style={styles.header}>
             <BotonAccion
 
-                title={" 👤	?"}
+                title={" 👤	"}
                 action={() => navigation.navigate("Profile")}
             />
               <View style={styles.titleContainer}>

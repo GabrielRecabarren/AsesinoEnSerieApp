@@ -19,18 +19,19 @@ const BotonAccion = ({ title, action }) => {
 
 const styles = StyleSheet.create({
   boton: {
-    paddingVertical: 10,
+    paddingVertical: 20,
     paddingHorizontal: 20,
     borderRadius: 20,
     elevation: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    maxHeight:20 
+    maxHeight:40 
   },
   textoBoton: {
     color: 'white',
     fontWeight: 'bold',
     textTransform: 'uppercase',
+    fontSize: 33,
   },
 });
 

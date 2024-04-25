@@ -91,9 +91,9 @@ const AccionModal = () => {
                   <>
                     <PlayerAvatar namePlayer={selectedPlayer.username} />
                     <Button
-                      title="Matar"
+                      title={textosPorRol[userRol].accion}
                       onPress={handleRolAction}
-                      color="#F44336"
+                      color="red"
                     />
                   </>
                 )}
@@ -101,7 +101,8 @@ const AccionModal = () => {
               <Button
                 title="Mejor por ahora no ...."
                 onPress={handleCloseModal}
-                color={"#ff4509"}
+                color={"purple"}
+                
               />
             </View>
           </View>
@@ -112,6 +113,7 @@ const AccionModal = () => {
         title="Acción Rol"
         onPress={() => setModalVisible(true)}
         color={"#ff4500"}
+        
       />
     </View>
   );

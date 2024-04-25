@@ -13,7 +13,7 @@ import CartaRolModal from "../components/Modal/CartaRolModal";
 
 const ChatScreen = ({ navigation }) => {
   const [loaderVisible, setLoaderVisible] = useState(false);
-  const [rolAction, setRolAction] = useState(null);
+  const [rolActionData, setRolActionData] = useState(null);
   const { elegirRol, userId, userRol } = useContext(UserContext);
   const [asesinados, setAsesinados] = useState([]);
 
@@ -33,7 +33,8 @@ const ChatScreen = ({ navigation }) => {
     console.log(gamePlayers, "GamePlayers");
     if (socket) {
       socket.on("action-rol", (actionData) => {
-        console.log(actionData, "actionData recibido")
+        console.log(actionData, "actionData recibido");
+        setRolActionData(actionData);
         handleRolAction(actionData);
       });
 
@@ -57,7 +58,6 @@ const ChatScreen = ({ navigation }) => {
     const {userRol} = actionData;
     console.log(userRol, actionData, "handlerolAction");
     setLoaderVisible(true);
-    setRolAction(userRol);
 
   }
   const handleCloseModal = () => {
@@ -89,7 +89,7 @@ const ChatScreen = ({ navigation }) => {
         </View>
         <View style={styles.chatContainer}>
           {asesinado ? <AsesinadoCartel navigation={navigation} /> : <Chat />}
-          <Loader visible={loaderVisible} rolAction={rolAction} style={{ zIndex: 10 }} onCloseModal={handleCloseModal} />
+          <Loader visible={loaderVisible} actionData={rolActionData} style={{ zIndex: 10 }} onCloseModal={handleCloseModal} />
           <View style={styles.botonesAcciones}>
             <AccionModal />
             <CartaRolModal userRol={userRol} />
