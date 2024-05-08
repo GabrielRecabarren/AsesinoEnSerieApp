@@ -21,7 +21,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/img/fondo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sjs.asesino",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./src/img/fondo.png"

@@ -32,15 +32,14 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 10,
+    
+    margin:10
   },
   senderContainer: {
     justifyContent: 'flex-end',
-    backgroundColor:'green'
   },
   receiverContainer: {
     justifyContent: 'flex-start',
-    backgroundColor: 'purple'
   },
   messageContainer: {
     maxWidth: '70%',

@@ -80,7 +80,7 @@ export const CreateScreen = ({ navigation }) => {
       </View>
 
 
-      <View>
+      <View style={{flex:1}}>
 
         {/* Si el juego está listo para comenzar, se activa el botón. */}
         <Pressable style={styles.button} onPress={handleComenzarPartida}>

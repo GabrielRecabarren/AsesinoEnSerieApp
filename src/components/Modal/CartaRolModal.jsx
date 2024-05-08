@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, View, StyleSheet, Image, Text } from "react-native";
+import images from "../../img/roles/rolesImgs";
 
-const CartaRolModal = ({userRol}) => {
+const CartaRolModal = ({ userRol }) => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const imgUrl = images[userRol];
+
+
+
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -15,11 +21,11 @@ const CartaRolModal = ({userRol}) => {
         }}
       >
         <View style={styles.modalContainer}>
-        <Text style={styles.rememberText}>
-  *Recuerda que para hablar como rol puedes usar el Switch al lado del boton "ENVIAR"
-</Text>
+          <Text style={styles.rememberText}>
+            *Recuerda que para hablar como rol puedes usar el Switch al lado del boton "ENVIAR"
+          </Text>
           <Image
-            source={require(`../../img/roles/${userRol}.png`)}
+            source={imgUrl}
             style={styles.cardImage}
           />
           <Button
@@ -30,7 +36,7 @@ const CartaRolModal = ({userRol}) => {
       </Modal>
 
       <Button
-        title="Rol"
+        title="Consejos Rol"
         onPress={() => setModalVisible(true)}
         color={"purple"}
       />

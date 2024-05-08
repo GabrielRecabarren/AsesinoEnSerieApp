@@ -1,28 +1,34 @@
 import { useContext, useEffect, useState } from "react";
 import {
   ImageBackground,
-  Picker,
+  Image,
   StyleSheet,
   View,
   Text,
   Button,
   ScrollView,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { UserContext } from "../context/UserContext";
 import { asignarUserRoleEnPartida } from "../../api/api";
 import { GameContext } from "../context/GameContext";
 import textosPorRol from "../../api/rolTexts";
+import images from "../img/roles/rolesImgs";
 
 const RolScreen = ({ navigation }) => {
 
-  const { userToken, userId, userRol, elegirRol } = useContext(UserContext);
+  const { userToken, userId, elegirRol } = useContext(UserContext);
   const { gameId } = useContext(GameContext);
-
   const [rolElegido, setRolElegido] = useState("DEFAULT");
+  const [imageUri, setImageUri] = useState("../img/roles/DEFAULT.png");
+
+
 
   const updateSelectedValue = (value) => {
     setRolElegido(value);
   };
+
+
 
   const irAlJuego = async () => {
     if (rolElegido === "DEFAULT") {
@@ -60,31 +66,30 @@ const RolScreen = ({ navigation }) => {
           <Picker.Item label="MANIACO" value="MANIACO" />
           <Picker.Item label="PERIODISTA" value="PERIODISTA" />
           <Picker.Item label="VÍCTIMA" value="VICTIMA" />
-          <Picker.Item label="CÓMPLICE" value="COMPLICE" />
           <Picker.Item label="ASESINO" value="ASESINO" />
         </Picker>
-        
 
-          <ScrollView style={styles.leyenda}>
-            <Text
-              style={{
-                color: "yellow",
-                fontSize: 18,
-                fontWeight: 'bold',
-                margin: 10
-              }}>
-              {textosPorRol[rolElegido].instrucciones}
-            </Text>
-          </ScrollView>
-          <ImageBackground
-        style={{
-          width: 330,
-          height: 200,
-          resizeMode: 'cover'
-        }}
-        source={rolElegido =="DEFAULT" ? "" : require(`../img/roles/${rolElegido}.png`)}
-        >
-        </ImageBackground>
+
+        <ScrollView style={styles.leyenda}>
+          <Text
+            style={{
+              color: "yellow",
+              fontSize: 18,
+              fontWeight: 'bold',
+              margin: 10
+            }}>
+            {textosPorRol[rolElegido].instrucciones}
+          </Text>
+        </ScrollView>
+        <Image
+          style={{
+            flex: 1,
+            width: 330,
+            height: 200,
+          }}
+          resizeMode="contain"
+          source={ images[rolElegido] }
+        />
         <Button onPress={irAlJuego} title="Vamos al Juego!">
           Comencemos!
         </Button>

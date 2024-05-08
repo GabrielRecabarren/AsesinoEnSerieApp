@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View, ImageBackground } from "react-native";
+import { StyleSheet, Text, View, ImageBackground, Button, Alert } from "react-native";
 import Chat from "../components/Chat/Chat";
-import BotonAccion from "../components/BotonAccion/BotonAccion";
 import AccionModal from "../components/Modal/RolActionModal";
 import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
@@ -17,12 +16,12 @@ const ChatScreen = ({ navigation }) => {
   const { elegirRol, userId, userRol } = useContext(UserContext);
   const [asesinados, setAsesinados] = useState([]);
 
-  
-  const { gamePlayers, gameId, asesinado, usuarioAsesinado } = useContext(GameContext);
-  const socketContext = useContext(SocketContext); // Obtener el contexto del socket
-  const socket = socketContext.socket; // Obtener el socket del contexto
+
+  const {  gameId, asesinado, usuarioAsesinado } = useContext(GameContext);
+  const { socket } = useContext(SocketContext); // Obtener el contexto del socket
 
   useEffect(() => {
+    console.log("socket");
     socket.connect();
     //Intentando enviar datos del usuario para mensajes especificos:
     socket.emit("canal-privado", userId);
@@ -30,7 +29,6 @@ const ChatScreen = ({ navigation }) => {
   })
   //UseEffect para escuchar las acciones del rol
   useEffect(() => {
-    console.log(gamePlayers, "GamePlayers");
     if (socket) {
       socket.on("action-rol", (actionData) => {
         console.log(actionData, "actionData recibido");
@@ -44,19 +42,19 @@ const ChatScreen = ({ navigation }) => {
         setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
         usuarioAsesinado();
         navigation.navigate("Despedida");
-        
+
       }
       );
-      socket.on("MEDICO-exitoso",() =>{
+      socket.on("MEDICO-exitoso", () => {
         console.log("Medico-exitoso");
       });
-      socket.on("PERIODISTA-exitoso",() =>{
+      socket.on("PERIODISTA-exitoso", () => {
         console.log("PERIODISTA-exitoso");
       });
-      socket.on("FISCAL-exitoso",() =>{
+      socket.on("FISCAL-exitoso", () => {
         console.log("FISCAL-exitoso");
       });
-      socket.on("MANIACO-exitoso",() =>{
+      socket.on("MANIACO-exitoso", () => {
         console.log("MANIACO-exitoso");
         alert("Moriste");
         setLoaderVisible(false);
@@ -64,24 +62,20 @@ const ChatScreen = ({ navigation }) => {
         usuarioAsesinado();
         navigation.navigate("")
       });
-      socket.on("DETECTIVE-exitoso",() =>{
+      socket.on("DETECTIVE-exitoso", () => {
         console.log("DETECTIVE-exitoso");
       });
     };
   }, [socket]);
-  useEffect(() => {
-    console.log(asesinados, "asesinados actualizados");
-  }, [asesinados]);
+
 
 
   //Manejamos el action rol
   const handleRolAction = () => {
-   
     setLoaderVisible(true);
-
   }
-  const handleCloseModal = () => {
 
+  const handleCloseModal = () => {
     setLoaderVisible(false);
   };
 
@@ -91,7 +85,7 @@ const ChatScreen = ({ navigation }) => {
   const handleExitGame = () => {
     elegirRol("DEFAULT");
     socket.disconnect();
-    alert("Saliendo del juego");
+    Alert.alert("Saliendo del juego");
     navigation.navigate("Start");
   };
   return (
@@ -103,22 +97,19 @@ const ChatScreen = ({ navigation }) => {
         <Header navigation={navigation} />
 
         <View style={styles.botonesContainer}>
-          <BotonAccion style={styles.tips} title={"Consejos Rol📕"} />
+          <CartaRolModal userRol={userRol} />
 
 
         </View>
         <View style={styles.chatContainer}>
-          <Chat isAsesinado={asesinado}/>
+          <Chat isAsesinado={asesinado} />
           <Loader visible={loaderVisible} actionData={rolActionData} style={{ zIndex: 10 }} onCloseModal={handleCloseModal} />
           <View style={styles.botonesAcciones}>
             <AccionModal />
-            <CartaRolModal userRol={userRol} />
-
-            <BotonAccion
-              style={styles.perfil}
+            <Button
               title={"Salir de la partida."}
-              action={handleExitGame}
-            />
+              onPress={handleExitGame} />
+
           </View>
         </View>
       </ImageBackground>
@@ -139,7 +130,9 @@ const styles = StyleSheet.create({
   },
   chatContainer: {
     flex: 1,
-    alignItems: "center", // Centrar contenido horizontalmente
+
+
+    alignItems: "center",
   },
   botonesContainer: {
     flexDirection: "row",
@@ -154,11 +147,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
 
-    gap: 15,
-    width: 300,
+    gap: 10,
+    width: 400,
+    height: 80,
     zIndex: 1,
   },
-
+  perfil: {
+    backgroundColor: "blue"
+  }
 
 });
 

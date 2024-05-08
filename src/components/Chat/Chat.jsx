@@ -162,9 +162,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width:"99%", 
+    
   },
   chatBox: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, .5)',
     width: '100%',
     height: '60%',
   },

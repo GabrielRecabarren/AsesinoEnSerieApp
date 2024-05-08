@@ -10,7 +10,7 @@ const IOS = 'ios';
 const isIOS = () => Platform.OS === 'ios';
 
 // URL del servidor de socket
-const SOCKET_DEV = 'http://localhost:3000';
+const SOCKET_DEV = 'http://192.168.1.89:3000';
 
 // Contexto del socket
 export const SocketContext = React.createContext({ socket: null });

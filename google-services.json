@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "326875325948",
+    "project_id": "asesino-en-serie",
+    "storage_bucket": "asesino-en-serie.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326875325948:android:d3ae12993aed0bc43f3e79",
+        "android_client_info": {
+          "package_name": "com.sjs.asesino"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2WjdAyS16enAUdGlfWKrRy3wLXHH0VOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

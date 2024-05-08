@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3000';
+// const baseURL = 'http://localhost:3000';
+const baseURL = 'http://192.168.1.89:3000';
+
 const usersEndpoint = '/users';
-const messagesEndpoint = '/messages';
+// const messagesEndpoint = '/messages';
 
 
 const api = axios.create({
