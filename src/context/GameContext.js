@@ -12,13 +12,15 @@ const GameContextProvider = ({ children }) => {
         console.log(`Create desde Game Provider, ${gameData}`)
         setGameStatus(gameData.status);
         setGameId(gameData.id);
+        setAsesinado(false)
     }
 
-    const load = (gameData) => {
-        console.log(gameData.id, "gameid");
+    const load = (gameData, userState) => {
+        console.log(gameData, "gameData");
         setGameStatus(gameData.state);
         setGameId(gameData.id);
         setGamePlayers(gameData.players);
+        setAsesinado(!userState);
     }
     const loadPlayers = (players) => {
         setGamePlayers(players);

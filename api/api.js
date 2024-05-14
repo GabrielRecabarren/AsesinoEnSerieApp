@@ -169,6 +169,7 @@ export const consultarUserRoleEnPartida = async (userId, gameId, token) => {
 export const crearMensajeEnPartida = async ( mensajeData, token) => {
   try {
     const gameId = mensajeData.gameId
+    console.log(gameId, "Aqui deberia estar el game Id")
     const response = await api.post(`/messages/${gameId}`, mensajeData, {
       headers: {
         Authorization: `Bearer ${token}`,

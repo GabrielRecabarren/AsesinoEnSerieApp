@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, View, StyleSheet, Image, Text } from "react-native";
 import images from "../../img/roles/rolesImgs";
+import textosPorRol from "../../../api/rolTexts";
 
 const CartaRolModal = ({ userRol }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -28,10 +29,14 @@ const CartaRolModal = ({ userRol }) => {
             source={imgUrl}
             style={styles.cardImage}
           />
+          <Text style={styles.rememberText}>
+            {textosPorRol[userRol].recordatorio}
+          </Text>
           <Button
             title="Cerrar"
             onPress={() => setModalVisible(!modalVisible)}
           />
+
         </View>
       </Modal>
 

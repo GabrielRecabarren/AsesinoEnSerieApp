@@ -3,33 +3,42 @@ import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import { SocketContext } from '../../context/socketProvider';
 import { GameContext } from '../../context/GameContext';
 import { UserContext } from '../../context/UserContext';
+import { crearMensajeEnPartida } from '../../../api/api';
 
 const AsesinatoFormulario = ({ navigation }) => {
+
     const [lugar, setLugar] = useState('');
     const [hora, setHora] = useState('');
     const [inputSeleccionado, setInputSeleccionado] = useState('lugar');
-    const { username } = useContext(UserContext);
-    const { gameId, exit } = useContext(GameContext);
+
+    const { username, userToken } = useContext(UserContext);
+    const { gameId } = useContext(GameContext);
 
     const socketContext = useContext(SocketContext); // Obtener el contexto del socket
     const socket = socketContext.socket; // Obtener el socket del contexto
 
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         console.log('Lugar:', lugar);
         console.log('Hora:', hora);
 
         const despedidaMensaje = {
             text: ` ${username} fue asesinado, y sus últimas palabras fueron : ${hora} ${lugar}`,
-            sender: "EVENTO",
+            sender: "REPORTE",
             isReceiver: true,
             speakingAsRole: false,
-            role: "DEFAULT"
+            role: "DEFAULT",
+            userId: 0,
+            gameId
         }; // Objeto de mensaje completo 
+        const nuevoMensaje = await crearMensajeEnPartida(despedidaMensaje, userToken);
         //Enviamos el mensaje de evento
-        socket.emit('chat-message', despedidaMensaje, gameId, (res) => {
+        socket.emit('chat-message', despedidaMensaje,(res) => {
             if (res.success) {
+
                 
+                console.log(nuevoMensaje);
+
                 navigation.navigate("Chat");
             } else {
                 console.warn("Error al enviar el mensaje:", res.error);
@@ -41,6 +50,7 @@ const AsesinatoFormulario = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.titulo}>Carta de Despedida</Text>
+
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Selecciona:</Text>
                 <View style={styles.switchContainer}>
@@ -56,6 +66,7 @@ const AsesinatoFormulario = ({ navigation }) => {
                     </Pressable>
                 </View>
             </View>
+
             {inputSeleccionado === 'lugar' && (
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>¿Donde fuiste asesinado?</Text>
@@ -87,20 +98,18 @@ const AsesinatoFormulario = ({ navigation }) => {
                 </Pressable>
             </View>
         </View>
-    );
-};
-
+    )
+}
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         backgroundColor: 'purple',
-        padding: 20,
+        justifyContent: 'center', // Añadido para centrar el contenido verticalmente
     },
     titulo: {
-        fontSize: 24,
+        fontSize: 34,
         fontWeight: 'bold',
         color: 'yellow',
-        marginBottom: 20,
         textAlign: 'center',
     },
     inputContainer: {
@@ -121,6 +130,7 @@ const styles = StyleSheet.create({
     switchContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
+        marginBottom: 10, // Añadido para separar el switchContainer del inputContainer
     },
     switchOption: {
         paddingHorizontal: 20,

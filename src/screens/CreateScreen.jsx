@@ -27,7 +27,7 @@ export const CreateScreen = ({ navigation }) => {
 
   //Función para obtener los usuarios conectados
   const usuariosConectados = async () => {
-    console.log(`"listando users por partida" con este gameID ${gameId}`,gameData)
+    console.log(`listando users por partida con este gameID ${gameId}`,gameData)
     const usuariosConfirmados = await listarUsuariosPorPartida(gameId, userData.data.token);
     setJugadoresConectados(usuariosConfirmados);
   }
