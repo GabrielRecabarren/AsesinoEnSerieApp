@@ -3,8 +3,13 @@ import { Button, Modal, View, StyleSheet, Image, Text } from "react-native";
 import images from "../../img/roles/rolesImgs";
 import textosPorRol from "../../../api/rolTexts";
 
-const CartaRolModal = ({ userRol }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+const CartaRolModal = ({ userRol, visible }) => {
+  const [modalVisible, setModalVisible] = useState(visible);
+
+  
+  useEffect(() => {
+    setModalVisible(visible);
+  }, [visible]);
 
   const imgUrl = images[userRol];
 

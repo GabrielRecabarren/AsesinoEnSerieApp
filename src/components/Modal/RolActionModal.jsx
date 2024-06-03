@@ -99,7 +99,7 @@ const AccionModal = () => {
                 )}
               </View>
               <Button
-                title="Mejor por ahora no ...."
+                title="Cambié de opinión ...."
                 onPress={handleCloseModal}
                 color={"purple"}
                 

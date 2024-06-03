@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { View, ScrollView, TextInput, Button, SafeAreaView, StatusBar, StyleSheet, Switch } from 'react-native';
+import { View, Text, ScrollView, TextInput, Button, SafeAreaView, StatusBar, StyleSheet, Switch } from 'react-native';
 import { SocketContext } from '../../context/socketProvider';
 import { Mensaje } from '../Mensaje/Mensaje';
 import { UserContext } from '../../context/UserContext';
 import { GameContext } from '../../context/GameContext';
-import { crearMensajeEnPartida, obtenerMensajesPorPartida, eliminarMensajePorId } from '../../../api/api';
+import { crearMensajeEnPartida, obtenerMensajesPorPartida } from '../../../api/api';
 
-const Chat = ({isAsesinado}) => {
+const Chat = ({ isAsesinado }) => {
   const scrollViewRef = useRef(null);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
@@ -40,6 +40,8 @@ const Chat = ({isAsesinado}) => {
         }
 
       });
+
+      
     }
     return () => {
       // Limpiar los listeners si es necesario
@@ -59,32 +61,32 @@ const Chat = ({isAsesinado}) => {
     try {
       const mensajes = await obtenerMensajesPorPartida(gameId, userToken); // Obtener mensajes de la partida
       console.log(mensajes);
-  
+
       // Modificar las propiedades de los mensajes antes de establecerlos en el estado local
       const mensajesModificados = mensajes.map(mensaje => {
         // Verificar si el sender del mensaje es igual al username del estado del componente
         const isReceiver = mensaje.sender != username;
-  
+
         // Devolver el mensaje modificado
         return {
           ...mensaje,
           isReceiver: isReceiver
         };
       });
-  
+
       // Actualizar los mensajes en el estado local
       setMessages(mensajesModificados);
     } catch (error) {
       console.error('Error al cargar mensajes:', error);
     }
   };
-  
+
 
   // Manejador para enviar mensajes
   const handleSendMessage = async () => {
     if (inputMessage.trim() !== '') {
       try {
-        
+
         // Enviar el mensaje a través del socket
         const message = {
           text: inputMessage,
@@ -94,13 +96,13 @@ const Chat = ({isAsesinado}) => {
           userId,
           gameId,
           role,
-          
+
         };
         // Crear el mensaje en la base de datos
         const nuevoMensaje = await crearMensajeEnPartida(message, userToken);
-        
-        console.log(nuevoMensaje,"nuevoMensaje");//Emitir al socket
-        socket.emit('chat-message', message, gameId, (res) => {
+
+        console.log(nuevoMensaje, "nuevoMensaje");//Emitir al socket
+        socket.emit('chat-message', message, (res) => {
           if (res.success) {
             setInputMessage("");
           } else {
@@ -138,7 +140,7 @@ const Chat = ({isAsesinado}) => {
           ))}
         </ScrollView>
 
-        <View style={isAsesinado ? {display:'none'} : styles.inputContainer}>
+        <View style={isAsesinado ? { display: 'none' } : styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setInputMessage(text)}
@@ -147,10 +149,17 @@ const Chat = ({isAsesinado}) => {
             onKeyPress={handleOnEnterPress}
           />
           <Button title="Enviar" onPress={handleSendMessage} />
-          <Switch
-            value={speakingAsRole}
-            onValueChange={() => setSpeakingAsRole(!speakingAsRole)}
-          />
+          <View style={{width:60, alignItems: 'center' }}>
+
+            <Text style={{color:speakingAsRole ? 'red':'yellow'  , textAlign: 'center', fontSize:7}}>{speakingAsRole ? userRol : username}</Text>
+            <Switch
+              value={speakingAsRole}
+              onValueChange={() => setSpeakingAsRole(!speakingAsRole)}
+              thumbColor={"red"}
+              trackColor={{false: '#767577', true: 'red'}}
+
+            />
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -162,8 +171,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width:"99%", 
-    
+    width: "99%",
+
   },
   chatBox: {
     backgroundColor: 'rgba(0, 0, 0, .5)',

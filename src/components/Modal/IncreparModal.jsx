@@ -1,42 +1,55 @@
 import React, { useState, useContext } from "react";
-import { Button, Modal, Text, View, StyleSheet, Pressable } from "react-native";
+import { Button, Modal, Text, View, StyleSheet, Pressable, Alert } from 'react-native';
 import { PlayerAvatar } from "../PlayerAvatar/PlayerAvatar";
 import { GameContext } from "../../context/GameContext";
 import { UserContext } from "../../context/UserContext";
+import { SocketContext } from "../../context/socketProvider";
 
-const AccionModal = () => {
+const IncreparModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState([]);
-  const { gamePlayers } = useContext(GameContext);
-  const { userRol } = useContext(UserContext);
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const { gamePlayers, gameId } = useContext(GameContext);
+  const { userRol, userId } = useContext(UserContext);
+  const socketContext = useContext(SocketContext); // Obtener el contexto del socket
+  const socket = socketContext.socket; // Obtener el socket del contexto
 
-  //Manejamos Boton de  acciones en función del rol del usuario
-  const handleRolAction = async (userRol) => {
-    switch (userRol) {
-      case "ASESINO":
-        socket.emit("action-rol", "asesinar");
+  //Manejamos Increpar
+  const handleIncrepar = () => {
+    //Lógica para increpar al jugador seleccionado
+    const increparData = {
+      gameId,
+      userId,
+      selectedPlayer
 
-        break;
-      case "COMPLICE":
-        console.log("Cómplice");
-        break;
-      case "DETECTIVE":
-        console.log("Detective");
-        break;
-      case "MANIACO":
-        console.log("Maniaco");
-        break;
-      case "DOCTOR":
-        console.log("Doctor");
-        break;
-      case "PERIODISTA":
-        console.log("Periodista");
-        break;
-      default:
-        console.log("Rol no reconocido");
-        break;
     }
-  };
+    socket.emit("increpar", increparData, (callback) =>{
+      console.log(callback);
+    });
+    
+    setModalVisible(!modalVisible);
+    Alert.alert(
+      "Increpando!",
+      'La persona increpada podrá defenderse. Puedes escucharla y arrepentirte o confirmar el juicio.',
+      [
+
+        {
+          text: '¡CONFIRMO!',
+          onPress: () => Alert.alert('CONFIRMADO'),
+          style: 'default',
+        },
+        {
+          text: '...ME RETRACTO',
+          onPress: () => Alert.alert('RETRACTADO'),
+          style: 'destructive',
+        },
+      ],
+    )
+  }
+  //Manejamos Cancelar
+  const handleCancelar = () => {
+    setSelectedPlayer(null);    
+    setModalVisible(!modalVisible)
+  }
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Modal
@@ -59,11 +72,14 @@ const AccionModal = () => {
               backgroundColor: "rgba(0, 0, 0, 0.5)",
             }}
           >
-            <View style={{ backgroundColor: "white", padding: 20 }}>
-              <Text>Elige a quién vas a asesinar</Text>
+            <View style={{ backgroundColor: 'darkgoldenrod'
+, padding: 20 }}>
+              <Text>Elige a quién vas a increpar</Text>
               <View style={styles.playerContainer}>
-                {selectedPlayer.length === 0 ? (
-                  gamePlayers.map((jugador, index) => (
+              {selectedPlayer === null ? (
+                  gamePlayers
+                  .filter(jugador => jugador.id !== userId)
+                  .map((jugador, index) =>(
                     <Pressable
                       key={index}
                       onPressOut={() => setSelectedPlayer(jugador)}
@@ -83,17 +99,17 @@ const AccionModal = () => {
                   <>
                     <PlayerAvatar namePlayer={selectedPlayer.username} />
                     <Button
-                      title="Matar"
-                      onPress={() => handleRolAction(userRol)}
+                      title="Increpar"
+                      onPress={() => handleIncrepar(userRol)}
                       color="#F44336"
                     />
                   </>
                 )}
               </View>
               <Button
-                title="Mejor por ahora no ...."
-                onPress={() => setModalVisible(!modalVisible)}
-                color={"#ff4509"}
+                title="Cambié de opinion...."
+                onPress={() => handleCancelar()}
+                color={"crimson"}
               />
             </View>
           </View>
@@ -101,15 +117,15 @@ const AccionModal = () => {
       </Modal>
 
       <Button
-        title="Acción Rol"
+        title="Increpar"
         onPress={() => setModalVisible(true)}
-        color={"#ff4500"}
+        color={"gold"}
       />
     </View>
   );
 };
 
-export default AccionModal;
+export default IncreparModal;
 
 const styles = StyleSheet.create({
   playerContainer: {

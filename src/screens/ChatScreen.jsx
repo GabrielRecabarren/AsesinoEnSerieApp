@@ -8,15 +8,19 @@ import { SocketContext } from "../context/socketProvider";
 import Loader from "../components/Loader/Loader";
 import Header from "../components/Header/Header";
 import CartaRolModal from "../components/Modal/CartaRolModal";
+import IncreparModal from "../components/Modal/IncreparModal";
+import Increpar from "../components/Loader/Increpar";
 
 const ChatScreen = ({ navigation }) => {
   const [loaderVisible, setLoaderVisible] = useState(false);
+  const [increparVisible, setIncreparVisible] = useState(false);
+  const [increpado, setIncrepado] = useState(false);
   const [rolActionData, setRolActionData] = useState(null);
   const { elegirRol, userId, userRol } = useContext(UserContext);
   const [asesinados, setAsesinados] = useState([]);
 
 
-  const {  gameId, asesinado, usuarioAsesinado } = useContext(GameContext);
+  const { gameId, asesinado, usuarioAsesinado } = useContext(GameContext);
   const { socket } = useContext(SocketContext); // Obtener el contexto del socket
 
   useEffect(() => {
@@ -59,11 +63,21 @@ const ChatScreen = ({ navigation }) => {
         setLoaderVisible(false);
         setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
         usuarioAsesinado();
-        navigation.navigate("")
+        navigation.navigate("Despedida")
       });
       socket.on("DETECTIVE-exitoso", () => {
         console.log("DETECTIVE-exitoso");
       });
+      socket.on('increpar', (increparData) => {
+        console.log("Increpar recibido en el cliente.", increparData)
+        setIncreparVisible(true);
+      });
+
+      socket.on('increpado', () =>{
+        console.log("INCREPADO")
+        setIncrepado(true);
+      } )
+      
     };
   }, [socket]);
 
@@ -76,7 +90,10 @@ const ChatScreen = ({ navigation }) => {
 
   const handleCloseModal = () => {
     setLoaderVisible(false);
+    setIncreparVisible(false)
   };
+
+
 
 
 
@@ -96,17 +113,27 @@ const ChatScreen = ({ navigation }) => {
         <Header navigation={navigation} />
 
         <View style={styles.botonesContainer}>
-          <CartaRolModal userRol={userRol} />
+          <CartaRolModal userRol={userRol} visible={increpado}/>
 
 
         </View>
         <View style={styles.chatContainer}>
           <Chat isAsesinado={asesinado} />
-          <Loader visible={loaderVisible} actionData={rolActionData} style={{ zIndex: 10 }} onCloseModal={handleCloseModal} />
+          <Loader
+            visible={loaderVisible}
+            actionData={rolActionData}
+            style={{ zIndex: 10 }}
+            onCloseModal={handleCloseModal}
+          />
+          <Increpar
+            visible={increparVisible}
+            onCloseModal={handleCloseModal}
+          />
           <View style={styles.botonesAcciones}>
+            <IncreparModal />
             <AccionModal />
             <Button
-              title={"Salir de la partida."}
+              title={"Salir"}
               onPress={handleExitGame} />
 
           </View>
