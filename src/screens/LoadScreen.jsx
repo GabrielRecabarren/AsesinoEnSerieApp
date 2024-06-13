@@ -15,6 +15,7 @@ import {
 import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
 import { SocketContext } from "../context/socketProvider";
+import { Card } from "../components/Card/Card";
 
 export const LoadScreen = ({ navigation }) => {
   const [partidasUsuario, setPartidasUsuario] = useState([]);
@@ -72,12 +73,12 @@ export const LoadScreen = ({ navigation }) => {
               onPress={() => handlePartidaSeleccionada(item)}
             >
               <View style={styles.partidaContainer}>
-                <Text
-                  style={styles.partidaText}
-                >{`Partida ID: ${item.id}, Estado: ${item.state}`}</Text>
-                <Text style={styles.partidaText}>{`Creador: ${item.creator?.username || "Desconocido"
-                  }`}</Text>
-                {/* Agregar más detalles según la estructura de tus datos */}
+                <Card
+                text={item.name}
+                valor={`Creador: ${item.creator.username}`}
+                />
+                
+                
               </View>
             </TouchableOpacity>
           ))}

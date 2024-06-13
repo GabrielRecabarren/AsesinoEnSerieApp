@@ -1,29 +1,35 @@
-import React, { useContext } from "react";
-import { View, ImageBackground, StyleSheet, Pressable } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { View, ImageBackground, StyleSheet, Pressable, Alert } from "react-native";
 import { Card } from "../components/Card/Card";
 import { CompraAsesino } from "../components/CompraAsesino/CompraAsesino";
 import { crearPartida } from "../../api/api";
 import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
 import Header from "../components/Header/Header";
+import CreateGameModal from "../components/Modal/CrearPartidaModal";
 
 export const StartScreen = ({ navigation }) => {
-  //Traemos el contexto
-  const { userData, userRol } = useContext(UserContext);
+  // Traemos el contexto
+  const { userData } = useContext(UserContext);
   const { create } = useContext(GameContext);
+  const [modalVisible, setModalVisible] = useState(false);
 
 
-  //Creamos partida
-  const handlingCrearPartida = async () => {
-    const token = userData.data.token; //Obtenemos el token
-    const userId = userData.data.user.id; //Obtenemos el userId.
+
+
+  // Crear partida
+  const handleCreateGame = async (gamename) => {
+    const token = userData.data.token; // Obtenemos el token
+    const userId = userData.data.user.id; // Obtenemos el userId.
 
     try {
-      console.log("Creando partida");
+      console.log("Creando partida", gamename);
       const gameData = {
         userId: userId,
+
         datosPartida: {
           state: "En Curso",
+          name: gamename,
         },
       };
 
@@ -33,6 +39,7 @@ export const StartScreen = ({ navigation }) => {
       navigation.navigate("Create");
     } catch (error) {
       console.log(`Error creando la partida: ${error}`);
+      // Manejo del error si es necesario
     }
   };
 
@@ -40,13 +47,13 @@ export const StartScreen = ({ navigation }) => {
     switch (option) {
       case 1:
         navigation.navigate("Create");
-
         break;
       case 2:
         navigation.navigate("Load");
         break;
     }
   };
+
   return (
     <ImageBackground
       source={require("../img/fondo.png")}
@@ -54,25 +61,26 @@ export const StartScreen = ({ navigation }) => {
     >
       <Header navigation={navigation} />
       <View style={styles.container}>
-        <Pressable style={styles.button} onPress={() => handlingCrearPartida()}>
+        <Pressable style={styles.button} onPress={() => setModalVisible(true)}>
           <Card text={"CREAR PARTIDA"} />
-         
         </Pressable>
         <Pressable style={styles.button} onPress={() => handlingStart(2)}>
           <Card text={"PARTIDAS EN CURSO"} />
         </Pressable>
-        
-
-
-        
       </View>
 
       <CompraAsesino />
 
-
+      {/* Modal para crear partida */}
+      <CreateGameModal
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        onCreateGame={handleCreateGame}
+      />
     </ImageBackground>
   );
 };
+
 const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
@@ -99,4 +107,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
 });
+
 export default StartScreen;
