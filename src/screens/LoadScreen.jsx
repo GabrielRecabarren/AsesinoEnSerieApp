@@ -47,8 +47,7 @@ export const LoadScreen = ({ navigation }) => {
         gameData.id,
         userToken
       );
-      console.log(rolEnPartida, "rol en partida aqui");
-      elegirRol(rolEnPartida.userRole);
+      console.log(gameData, "gamedata aqui");
       load(gameData, rolEnPartida.userState);
       navigation.navigate(rolEnPartida.userRol === "DEFAULT" ? "Create" : "Chat");
     } catch (error) {

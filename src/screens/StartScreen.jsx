@@ -7,7 +7,6 @@ import { UserContext } from "../context/UserContext";
 import { GameContext } from "../context/GameContext";
 import Header from "../components/Header/Header";
 
-
 export const StartScreen = ({ navigation }) => {
   //Traemos el contexto
   const { userData, userRol } = useContext(UserContext);
@@ -27,7 +26,7 @@ export const StartScreen = ({ navigation }) => {
           state: "En Curso",
         },
       };
-      
+
       const newGame = await crearPartida(gameData, token);
       await create(newGame);
 
@@ -53,19 +52,24 @@ export const StartScreen = ({ navigation }) => {
       source={require("../img/fondo.png")}
       style={styles.imageBackground}
     >
-      <Header navigation={navigation}/>
+      <Header navigation={navigation} />
       <View style={styles.container}>
         <Pressable style={styles.button} onPress={() => handlingCrearPartida()}>
           <Card text={"CREAR PARTIDA"} />
+         
         </Pressable>
         <Pressable style={styles.button} onPress={() => handlingStart(2)}>
-          <Card  text={"PARTIDA GUARDADA"} />
+          <Card text={"PARTIDAS EN CURSO"} />
         </Pressable>
+        
+
+
+        
       </View>
 
       <CompraAsesino />
-      
-      
+
+
     </ImageBackground>
   );
 };

@@ -29,7 +29,7 @@ export const SignInForm = ({ navigation }) => {
       }
       const userData = {
         username: username.toLowerCase(),
-        email: email.toLowerCase(),
+        email: email.toLowerCase().trim(),
         password,
         alias
       };
@@ -85,8 +85,11 @@ export const SignInForm = ({ navigation }) => {
         onChangeText={(text) => setRepeatPassword(text)}
       />
 
-      <Button title="Crear Cuenta"
-        onPress={() => handleCreateAccount()} />
+      <Button
+        title="Crear Cuenta"
+        onPress={() => handleCreateAccount()}
+      />
+
       <Button
         title="Ya tengo"
         color="#E333FF"
@@ -94,7 +97,7 @@ export const SignInForm = ({ navigation }) => {
         onPress={() => {
           navigation.navigate("Login");
         }}
-      ></Button>
+      />
     </View>
   );
 };
@@ -103,20 +106,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-evenly",
+    gap:12
+
   },
   text: {
     fontSize: 25,
     color: "red",
   },
   input: {
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: "black",
-    fontSize: 15,
+    fontSize: 18,
 
     color: "yellow",
-    width: 200,
-    margin: 10,
+    width: 250,
+    
     padding: 10,
   },
 });

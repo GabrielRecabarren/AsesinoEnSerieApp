@@ -1,8 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
-export const Card = ({ text, valor }) => {
+import { Icon } from "@rneui/themed";
+export const Card = ({ text,icon, valor }) => {
   return (
     <View style={styles.cardContainer}>
       <Text style={styles.text}>{text}</Text>
+      
       <Text style={styles.valor}>{valor}</Text>
 
     </View>

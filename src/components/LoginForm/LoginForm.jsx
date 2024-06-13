@@ -41,7 +41,7 @@ const LoginForm = ({ navigation }) => {
 
     // Intentamos iniciar sesión
     try {
-      const userData = { email: email.toLowerCase(), password: password.toLowerCase() };
+      const userData = { email: email.toLowerCase().trim(), password: password.toLowerCase() };
       const loggedUser = await loginUsuario(userData);
 
       // Verificamos si la autenticación fue exitosa
@@ -91,7 +91,9 @@ const LoginForm = ({ navigation }) => {
       <Button
         title="Iniciar sesión"
         onPress={handleLogin}
+        color={'green'}
       />
+      
       <Button
         title="Crear Cuenta"
         onPress={() => navigation.navigate("Home")}

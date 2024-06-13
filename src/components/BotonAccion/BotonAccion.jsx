@@ -12,7 +12,7 @@ const BotonAccion = ({ title, action }) => {
       ]}
       onPress={action}
     >
-      <Text style={styles.textoBoton}>{title}</Text>
+      <Text style={styles.textoBoton}>Alo</Text>
     </Pressable>
   );
 };
@@ -25,13 +25,14 @@ const styles = StyleSheet.create({
     elevation: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    maxHeight:40 
+    maxHeight:40 ,
+    marginVertical: 20,
   },
   textoBoton: {
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    fontSize: 33,
+    fontSize: 13,
   },
 });
 
