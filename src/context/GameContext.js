@@ -6,6 +6,7 @@ const GameContextProvider = ({ children }) => {
     const [gameStatus, setGameStatus] = useState("");
     const [gameId, setGameId] = useState(null);
     const [gamePlayers, setGamePlayers] = useState([]);
+    const [gameData, setGameData] = useState([]);
     const [asesinado, setAsesinado] = useState(false);
 
     const create = (gameData) => {
@@ -13,14 +14,16 @@ const GameContextProvider = ({ children }) => {
         setGameStatus(gameData.status);
         setGameId(gameData.id);
         setAsesinado(false)
+        setGameData(gameData);
     }
 
     const load = (gameData, userState) => {
-        console.log(gameData, "gameData");
         setGameStatus(gameData.state);
         setGameId(gameData.id);
         setGamePlayers(gameData.players);
         setAsesinado(!userState);
+        setGameData(gameData);
+
     }
     const loadPlayers = (players) => {
         setGamePlayers(players);
@@ -42,7 +45,7 @@ const GameContextProvider = ({ children }) => {
 
 
     return (
-        <GameContext.Provider value={{ create, load,loadPlayers, usuarioAsesinado,exit, asesinado, gameId, gamePlayers }}>
+        <GameContext.Provider value={{ create, load,loadPlayers, usuarioAsesinado,exit, gameData, asesinado, gameId, gamePlayers }}>
             {children}
         </GameContext.Provider>
     )

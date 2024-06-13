@@ -74,14 +74,13 @@ export const crearPartida = async (gameData, token) => {
 //Obtener usuarios por partida
 export const listarUsuariosPorPartida = async (gameId, token) => {
   try {
-    console.log(`"Enviando datos para listar: ${gameId} ${token}"`)
+    
     const response = await api.get(`/players/${gameId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': "application/json"
       }
     })
-    console.log(response.data);
     return response.data;
 
   } catch (error) {
@@ -145,7 +144,6 @@ export const asignarUserRoleEnPartida = async (userId, gameId, userRoleId, token
     return response.data;
   } catch (error) {
     console.error(error);
-    throw new Error('Error al asignar UserRole en la partida.');
   }
 };
 
@@ -161,7 +159,7 @@ export const consultarUserRoleEnPartida = async (userId, gameId, token) => {
     return response.data;
   } catch (error) {
     console.error(error);
-    throw new Error('Error al consultar el UserRole en la partida.');
+    return null;
   }
 };
 

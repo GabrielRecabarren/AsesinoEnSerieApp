@@ -20,7 +20,7 @@ import { Card } from "../components/Card/Card";
 export const LoadScreen = ({ navigation }) => {
   const [partidasUsuario, setPartidasUsuario] = useState([]);
   const [partidasElegida, setPartidaElegida] = useState([]);
-  const { userToken, userId, userRol, elegirRol } = useContext(UserContext);
+  const { userToken, userId, userRol} = useContext(UserContext);
   const { socket } = useContext(SocketContext);
   const { load } = useContext(GameContext);
 
@@ -41,23 +41,28 @@ export const LoadScreen = ({ navigation }) => {
   }, []);
 
   const handlePartidaSeleccionada = async (gameData) => {
-    
     try {
       const rolEnPartida = await consultarUserRoleEnPartida(
         userId,
         gameData.id,
         userToken
       );
-      console.log(gameData, "gamedata aqui");
-      load(gameData, rolEnPartida.userState);
-      navigation.navigate(rolEnPartida.userRol === "DEFAULT" ? "Create" : "Chat");
+      
+      if (rolEnPartida) {
+        load(gameData, rolEnPartida.userState);
+        navigation.navigate("Chat");
+      } else {
+        // Si rolEnPartida es null, manejar el caso
+        console.warn("No se pudo obtener el rol en la partida. Procediendo con un rol predeterminado.");
+        load(gameData, userRol); // Usar un rol predeterminado si es necesario
+        navigation.navigate("Create");
+      }
     } catch (error) {
-      console.error("Error al consultar el UserRole en la partida:", error);
-      // Aquí puedes redirigir al usuario a la página donde se elige el rol
-
-      navigation.navigate("Create");
+      console.error("Error al manejar la partida seleccionada:", error);
+      
     }
   };
+  
 
   return (
     <ImageBackground source={require("../img/fondo.png")} style={{ flex: 1 }}>
@@ -74,11 +79,11 @@ export const LoadScreen = ({ navigation }) => {
             >
               <View style={styles.partidaContainer}>
                 <Card
-                text={item.name}
-                valor={`Creador: ${item.creator.username}`}
+                  text={item.name}
+                  valor={`Creador: ${item.creator.username}`}
                 />
-                
-                
+
+
               </View>
             </TouchableOpacity>
           ))}
