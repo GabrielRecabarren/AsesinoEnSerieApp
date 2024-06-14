@@ -13,7 +13,7 @@ export const Narracion = ({ text }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: "25%",
+    height: "35%",
     width: "90%",
     margin: 20,
     padding: 5,

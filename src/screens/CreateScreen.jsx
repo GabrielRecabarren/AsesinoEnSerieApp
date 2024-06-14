@@ -70,11 +70,11 @@ export const CreateScreen = ({ navigation }) => {
       style={styles.imageBackground}
     >
       <Narracion text={text} />
-      <Text style={{ textAlign: "center", color: "yellow", margin: 10, fontWeight: "bold", fontSize: 18 }}> Usuarios con Partida Aceptada</Text>
+      <Text style={{ textAlign: "center", color: "yellow", margin: 10, fontWeight: "bold", fontSize: 18 }}> Usuarios en partida</Text>
 
       <View style={styles.playersBar}>
         {jugadoresConectados.map((jugador) => (
-          <PlayerAvatar key={jugador.id} namePlayer={jugador.username} image={jugador.imagen} />
+          <PlayerAvatar key={jugador.id} namePlayer={jugador.username}  />
         ))}
       </View>
 

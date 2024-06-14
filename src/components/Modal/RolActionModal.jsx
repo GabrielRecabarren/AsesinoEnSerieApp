@@ -12,6 +12,7 @@ import { GameContext } from "../../context/GameContext";
 import { UserContext } from "../../context/UserContext";
 import { SocketContext } from "../../context/socketProvider";
 import textosPorRol from "../../../api/rolTexts";
+import { Icon } from "@rneui/themed";
 const AccionModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState(null); // Cambiado a objeto en lugar de arreglo
@@ -23,7 +24,7 @@ const AccionModal = () => {
   //Manejamos Boton de  acciones en función del rol del usuario
   const handleRolAction = async () => {
     if (userRol && selectedPlayer) {
-      const actionData = { 
+      const actionData = {
         userRol,
         emisor: userId,
         destinatario: selectedPlayer.id,
@@ -65,56 +66,62 @@ const AccionModal = () => {
               backgroundColor: "rgba(0, 0, 0, 0.5)",
             }}
           >
-            <View style={{ backgroundColor: "white", padding: 20 }}>
-            <Text>{textosPorRol[userRol].pregunta}</Text>
+            <View style={{ backgroundColor: "rgba(186, 19, 19, 0.5)", padding: 20 }}>
+              <Text>{textosPorRol[userRol].pregunta}</Text>
               <View style={styles.playerContainer}>
                 {selectedPlayer === null ? (
                   gamePlayers
-                  .filter(jugador => jugador.id !== userId)
-                  .map((jugador, index) => (
-                    <Pressable
-                      key={index}
-                      onPressOut={() => setSelectedPlayer(jugador)}
-                      style={({ pressed }) => [
-                        {
-                          backgroundColor: pressed
-                            ? "rgb(210, 230, 255)"
-                            : "white",
-                        },
-                        styles.wrapperCustom,
-                      ]}
-                    >
-                      <PlayerAvatar namePlayer={jugador.username} />
-                    </Pressable>
-                  ))
+                    .filter(jugador => jugador.id !== userId)
+                    .map((jugador, index) => (
+                      <Pressable
+                        key={index}
+                        onPressOut={() => setSelectedPlayer(jugador)}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed
+                              ? "rgba(176, 19, 19, 1)"
+                              : "rgba(176, 19, 19, .5)",
+                          },
+                          styles.wrapperCustom,
+                        ]}
+                      >
+                        <PlayerAvatar namePlayer={jugador.username} />
+                      </Pressable>
+                    ))
                 ) : (
-                  <>
+                  <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
                     <PlayerAvatar namePlayer={selectedPlayer.username} />
-                    <Button
-                      title={textosPorRol[userRol].accion}
-                      onPress={handleRolAction}
-                      color="red"
-                    />
-                  </>
+                    
+                      <Button
+
+                        title={textosPorRol[userRol].accion}
+                        onPress={handleRolAction}
+                        color="red"
+
+                      />
+                    
+                  </View>
                 )}
               </View>
               <Button
                 title="Cambié de opinión ...."
                 onPress={handleCloseModal}
                 color={"purple"}
-                
+
               />
             </View>
           </View>
         </Pressable>
       </Modal>
-
-      <Button
-        title="Acción Rol"
+      <Icon
+        name={"contact-emergency"}
+        color={"red"}
+        size={35}
         onPress={() => setModalVisible(true)}
-        color={"#ff4500"}
-        
       />
+      <Text style={{ color: 'red', marginBottom: 14 }}>ACCIÓN X ROL</Text>
+
+
     </View>
   );
 };

@@ -140,7 +140,7 @@ const Chat = ({ isAsesinado }) => {
           ))}
         </ScrollView>
 
-        <View style={isAsesinado ? { display: 'none' } : styles.inputContainer}>
+        <View style={isAsesinado ? styles.inputContainer : { display: 'none' } }>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setInputMessage(text)}

@@ -20,7 +20,7 @@ import { Card } from "../components/Card/Card";
 export const LoadScreen = ({ navigation }) => {
   const [partidasUsuario, setPartidasUsuario] = useState([]);
   const [partidasElegida, setPartidaElegida] = useState([]);
-  const { userToken, userId, userRol} = useContext(UserContext);
+  const { userToken, userId, userRol, elegirRol} = useContext(UserContext);
   const { socket } = useContext(SocketContext);
   const { load } = useContext(GameContext);
 
@@ -49,7 +49,9 @@ export const LoadScreen = ({ navigation }) => {
       );
       
       if (rolEnPartida) {
+        console.log(rolEnPartida.userRole, "Que tenemos aqui")
         load(gameData, rolEnPartida.userState);
+        elegirRol(rolEnPartida.userRole);
         navigation.navigate("Chat");
       } else {
         // Si rolEnPartida es null, manejar el caso

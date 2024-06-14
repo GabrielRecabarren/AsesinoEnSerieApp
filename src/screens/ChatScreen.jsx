@@ -10,6 +10,7 @@ import Header from "../components/Header/Header";
 import CartaRolModal from "../components/Modal/CartaRolModal";
 import IncreparModal from "../components/Modal/IncreparModal";
 import Increpar from "../components/Loader/Increpar";
+import { Icon } from "@rneui/themed";
 
 const ChatScreen = ({ navigation }) => {
   const [loaderVisible, setLoaderVisible] = useState(false);
@@ -73,11 +74,11 @@ const ChatScreen = ({ navigation }) => {
         setIncreparVisible(true);
       });
 
-      socket.on('increpado', () =>{
+      socket.on('increpado', () => {
         console.log("INCREPADO")
         setIncrepado(true);
-      } )
-      
+      })
+
     };
   }, [socket]);
 
@@ -113,7 +114,7 @@ const ChatScreen = ({ navigation }) => {
         <Header navigation={navigation} />
 
         <View style={styles.botonesContainer}>
-          <CartaRolModal userRol={userRol} visible={increpado}/>
+          <CartaRolModal userRol={userRol} visible={increpado} />
 
 
         </View>
@@ -132,9 +133,16 @@ const ChatScreen = ({ navigation }) => {
           <View style={styles.botonesAcciones}>
             <IncreparModal />
             <AccionModal />
-            <Button
-              title={"Salir"}
+            <View style={{flexDirection:'column', marginLeft:45}}>
+
+            <Icon
+              name={"logout"}
+              color={"purple"}
+              size={35}
               onPress={handleExitGame} />
+            <Text style={{ color: 'purple', marginBottom: 14 }}>SALIR</Text>
+              </View>
+
 
           </View>
         </View>

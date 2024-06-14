@@ -7,7 +7,7 @@ const GameContextProvider = ({ children }) => {
     const [gameId, setGameId] = useState(null);
     const [gamePlayers, setGamePlayers] = useState([]);
     const [gameData, setGameData] = useState([]);
-    const [asesinado, setAsesinado] = useState(false);
+    const [asesinado, setAsesinado] = useState(true);
 
     const create = (gameData) => {
         console.log(`Create desde Game Provider, ${gameData}`)
@@ -21,7 +21,7 @@ const GameContextProvider = ({ children }) => {
         setGameStatus(gameData.state);
         setGameId(gameData.id);
         setGamePlayers(gameData.players);
-        setAsesinado(!userState);
+        setAsesinado(userState);
         setGameData(gameData);
 
     }

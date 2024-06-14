@@ -9,7 +9,7 @@ export const Mensaje = ({ mensaje }) => {
     <View style={[styles.container, isReceiver ? styles.receiverContainer : styles.senderContainer]}>
       {isReceiver ? (
         <>
-          <PlayerAvatar namePlayer={speakingAsRole ? role : sender} />
+          <PlayerAvatar namePlayer={speakingAsRole ? role : sender} background={isReceiver } />
           <View style={[styles.messageContainer, styles.receiverMessageContainer]}>
             <Text style={[styles.text, styles.receiverText]}>{text}</Text>
           </View>

@@ -4,6 +4,7 @@ import { PlayerAvatar } from "../PlayerAvatar/PlayerAvatar";
 import { GameContext } from "../../context/GameContext";
 import { UserContext } from "../../context/UserContext";
 import { SocketContext } from "../../context/socketProvider";
+import { Icon } from "@rneui/themed";
 
 const IncreparModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,10 +23,10 @@ const IncreparModal = () => {
       selectedPlayer
 
     }
-    socket.emit("increpar", increparData, (callback) =>{
+    socket.emit("increpar", increparData, (callback) => {
       console.log(callback);
     });
-    
+
     setModalVisible(!modalVisible);
     Alert.alert(
       "Increpando!",
@@ -47,7 +48,7 @@ const IncreparModal = () => {
   }
   //Manejamos Cancelar
   const handleCancelar = () => {
-    setSelectedPlayer(null);    
+    setSelectedPlayer(null);
     setModalVisible(!modalVisible)
   }
   return (
@@ -69,41 +70,43 @@ const IncreparModal = () => {
               flex: 1,
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backgroundColor: "rgba(, 50, , 0.5)",
             }}
           >
-            <View style={{ backgroundColor: 'darkgoldenrod'
-, padding: 20 }}>
+            <View style={{
+              backgroundColor: 'darkgoldenrod'
+              , padding: 20
+            }}>
               <Text>Elige a quién vas a increpar</Text>
               <View style={styles.playerContainer}>
-              {selectedPlayer === null ? (
+                {selectedPlayer === null ? (
                   gamePlayers
-                  .filter(jugador => jugador.id !== userId)
-                  .map((jugador, index) =>(
-                    <Pressable
-                      key={index}
-                      onPressOut={() => setSelectedPlayer(jugador)}
-                      style={({ pressed }) => [
-                        {
-                          backgroundColor: pressed
-                            ? "rgb(210, 230, 255)"
-                            : "white",
-                        },
-                        styles.wrapperCustom,
-                      ]}
-                    >
-                      <PlayerAvatar namePlayer={jugador.username} />
-                    </Pressable>
-                  ))
+                    .filter(jugador => jugador.id !== userId)
+                    .map((jugador, index) => (
+                      <Pressable
+                        key={index}
+                        onPressOut={() => setSelectedPlayer(jugador)}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed
+                              ? "rgb(210, 230, 255)"
+                              : "rgb(210, 230, 255, .5)",
+                          },
+                          styles.wrapperCustom,
+                        ]}
+                      >
+                        <PlayerAvatar namePlayer={jugador.username} />
+                      </Pressable>
+                    ))
                 ) : (
-                  <>
+                  <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
                     <PlayerAvatar namePlayer={selectedPlayer.username} />
                     <Button
                       title="Increpar"
                       onPress={() => handleIncrepar(userRol)}
-                      color="#F44336"
+                      color="gold"
                     />
-                  </>
+                  </View>
                 )}
               </View>
               <Button
@@ -116,11 +119,14 @@ const IncreparModal = () => {
         </Pressable>
       </Modal>
 
-      <Button
-        title="Increpar"
+
+      <Icon
+        name={"connect-without-contact"}
+        color={"yellow"}
+        size={35}
         onPress={() => setModalVisible(true)}
-        color={"gold"}
       />
+      <Text style={{ color: 'yellow', marginBottom: 14 }}>INCREPAR</Text>
     </View>
   );
 };
