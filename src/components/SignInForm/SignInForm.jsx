@@ -31,7 +31,7 @@ export const SignInForm = ({ navigation }) => {
         username: username.toLowerCase(),
         email: email.toLowerCase().trim(),
         password,
-        alias
+        alias:username
       };
       const nuevoUsuario = await crearUsuario(userData);
       nuevoUsuario === undefined ? alert("usuario incorrecto") : navigation.navigate("Login")
@@ -54,7 +54,7 @@ export const SignInForm = ({ navigation }) => {
       <Text style={styles.text}>Crea tu Cuenta</Text>
       <TextInput
         placeholder="Nombre Usuario"
-        placeholderTextColor="white"
+        placeholderTextColor="rgb(0, 255, 255)"
         style={styles.input}
         keyboardType="ascii-capable"
         value={username}
@@ -62,7 +62,7 @@ export const SignInForm = ({ navigation }) => {
       />
       <TextInput
         placeholder="email@contacto.<3"
-        placeholderTextColor="white"
+        placeholderTextColor="rgb(0, 255, 255)"
         style={styles.input}
         keyboardType="email-address"
         value={email}
@@ -70,7 +70,7 @@ export const SignInForm = ({ navigation }) => {
       />
       <TextInput
         placeholder="password"
-        placeholderTextColor="white"
+        placeholderTextColor="rgb(0, 255, 255)"
         style={styles.input}
         secureTextEntry
         value={password}
@@ -78,7 +78,7 @@ export const SignInForm = ({ navigation }) => {
       />
       <TextInput
         placeholder="Repetir password"
-        placeholderTextColor="white"
+        placeholderTextColor="rgb(0, 255, 255)"
         style={styles.input}
         secureTextEntry
         value={repeatPassword}
@@ -92,7 +92,7 @@ export const SignInForm = ({ navigation }) => {
 
       <Button
         title="Ya tengo"
-        color="#E333FF"
+        color="purple"
         //Redirigimos el botón al Login
         onPress={() => {
           navigation.navigate("Login");
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 2,
-    borderColor: "black",
+    borderColor: "rgba(0, 255, 255, 0.4)",
     fontSize: 18,
 
     color: "yellow",

@@ -60,7 +60,6 @@ const Chat = ({ isAsesinado }) => {
   const cargarMensajes = async () => {
     try {
       const mensajes = await obtenerMensajesPorPartida(gameId, userToken); // Obtener mensajes de la partida
-      console.log(mensajes);
 
       // Modificar las propiedades de los mensajes antes de establecerlos en el estado local
       const mensajesModificados = mensajes.map(mensaje => {
@@ -132,7 +131,6 @@ const Chat = ({ isAsesinado }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar />
       <View style={styles.container}>
         <ScrollView style={styles.chatBox} ref={scrollViewRef}>
           {messages.map((message, index) => (
@@ -140,7 +138,7 @@ const Chat = ({ isAsesinado }) => {
           ))}
         </ScrollView>
 
-        <View style={isAsesinado ? styles.inputContainer : { display: 'none' } }>
+        <View style={!isAsesinado ? { display: 'none' } : styles.inputContainer }>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setInputMessage(text)}
@@ -177,12 +175,12 @@ const styles = StyleSheet.create({
   chatBox: {
     backgroundColor: 'rgba(0, 0, 0, .5)',
     width: '100%',
-    height: '60%',
+    height: '100%',
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: 20,
     paddingHorizontal: 10,
   },
   input: {

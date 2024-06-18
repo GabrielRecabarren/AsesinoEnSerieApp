@@ -11,7 +11,7 @@ const HomeScreen = ({ navigation }) => {
       try {
         const usuarioAutenticado = await AsyncStorage.getItem('usuarioAutenticado');
         // Realiza la lógica correspondiente para redirigir a la página de inicio de sesión o a la página principal según el estado de autenticación recuperado.
-        usuarioAutenticado ? console.log("Autenticado") : console.log("No hay Autenticado");
+        //usuarioAutenticado ? navigation.navigate("Start") : console.log("nada");
       } catch (error) {
         console.error('Error al recuperar el estado de autenticación:', error);
       }
@@ -39,15 +39,16 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
+
   },
   container: {
     margin: 20,
-    backgroundColor: "rgba(31, 38, 135, 0.37)",
+    backgroundColor: "rgba(31, 38, 135, 0.57)",
     borderRadius: 20,
-    padding: 20,
-    height: 450,
+    padding: 30,
+    height: 480,
     borderWidth: 3,
-    borderColor: "rgba(322, 25, 255, 0.18)",
+    borderColor: "rgba(0, 255, 255, 0.18)",
 
   },
 

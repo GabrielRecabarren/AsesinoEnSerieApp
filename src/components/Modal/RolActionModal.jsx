@@ -67,7 +67,7 @@ const AccionModal = () => {
             }}
           >
             <View style={{ backgroundColor: "rgba(186, 19, 19, 0.5)", padding: 20 }}>
-              <Text>{textosPorRol[userRol].pregunta}</Text>
+              <Text style={{color:'yellow', textTransform:'uppercase'}}>{textosPorRol[userRol].pregunta}</Text>
               <View style={styles.playerContainer}>
                 {selectedPlayer === null ? (
                   gamePlayers

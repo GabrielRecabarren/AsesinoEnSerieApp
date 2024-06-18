@@ -1,6 +1,7 @@
 import axios from 'axios';
 
- //const baseURL = 'http://localhost:3000';
+//Esta es la url con la que expongo en expo en mi red. Cuando estés en otras redes, revisar la ip de expo. 
+//Que sucede cuando se compile y se disponibilice, si no se puede usar localhost? confirmar.
 const baseURL = 'http://192.168.1.89:3000';
 
 const usersEndpoint = '/users';
@@ -74,7 +75,7 @@ export const crearPartida = async (gameData, token) => {
 //Obtener usuarios por partida
 export const listarUsuariosPorPartida = async (gameId, token) => {
   try {
-    
+
     const response = await api.get(`/players/${gameId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -155,7 +156,6 @@ export const consultarUserRoleEnPartida = async (userId, gameId, token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data, "response con rol");
     return response.data;
   } catch (error) {
     console.error(error);
@@ -164,10 +164,9 @@ export const consultarUserRoleEnPartida = async (userId, gameId, token) => {
 };
 
 // Crear un nuevo mensaje en una partida específica
-export const crearMensajeEnPartida = async ( mensajeData, token) => {
+export const crearMensajeEnPartida = async (mensajeData, token) => {
   try {
     const gameId = mensajeData.gameId
-    console.log(gameId, "Aqui deberia estar el game Id")
     const response = await api.post(`/messages/${gameId}`, mensajeData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -210,3 +209,37 @@ export const obtenerMensajesPorPartida = async (gameId, token) => {
     throw new Error('Error al obtener los mensajes de la partida.');
   }
 };
+
+//Cambiar estado de jugador a muerto
+export const cambiarEstadoJugador = async (gameId, userId, isAlive, token) => {
+  try {
+    const response = await api.put(`/games/${gameId}/asesinado/${userId}`,{
+      isAlive: isAlive
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error al actualizar al jugador de la partida.');
+
+  }
+}
+
+//Consultar si jugador está vivo o no
+export const consultarEstadoJugador = async (gameId, userId, token) => {
+  try {
+    const response = await api.get(`/games/${gameId}/estado/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        },
+        });
+        return response.data;
+        } catch (error) {
+          console.error(error);
+          throw new Error('Error al consultar el estado del jugador.');
+          }
+}

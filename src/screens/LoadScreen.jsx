@@ -20,7 +20,7 @@ import { Card } from "../components/Card/Card";
 export const LoadScreen = ({ navigation }) => {
   const [partidasUsuario, setPartidasUsuario] = useState([]);
   const [partidasElegida, setPartidaElegida] = useState([]);
-  const { userToken, userId, userRol, elegirRol} = useContext(UserContext);
+  const { userToken, userId,  elegirRol} = useContext(UserContext);
   const { socket } = useContext(SocketContext);
   const { load } = useContext(GameContext);
 
@@ -49,14 +49,13 @@ export const LoadScreen = ({ navigation }) => {
       );
       
       if (rolEnPartida) {
-        console.log(rolEnPartida.userRole, "Que tenemos aqui")
-        load(gameData, rolEnPartida.userState);
+        load(gameData, userId, userToken);
         elegirRol(rolEnPartida.userRole);
         navigation.navigate("Chat");
       } else {
         // Si rolEnPartida es null, manejar el caso
         console.warn("No se pudo obtener el rol en la partida. Procediendo con un rol predeterminado.");
-        load(gameData, userRol); // Usar un rol predeterminado si es necesario
+        load(gameData, userId, userToken); 
         navigation.navigate("Create");
       }
     } catch (error) {

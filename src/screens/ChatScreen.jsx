@@ -17,7 +17,7 @@ const ChatScreen = ({ navigation }) => {
   const [increparVisible, setIncreparVisible] = useState(false);
   const [increpado, setIncrepado] = useState(false);
   const [rolActionData, setRolActionData] = useState(null);
-  const { elegirRol, userId, userRol } = useContext(UserContext);
+  const { elegirRol, userId, userRol, userToken } = useContext(UserContext);
   const [asesinados, setAsesinados] = useState([]);
 
 
@@ -25,7 +25,6 @@ const ChatScreen = ({ navigation }) => {
   const { socket } = useContext(SocketContext); // Obtener el contexto del socket
 
   useEffect(() => {
-    console.log("socket");
     socket.connect();
     //Intentando enviar datos del usuario para mensajes especificos:
     socket.emit("canal-privado", userId);
@@ -44,7 +43,7 @@ const ChatScreen = ({ navigation }) => {
         alert("Moriste");
         setLoaderVisible(false);
         setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
-        usuarioAsesinado();
+        usuarioAsesinado(gameId, userId, isAlive=false, userToken);
         navigation.navigate("Despedida");
 
       }
@@ -114,7 +113,6 @@ const ChatScreen = ({ navigation }) => {
         <Header navigation={navigation} />
 
         <View style={styles.botonesContainer}>
-          <CartaRolModal userRol={userRol} visible={increpado} />
 
 
         </View>
@@ -133,7 +131,9 @@ const ChatScreen = ({ navigation }) => {
           <View style={styles.botonesAcciones}>
             <IncreparModal />
             <AccionModal />
-            <View style={{flexDirection:'column', marginLeft:45}}>
+            <CartaRolModal userRol={userRol} visible={increpado} />
+
+            <View style={{flexDirection:'column', marginLeft:30, marginRight:20}}>
 
             <Icon
               name={"logout"}
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
 
     width: "100%",
-    padding: 20,
+    padding: 10,
     zIndex: 1,
   },
   botonesAcciones: {

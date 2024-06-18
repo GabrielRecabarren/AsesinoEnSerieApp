@@ -6,30 +6,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginForm = ({ navigation }) => {
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
- 
+  const [error, setError] = useState("");
 
-  //Datos del context
+  // Datos del context
   const { login } = useContext(UserContext);
 
-
-
-  //Guardamos al usuario  
+  // Guardamos al usuario
   const guardarUsuarioEnSesion = async (usuario) => {
     try {
-
       await AsyncStorage.setItem('usuario', JSON.stringify(usuario));
-
-
       const dataStored = await AsyncStorage.getItem('usuario');
-
       const parsedData = await JSON.parse(dataStored);
-
-
       await login(parsedData);
-
       return dataStored;
     } catch (error) {
       console.error('Error al guardar usuario en la sesión:', error);
@@ -37,63 +26,71 @@ const LoginForm = ({ navigation }) => {
   };
 
   const handleLogin = async () => {
-   
-
-    // Intentamos iniciar sesión
     try {
+      setError(""); // Limpiar errores anteriores
+
+      // Validar email
+      if (!email) {
+        setError("Debes ingresar un correo válido. Por favor, inténtalo de nuevo.");
+        return;
+      }
+
+      // Validar password
+      if (!password) {
+        setError("Debes ingresar una contraseña. Por favor, inténtalo de nuevo.");
+        return;
+      }
+
       const userData = { email: email.toLowerCase().trim(), password: password.toLowerCase() };
       const loggedUser = await loginUsuario(userData);
 
       // Verificamos si la autenticación fue exitosa
       if (loggedUser) {
         const usuarioGuardado = await guardarUsuarioEnSesion(loggedUser);
-
-        usuarioGuardado ? navigation.navigate("Start") : alert("Imposible guardar usuario");
+        if (usuarioGuardado) {
+          navigation.navigate("Start");
+        } else {
+          setError("Imposible guardar usuario.");
+        }
       } else {
-        console.log("Inicio de sesión fallido");
+        setError("Inicio de sesión fallido. Verifica tus credenciales.");
       }
     } catch (error) {
       console.error("Error al intentar iniciar sesión:", error);
-      // Puedes mostrar un mensaje de error al usuario si lo deseas
-      alert("Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.");
+      setError("Error al intentar iniciar sesión. Por favor, inténtalo de nuevo.");
     }
   };
-
-
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Inicia Sesión</Text>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TextInput
         placeholder="email@contacto.<3"
-        placeholderTextColor="white"
+        placeholderTextColor="rgb(0, 255, 255)"
         style={styles.input}
         value={email}
         onChangeText={(text) => {
           setEmail(text);
-          setEmailError("");
+          setError("");
         }}
       />
-      <Text style={{ color: "red" }}>{emailError}</Text>
       <TextInput
         placeholder="password"
-        placeholderTextColor="white"
+        placeholderTextColor="rgba(0, 255, 255,1)"
         style={styles.input}
         secureTextEntry
         value={password}
         onChangeText={(text) => {
           setPassword(text);
-          setPasswordError("");
+          setError("");
         }}
       />
-      <Text style={{ color: "red" }}>{passwordError}</Text>
-
       <Button
         title="Iniciar sesión"
         onPress={handleLogin}
         color={'green'}
       />
-      
       <Button
         title="Crear Cuenta"
         onPress={() => navigation.navigate("Home")}
@@ -114,13 +111,17 @@ const styles = StyleSheet.create({
     color: "red",
   },
   input: {
-    borderWidth: 3,
-    borderColor: "black",
+    borderWidth: 2,
+    borderColor: "rgba(0, 255, 255, 0.4)",
     fontSize: 18,
     color: "yellow",
     width: 200,
     margin: 10,
     padding: 10,
+  },
+  errorText: {
+    color: "yellow",
+    marginBottom: 10,
   },
 });
 

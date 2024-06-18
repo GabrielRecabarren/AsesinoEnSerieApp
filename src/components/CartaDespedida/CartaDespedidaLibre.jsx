@@ -22,6 +22,7 @@ const CartaDespedidaLibre = ({navigation}) => {
             userId: 0,
             gameId
         }; // Objeto de mensaje completo 
+        console.log(despedidaMensaje);
         const nuevoMensaje = await crearMensajeEnPartida(despedidaMensaje, userToken);
         //Enviamos el mensaje de evento
         socket.emit('chat-message', despedidaMensaje, (res) => {

@@ -22,11 +22,12 @@ const styles = StyleSheet.create({
   },
   container: {
     margin: 20,
-    backgroundColor: "rgba(31, 38, 135, 0.37)",
+    backgroundColor: "rgba(31, 38, 135, 0.57)",
     borderRadius: 20,
     padding: 20,
     height: 450,
     borderWidth: 3,
+    borderColor:"rgba(0, 255, 255, 0.18)"
    
   },
 });

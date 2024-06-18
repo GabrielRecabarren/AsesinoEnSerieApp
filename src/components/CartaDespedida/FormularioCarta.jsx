@@ -23,7 +23,7 @@ const AsesinatoFormulario = ({ navigation }) => {
         console.log('Hora:', hora);
 
         const despedidaMensaje = {
-            text: ` ${username} fue asesinado, y sus últimas palabras fueron : ${hora} ${lugar}`,
+            text: `${username} fue asesinado, y sus últimas palabras fueron : ${hora} ${lugar}`,
             sender: "REPORTE",
             isReceiver: true,
             speakingAsRole: false,
@@ -31,6 +31,7 @@ const AsesinatoFormulario = ({ navigation }) => {
             userId: 0,
             gameId
         }; // Objeto de mensaje completo 
+        console.log(despedidaMensaje, 'MensajeCarta')
         const nuevoMensaje = await crearMensajeEnPartida(despedidaMensaje, userToken);
         //Enviamos el mensaje de evento
         socket.emit('chat-message', despedidaMensaje,(res) => {

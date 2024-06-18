@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { cambiarEstadoJugador, consultarEstadoJugador } from "../../api/api";
 
 const GameContext = createContext();
 
@@ -17,11 +18,12 @@ const GameContextProvider = ({ children }) => {
         setGameData(gameData);
     }
 
-    const load = (gameData, userState) => {
+    const load = async(gameData, userId, token) => {
         setGameStatus(gameData.state);
         setGameId(gameData.id);
         setGamePlayers(gameData.players);
-        setAsesinado(userState);
+        const response = await consultarEstadoJugador(gameData.id, userId, token);
+        setAsesinado(response);
         setGameData(gameData);
 
     }
@@ -29,8 +31,9 @@ const GameContextProvider = ({ children }) => {
         setGamePlayers(players);
     };
     
-    const usuarioAsesinado = () => {
+    const usuarioAsesinado = (gameId, userId, isAlive, userToken) => {
         setAsesinado(true);
+        cambiarEstadoJugador(gameId, userId, isAlive, userToken);
     }
     
 

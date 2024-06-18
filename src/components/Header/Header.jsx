@@ -28,6 +28,7 @@ const Header = ({ navigation }) => {
             <Card
                     text={'Bienvenid@'}
                     valor={username}
+                    detalle={true}
                 />
             <Pressable
                 onPress={() => navigation.navigate("Start")}
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center', // Alinea verticalmente los elementos al centro
         paddingHorizontal: 20, // Agrega espaciado horizontal para evitar que los elementos estén pegados al borde del contenedor
-        paddingVertical:20
+        
     },
 
     titleText: {

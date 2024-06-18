@@ -4,12 +4,21 @@ import AsesinatoFormulario from '../CartaDespedida/FormularioCarta';
 import CartaDespedidaLibre from '../CartaDespedida/CartaDespedidaLibre';
 import CuadroAyuda from '../CuadoAyuda/CuadroAyuda';
 import { textosAyuda } from '../../../api/ayudaText';
+import { Icon } from '@rneui/themed';
 
 const AsesinadoCartel = ({ navigation }) => {
   const [versionCarta, setVersionCarta] = useState(false);
   return (
     <View style={styles.cartelContainer}>
-      <Text style={styles.texto}>Asesinado</Text>
+      <Text style={styles.texto}>Asesinado
+        <Icon
+          
+          color="red"
+          name={"highlight-off"}
+          size={35}
+
+        />
+      </Text>
       <CuadroAyuda
         text={textosAyuda.cartaDespedida} custom={versionCarta} />
       {
@@ -20,8 +29,8 @@ const AsesinadoCartel = ({ navigation }) => {
       <Pressable
         onPress={() => setVersionCarta(!versionCarta)}
         style={styles.tipoCarta}>
-        <Text style={{ fontSize: 15 }}>Cambiar a Carta Libre</Text>
-        <Text style={{ fontSize: 8 }}>Para jugadores Avanzados</Text>
+        <Text style={{ fontSize: 15 }}>{!versionCarta ? "Cambiar a Carta Libre" : "Cambiar a Carta Básica"} </Text>
+        <Text style={{ fontSize: 8 }}>{!versionCarta ? "Para jugadores Avanzados." : "Para todo jugador."}</Text>
 
       </Pressable>
     </View>
@@ -35,6 +44,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 15
   },
   texto: {
     color: 'yellow',

@@ -81,7 +81,9 @@ const RolScreen = ({ navigation }) => {
             {textosPorRol[rolElegido].instrucciones}
           </Text>
         </ScrollView>
-        <Image
+        <View style={{justifyContent:'center',alignItems:'center', width:'100%', height:'50%'}}>
+
+        <Image 
           style={{
             flex: 1,
             width: 330,
@@ -89,7 +91,8 @@ const RolScreen = ({ navigation }) => {
           }}
           resizeMode="contain"
           source={ images[rolElegido] }
-        />
+          />
+          </View>
         <Button onPress={irAlJuego} title="Vamos al Juego!">
           Comencemos!
         </Button>
@@ -109,8 +112,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(31, 38, 135, 0.37)",
     borderRadius: 20,
     padding: 20,
-    height: 450,
+    height: 600,
     borderWidth: 3,
+    justifyContent:'center',
 
   },
   leyenda: {
