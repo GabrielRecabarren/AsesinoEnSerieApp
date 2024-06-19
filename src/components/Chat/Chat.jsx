@@ -19,6 +19,7 @@ const Chat = ({ isAsesinado }) => {
   const [speakingAsRole, setSpeakingAsRole] = useState(false);
 
   useEffect(() => {
+    console.log(isAsesinado, 'Que llega?');
     // Cargar mensajes al montar el componente
     cargarMensajes();
   }, []);
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0, 255, 255, 0.30)",
     borderWidth: 1,
     borderRadius: 5,
-    paddingLeft: 10,
+    paddingLeft: 15,
     paddingRight: 10,
     color: 'rgba(0, 255, 50, 1)',
     marginRight: 10,

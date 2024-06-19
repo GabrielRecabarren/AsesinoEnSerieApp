@@ -48,8 +48,9 @@ export const LoadScreen = ({ navigation }) => {
         userToken
       );
       
-      if (rolEnPartida) {
+      if (rolEnPartida.userRole!='DEFAULT') {
         load(gameData, userId, userToken);
+        console.log(rolEnPartida.userRole);
         elegirRol(rolEnPartida.userRole);
         navigation.navigate("Chat");
       } else {

@@ -38,7 +38,7 @@ const RolScreen = ({ navigation }) => {
         console.log(userId, gameId, rolElegido, "holas");
         await asignarUserRoleEnPartida(userId, gameId, rolElegido, userToken);
         elegirRol(rolElegido);
-
+        console.log("rol asignado", rolElegido)
         navigation.navigate("Chat");
       } catch (error) {
         console.error(error);
@@ -81,18 +81,18 @@ const RolScreen = ({ navigation }) => {
             {textosPorRol[rolElegido].instrucciones}
           </Text>
         </ScrollView>
-        <View style={{justifyContent:'center',alignItems:'center', width:'100%', height:'50%'}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', height: '50%' }}>
 
-        <Image 
-          style={{
-            flex: 1,
-            width: 330,
-            height: 200,
-          }}
-          resizeMode="contain"
-          source={ images[rolElegido] }
+          <Image
+            style={{
+              flex: 1,
+              width: 330,
+              height: 200,
+            }}
+            resizeMode="contain"
+            source={images[rolElegido]}
           />
-          </View>
+        </View>
         <Button onPress={irAlJuego} title="Vamos al Juego!">
           Comencemos!
         </Button>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     padding: 20,
     height: 600,
     borderWidth: 3,
-    justifyContent:'center',
+    justifyContent: 'center',
 
   },
   leyenda: {

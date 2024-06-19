@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, TextInput, ImageBackground, Text, View, Button } from 'react-native';
 import { UserContext } from '../context/UserContext';
 import { invitarUsuariosALaPartida } from '../../api/api';
@@ -7,6 +7,7 @@ import { PlayersContext } from '../context/PlayersContext';
 
 const InvitarScreen = ({ navigation }) => {
     const [jugadores, setJugadores] = useState(['']); // Array de jugadores, inicialmente con un jugador vacío
+    const inputRefs = useRef([]); // Referencias a los inputs
 
     const { userData } = useContext(UserContext);
     const token = userData.data.token;
@@ -14,8 +15,15 @@ const InvitarScreen = ({ navigation }) => {
     const { invitar } = useContext(PlayersContext);
 
     const agregarJugador = () => {
-        setJugadores([...jugadores, '']); // Agrega un jugador vacío al array
+        setJugadores((prevJugadores) => [...prevJugadores, '']); // Agrega un jugador vacío al array
     };
+
+    useEffect(() => {
+        // Focalizar el último input cuando se agregue un nuevo jugador
+        if (inputRefs.current[jugadores.length - 1]) {
+            inputRefs.current[jugadores.length - 1].focus();
+        }
+    }, [jugadores]);
 
     const handleCodigoJugadorChange = (text, index) => {
         const newJugadores = [...jugadores];
@@ -46,6 +54,7 @@ const InvitarScreen = ({ navigation }) => {
                     {jugadores.map((jugador, index) => (
                         <View key={index}>
                             <TextInput
+                                ref={(el) => inputRefs.current[index] = el} // Asigna la referencia al input
                                 style={styles.input}
                                 onChangeText={(text) => handleCodigoJugadorChange(text, index)}
                                 value={jugador}
@@ -102,8 +111,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         color:"yellow",
-        
-    
     },
     buttonsContainer: {
         flexDirection: 'row',

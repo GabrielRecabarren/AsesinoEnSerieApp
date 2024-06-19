@@ -41,7 +41,7 @@ export const CreateScreen = ({ navigation }) => {
   // Cambiar el texto y el estado de los jugadores cuando haya 6 jugadores conectados
   useEffect(() => {
     if (playersOk === false) {
-      setText("Uno/a de nosotros/as se convertirá en Asesino/a. En sus adentros descubrirá un instinto inexpugnable que hasta ahora había sido reprimido. Nos conoce bien, convencerá a uno de nosotros para convertirse en cómplice de un plan aterrador: Eliminar uno auno, a quienes hasta ahora habíansido sus amigos y amigas. Asesino y Cómplice deberán pasar desapercibidos en cada uno de sus crímenes, ocultar el plan a sus víctimas, acometer sin dejar rastros ni sospechas.")
+      setText("Uno/a de nosotros/as se convertirá en Asesino/a. En sus adentros descubrirá un instinto inexpugnable que hasta ahora había sido reprimido. Nos conoce bien, convencerá a uno de nosotros para convertirse en cómplice de un plan aterrador: Eliminar uno a uno, a quienes hasta ahora habíansido sus amigos y amigas. Asesino y Cómplice deberán pasar desapercibidos en cada uno de sus crímenes, ocultar el plan a sus víctimas, acometer sin dejar rastros ni sospechas.")
     }
     if (jugadoresConectados.length >= 3) {
       setPlayersOk(true);
@@ -51,13 +51,13 @@ export const CreateScreen = ({ navigation }) => {
   }, [jugadoresConectados]);
 
   const handleComenzarPartida = () => {
-    const updatedGameData = {
-      state: "En Curso",
-      id: gameId,
-      players: jugadoresConectados
+    // const updatedGameData = {
+    //   state: "En Curso",
+    //   id: gameId,
+    //   players: jugadoresConectados
 
-    }
-    load(updatedGameData);
+    // }
+    // load(updatedGameData);
     navigation.navigate('Rol')
 
   }
@@ -79,7 +79,7 @@ export const CreateScreen = ({ navigation }) => {
       </View>
 
 
-      <View style={{flex:1}}>
+      <View style={styles.buttonsContainer}>
 
         {/* Si el juego está listo para comenzar, se activa el botón. */}
         <Pressable style={styles.button} onPress={handleComenzarPartida}>
@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     flexWrap: "wrap",
     alignContent: "space-between",
-    gap: 40
   },
   buttonsContainer: {
     flexDirection: 'row',
