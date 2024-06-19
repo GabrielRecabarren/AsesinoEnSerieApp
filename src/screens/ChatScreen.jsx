@@ -110,6 +110,7 @@ const ChatScreen = ({ navigation }) => {
         source={require("../img/fondo.png")}
         style={styles.imageBackground}
       >
+        <View style={styles.overlay} />
         <Header navigation={navigation} />
 
         <View style={styles.botonesContainer}>
@@ -161,6 +162,10 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(25, 25, 45, 0.9)', 
   },
   chatContainer: {
     flex: 1,

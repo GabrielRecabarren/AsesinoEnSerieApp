@@ -6,6 +6,7 @@ const GameContext = createContext();
 const GameContextProvider = ({ children }) => {
     const [gameStatus, setGameStatus] = useState("");
     const [gameId, setGameId] = useState(null);
+    const [gameName, setGameName] = useState(null);
     const [gamePlayers, setGamePlayers] = useState([]);
     const [gameData, setGameData] = useState([]);
     const [asesinado, setAsesinado] = useState(true);
@@ -16,26 +17,29 @@ const GameContextProvider = ({ children }) => {
         setGameId(gameData.id);
         setAsesinado(false)
         setGameData(gameData);
+        setGameName(gameData.name);
     }
 
-    const load = async(gameData, userId, token) => {
+    const load = async (gameData, userId, token) => {
         setGameStatus(gameData.state);
         setGameId(gameData.id);
         setGamePlayers(gameData.players);
         const response = await consultarEstadoJugador(gameData.id, userId, token);
         setAsesinado(response);
         setGameData(gameData);
+        setGameName(gameData.name);
+
 
     }
     const loadPlayers = (players) => {
         setGamePlayers(players);
     };
-    
+
     const usuarioAsesinado = (gameId, userId, isAlive, userToken) => {
         setAsesinado(true);
         cambiarEstadoJugador(gameId, userId, isAlive, userToken);
     }
-    
+
 
     const exit = () => {
 
@@ -48,7 +52,18 @@ const GameContextProvider = ({ children }) => {
 
 
     return (
-        <GameContext.Provider value={{ create, load,loadPlayers, usuarioAsesinado,exit, gameData, asesinado, gameId, gamePlayers }}>
+        <GameContext.Provider value={{
+            create,
+            load,
+            loadPlayers,
+            usuarioAsesinado,
+            exit,
+            gameName,
+            gameData,
+            asesinado,
+            gameId,
+            gamePlayers
+        }}>
             {children}
         </GameContext.Provider>
     )
