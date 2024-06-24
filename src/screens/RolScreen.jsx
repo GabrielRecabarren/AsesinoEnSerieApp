@@ -18,7 +18,7 @@ import images from "../img/roles/rolesImgs";
 const RolScreen = ({ navigation }) => {
 
   const { userToken, userId, elegirRol } = useContext(UserContext);
-  const { gameId } = useContext(GameContext);
+  const { gameId, asesinado } = useContext(GameContext);
   const [rolElegido, setRolElegido] = useState("DEFAULT");
   const [imageUri, setImageUri] = useState("../img/roles/DEFAULT.png");
 
@@ -35,10 +35,10 @@ const RolScreen = ({ navigation }) => {
       alert("Debes elegir tu rol");
     } else {
       try {
-        console.log(userId, gameId, rolElegido, "holas");
+        console.log(userId, gameId, rolElegido, asesinado, "holas");
         await asignarUserRoleEnPartida(userId, gameId, rolElegido, userToken);
         elegirRol(rolElegido);
-        console.log("rol asignado", rolElegido)
+        // console.log("rol asignado", rolElegido)
         navigation.navigate("Chat");
       } catch (error) {
         console.error(error);

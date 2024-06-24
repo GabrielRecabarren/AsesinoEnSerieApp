@@ -5,6 +5,8 @@ import { Mensaje } from '../Mensaje/Mensaje';
 import { UserContext } from '../../context/UserContext';
 import { GameContext } from '../../context/GameContext';
 import { crearMensajeEnPartida, obtenerMensajesPorPartida } from '../../../api/api';
+import * as Notifications from 'expo-notifications';
+import { Icon } from '@rneui/themed';
 
 const Chat = ({ isAsesinado }) => {
   const scrollViewRef = useRef(null);
@@ -35,6 +37,7 @@ const Chat = ({ isAsesinado }) => {
         }
       });
     }
+    
     return () => {
       // Limpiar los listeners si es necesario
       if (socket) {
@@ -48,6 +51,18 @@ const Chat = ({ isAsesinado }) => {
       scrollViewRef.current.scrollToEnd({ animated: true });
     }
   }, [messages]);
+  //Para enviar notificaciones
+  const triggerNotificationHandler = async () => {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: '¡Mira esto!',
+        body: 'Esta es una notificación local de prueba',
+      },
+      trigger: {
+        seconds: 1,
+      },
+    });
+  };
 
   const cargarMensajes = async () => {
     try {
@@ -113,6 +128,12 @@ const Chat = ({ isAsesinado }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
+      <Icon
+              name={"adb"}
+              color={"purple"}
+              size={35}
+               onPress={triggerNotificationHandler} 
+              />
         <View style={styles.chatBox}>
           <ScrollView contentContainerStyle={styles.chatContent} ref={scrollViewRef}>
             <View style={styles.backgroundTextContainer}>
@@ -123,6 +144,7 @@ const Chat = ({ isAsesinado }) => {
             ))}
           </ScrollView>
         </View>
+        
 
         <View style={!isAsesinado ? { display: 'none' } : styles.inputContainer}>
           <TextInput

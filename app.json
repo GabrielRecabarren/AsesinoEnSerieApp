@@ -9,7 +9,7 @@
     "splash": {
       "image": "./src/img/fondo.png",
       "resizeMode": "contain",
-      "backgroundColor": "black"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,7 +21,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/img/fondo.png",
-        "backgroundColor": "black"
+        "backgroundColor": "#000000"
       },
       "package": "com.sjs.asesino",
       "versionCode": 1

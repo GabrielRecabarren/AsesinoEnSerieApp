@@ -112,7 +112,7 @@ export const invitarUsuariosALaPartida = async (users, token, gameId) => {
       throw new Error('users debe ser un array.');
     }
 
-    console.log(`Invitando usuarios: ${users}`);
+    // console.log(`Invitando usuarios: ${users}`);
     const response = await api.put(`/games/${gameId}/agregarJugadores`,
       {
         userIds: users
@@ -125,7 +125,7 @@ export const invitarUsuariosALaPartida = async (users, token, gameId) => {
 
     });
     const dataDevuelta = JSON.stringify(response.data)
-    console.log(`Data devuelta: ${dataDevuelta}`);
+    // console.log(`Data devuelta: ${dataDevuelta}`);
     return dataDevuelta;
   } catch (error) {
     console.error(error);
@@ -135,7 +135,7 @@ export const invitarUsuariosALaPartida = async (users, token, gameId) => {
 
 export const asignarUserRoleEnPartida = async (userId, gameId, userRoleId, token) => {
   try {
-    console.log(`${usersEndpoint}/${userId}/games/${gameId}/assign-role/${userRoleId}`);
+    // console.log(`${usersEndpoint}/${userId}/games/${gameId}/assign-role/${userRoleId}`);
     const response = await api.put(`${usersEndpoint}/${userId}/games/${gameId}/assign-role/${userRoleId}`, {}, {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -51,13 +51,13 @@ export const CreateScreen = ({ navigation }) => {
   }, [jugadoresConectados]);
 
   const handleComenzarPartida = () => {
-    // const updatedGameData = {
-    //   state: "En Curso",
-    //   id: gameId,
-    //   players: jugadoresConectados
+    //  const updatedGameData = {
+    //    state: "En Curso",
+    //    id: gameId,
+    //    players: jugadoresConectados
 
-    // }
-    // load(updatedGameData);
+    //  }
+    //  load(updatedGameData);
     navigation.navigate('Rol')
 
   }

@@ -15,7 +15,7 @@ const GameContextProvider = ({ children }) => {
         console.log(`Create desde Game Provider, ${gameData}`)
         setGameStatus(gameData.status);
         setGameId(gameData.id);
-        setAsesinado(false)
+        setAsesinado(true)
         setGameData(gameData);
         setGameName(gameData.name);
     }

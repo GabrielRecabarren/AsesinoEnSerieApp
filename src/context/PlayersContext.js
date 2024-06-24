@@ -9,7 +9,7 @@ const PlayersContextProvider = ({ children }) => {
 
     const invitar =(players) =>{
         setPlayersConectados(...playersConectados, players);
-        console.log("Agregados al Context");
+        // console.log("Agregados al Context");
 
     }
     
