@@ -139,7 +139,7 @@ const ChatScreen = ({ navigation }) => {
             <Icon
               name={"logout"}
               color={"purple"}
-              size={35}
+              size={20}
               onPress={handleExitGame} />
             <Text style={{ color: 'purple', marginBottom: 14 }}>SALIR</Text>
               </View>

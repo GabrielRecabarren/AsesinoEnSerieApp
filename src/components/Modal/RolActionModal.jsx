@@ -116,7 +116,7 @@ const AccionModal = () => {
       <Icon
         name={"contact-emergency"}
         color={"red"}
-        size={35}
+        size={25}
         onPress={() => setModalVisible(true)}
       />
       <Text style={{ color: 'red', marginBottom: 14 }}>ACCIÓN X ROL</Text>

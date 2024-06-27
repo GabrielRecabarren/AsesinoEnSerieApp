@@ -49,7 +49,7 @@ const CartaRolModal = ({ userRol, visible }) => {
       <Icon
         name={"psychology-alt"}
         color={"pink"}
-        size={35}
+        size={25}
         onPress={() => setModalVisible(true)}
       />
       <Text style={{ color: 'pink', marginBottom: 14 }}>CONSEJOS X ROL</Text>

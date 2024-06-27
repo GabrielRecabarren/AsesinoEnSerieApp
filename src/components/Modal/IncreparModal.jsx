@@ -123,7 +123,7 @@ const IncreparModal = () => {
       <Icon
         name={"connect-without-contact"}
         color={"yellow"}
-        size={35}
+        size={25}
         onPress={() => setModalVisible(true)}
       />
       <Text style={{ color: 'yellow', marginBottom: 14 }}>INCREPAR</Text>

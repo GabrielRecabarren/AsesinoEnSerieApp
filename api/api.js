@@ -159,7 +159,7 @@ export const consultarUserRoleEnPartida = async (userId, gameId, token) => {
     return response.data;
   } catch (error) {
     console.error(error);
-    return null;
+    return 'DEFAULT';
   }
 };
 
