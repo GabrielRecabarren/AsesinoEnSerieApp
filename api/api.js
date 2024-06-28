@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-//Esta es la url con la que expongo en expo en mi red. Cuando estés en otras redes, revisar la ip de expo. 
-//Que sucede cuando se compile y se disponibilice, si no se puede usar localhost? confirmar.
-const baseURL = 'http://192.168.1.89:3000';
+
+const baseURL = 'http://192.168.1.89:3000'; //'http://backendasesinoapp-production.up.railway.app';
 
 const usersEndpoint = '/users';
 // const messagesEndpoint = '/messages';
