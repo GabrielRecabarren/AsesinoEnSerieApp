@@ -214,6 +214,7 @@ export const obtenerMensajesPorPartida = async (gameId, token) => {
 export const cambiarEstadoJugador = async (gameId, userId, isAlive, token) => {
   try {
     const response = await api.put(`/games/${gameId}/asesinado/${userId}`,{
+      
       isAlive: isAlive
     }, {
       headers: {
@@ -223,7 +224,7 @@ export const cambiarEstadoJugador = async (gameId, userId, isAlive, token) => {
     return response.data;
 
   } catch (error) {
-    console.error(error);
+    console.error(error, 'error', error.message);
     throw new Error('Error al actualizar al jugador de la partida.');
 
   }

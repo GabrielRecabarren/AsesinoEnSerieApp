@@ -25,7 +25,7 @@ const GameContextProvider = ({ children }) => {
         setGameId(gameData.id);
         setGamePlayers(gameData.players);
         const response = await consultarEstadoJugador(gameData.id, userId, token);
-        setAsesinado(response);
+        setAsesinado(response.estaVivo);
         setGameData(gameData);
         setGameName(gameData.name);
 
@@ -38,6 +38,11 @@ const GameContextProvider = ({ children }) => {
     const usuarioAsesinado = (gameId, userId, isAlive, userToken) => {
         setAsesinado(true);
         cambiarEstadoJugador(gameId, userId, isAlive, userToken);
+    }
+
+    //Calcular asesinados, para determinar si alguien ha ganado o no.
+    const calcularAsesinados = (gameData) => {
+        console.log(gamePlayers.map(players => players.username), "gp's en GC")
     }
 
 
@@ -57,6 +62,7 @@ const GameContextProvider = ({ children }) => {
             load,
             loadPlayers,
             usuarioAsesinado,
+            calcularAsesinados,
             exit,
             gameName,
             gameData,

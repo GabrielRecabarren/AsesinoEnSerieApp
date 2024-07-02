@@ -8,12 +8,13 @@ import { crearMensajeEnPartida, obtenerMensajesPorPartida } from '../../../api/a
 import * as Notifications from 'expo-notifications';
 import { Icon } from '@rneui/themed';
 
-const Chat = ({ isAsesinado }) => {
+const Chat = () => {
   const scrollViewRef = useRef(null);
   const socketContext = useContext(SocketContext); // Obtener el contexto del socket
   const socket = socketContext.socket; // Obtener el socket del contexto
   const { userData, userRol, userToken, userId } = useContext(UserContext);
-  const { gameId, gameName } = useContext(GameContext);
+  const { gameId, gameName, asesinado } = useContext(GameContext);
+  
   const username = userData.data.user.username;
   const role = userRol;
   const [messages, setMessages] = useState([]);
@@ -21,8 +22,8 @@ const Chat = ({ isAsesinado }) => {
   const [speakingAsRole, setSpeakingAsRole] = useState(false);
 
   useEffect(() => {
-    console.log(isAsesinado, 'Que llega?');
     // Cargar mensajes al montar el componente
+    console.log(asesinado, 'ue asesinad?', username);
     cargarMensajes();
   }, []);
 
@@ -128,12 +129,12 @@ const Chat = ({ isAsesinado }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-      <Icon
+      {/* <Icon
               name={"adb"}
               color={"purple"}
               size={35}
                onPress={triggerNotificationHandler} 
-              />
+              /> */}
         <View style={styles.chatBox}>
           <ScrollView contentContainerStyle={styles.chatContent} ref={scrollViewRef}>
             <View style={styles.backgroundTextContainer}>
@@ -146,7 +147,7 @@ const Chat = ({ isAsesinado }) => {
         </View>
         
 
-        <View style={!isAsesinado ? { display: 'none' } : styles.inputContainer}>
+        <View style={!asesinado ? { display: 'none' } : styles.inputContainer}>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setInputMessage(text)}
