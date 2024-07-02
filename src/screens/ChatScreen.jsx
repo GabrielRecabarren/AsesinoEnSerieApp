@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View, ImageBackground, Button, Alert } from "react-native";
+import { StyleSheet, Text, View, ImageBackground, Button, Alert, Pressable } from "react-native";
 import Chat from "../components/Chat/Chat";
 import AccionModal from "../components/Modal/RolActionModal";
 import { UserContext } from "../context/UserContext";
@@ -21,7 +21,7 @@ const ChatScreen = ({ navigation }) => {
   const [asesinados, setAsesinados] = useState([]);
 
 
-  const { gameId, asesinado, usuarioAsesinado } = useContext(GameContext);
+  const { gameId, usuarioAsesinado, calcularAsesinados, gameData } = useContext(GameContext);
   const { socket } = useContext(SocketContext); // Obtener el contexto del socket
 
   useEffect(() => {
@@ -40,10 +40,10 @@ const ChatScreen = ({ navigation }) => {
       });
 
       socket.on("ASESINO-exitoso", () => {
-        alert("Moriste");
+        alert("Has sido asesinado.");
         setLoaderVisible(false);
         setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
-        usuarioAsesinado(gameId, userId, isAlive=false, userToken);
+        usuarioAsesinado(gameId, userId, false, userToken);
         navigation.navigate("Despedida");
 
       }
@@ -62,7 +62,7 @@ const ChatScreen = ({ navigation }) => {
         alert("Moriste");
         setLoaderVisible(false);
         setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
-        usuarioAsesinado();
+        usuarioAsesinado(gameId, userId, isAlive=false, userToken);
         navigation.navigate("Despedida")
       });
       socket.on("DETECTIVE-exitoso", () => {
@@ -114,11 +114,23 @@ const ChatScreen = ({ navigation }) => {
         <Header navigation={navigation} />
 
         <View style={styles.botonesContainer}>
+                  <View> 
+                    <Pressable 
+                    onPress={()=>calcularAsesinados(gameData)}
+                    >
 
+                    <Text style={{
+                      color:'yellow',
+                      marginBottom:15
+                      }}>
+                      {asesinados.length}
+                    </Text>
+                    </Pressable>
+                  </View>
 
         </View>
         <View style={styles.chatContainer}>
-          <Chat isAsesinado={asesinado} />
+          <Chat  />
           <Loader
             visible={loaderVisible}
             actionData={rolActionData}
