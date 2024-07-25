@@ -62,7 +62,7 @@ const ChatScreen = ({ navigation }) => {
         alert("Moriste");
         setLoaderVisible(false);
         setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
-        usuarioAsesinado(gameId, userId, isAlive=false, userToken);
+        usuarioAsesinado(gameId, userId, false, userToken);
         navigation.navigate("Despedida")
       });
       socket.on("DETECTIVE-exitoso", () => {
@@ -75,12 +75,18 @@ const ChatScreen = ({ navigation }) => {
 
       socket.on('increpado', () => {
         console.log("INCREPADO")
+        setAsesinados(prevAsesinados => [...prevAsesinados, userId]);
+        usuarioAsesinado(gameId, userId, false, userToken);
         setIncrepado(true);
+        navigation.navigate("Despedida")
+
       })
 
     };
   }, [socket]);
 
+ 
+  
 
 
   //Manejamos el action rol
