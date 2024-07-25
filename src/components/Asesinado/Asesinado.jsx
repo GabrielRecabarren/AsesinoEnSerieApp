@@ -21,6 +21,7 @@ const AsesinadoCartel = ({ navigation }) => {
       </Text>
       <CuadroAyuda
         text={textosAyuda.cartaDespedida} custom={versionCarta} />
+        <Text style={{color:'yellow', marginTop:45, padding:10}}>*Si has sido increpado/a utiliza el formulario Carta Libre (Boton al final de la pantalla)</Text>
       {
         versionCarta ?
           <CartaDespedidaLibre navigation={navigation} /> :
@@ -29,8 +30,8 @@ const AsesinadoCartel = ({ navigation }) => {
       <Pressable
         onPress={() => setVersionCarta(!versionCarta)}
         style={styles.tipoCarta}>
-        <Text style={{ fontSize: 15 }}>{!versionCarta ? "Cambiar a Carta Libre" : "Cambiar a Carta Básica"} </Text>
-        <Text style={{ fontSize: 8 }}>{!versionCarta ? "Para jugadores Avanzados." : "Para todo jugador."}</Text>
+        <Text style={{ fontSize: 16 }}>{!versionCarta ? "Cambiar a Carta Libre" : "Cambiar a Carta Básica"} </Text>
+        <Text style={{ fontSize: 12 }}>{!versionCarta ? "Para jugadores Avanzados." : "Para todo jugador."}</Text>
 
       </Pressable>
     </View>
